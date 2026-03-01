@@ -17,15 +17,31 @@ Los siguientes objetivos específicos han sido definidos con el propósito de ab
     \item Agilizar la asignación de tareas al personal operativo, permitiendo un control eficiente de la carga laboral individual y optimizando la distribución de labores dentro de la comunidad.
 \end{itemize}
 
-\section{Metodología de Desarrollo}
-Para el desarrollo del proyecto se optó por la metodología \textbf{Cascada}, la cual se estructura en seis fases consecutivas: (1) Análisis, (2) Diseño, (3) Implementación, (4) Verificación y (5) Mantenimiento. La elección de este enfoque se justifica porque el proyecto cuenta con requerimientos funcionales claramente definidos desde el inicio, establecidos por la Ley 21.442 —que regula la copropiedad inmobiliaria en Chile—. Este nivel de claridad en los requerimientos permite un desarrollo lineal y estructurado, minimizando el riesgo de cambios significativos durante el ciclo de vida del sistema y facilitando una planificación más predecible y controlada.
+% \section{Metodología de Desarrollo}
+% Para el desarrollo del proyecto se optó por la metodología \textbf{Cascada}, la cual se estructura en seis fases consecutivas: (1) Análisis, (2) Diseño, (3) Implementación, (4) Verificación y (5) Mantenimiento. La elección de este enfoque se justifica porque el proyecto cuenta con requerimientos funcionales claramente definidos desde el inicio, establecidos por la Ley 21.442 —que regula la copropiedad inmobiliaria en Chile—. Este nivel de claridad en los requerimientos permite un desarrollo lineal y estructurado, minimizando el riesgo de cambios significativos durante el ciclo de vida del sistema y facilitando una planificación más predecible y controlada.
 
-\begin{figure}[H]
-    \centering
-    \includegraphics[height=7cm]{Proyecto_de_Titulo/InformeFinal-SW/images/MetodologiaCascada.png}
-    \caption{Metodología Cascada de Desarrollo. \textit{Fuente:} Metodologías de Cascada por Fernando Arciniega \url{https://fernandoarciniega.com/}.}
-    \label{fig:metodologia-cascada}
-\end{figure}
+% \begin{figure}[H]
+%     \centering
+%     \includegraphics[height=7cm]{Proyecto_de_Titulo/InformeFinal-SW/images/MetodologiaCascada.png}
+%     \caption{Metodología Cascada de Desarrollo. \textit{Fuente:} Metodologías de Cascada por Fernando Arciniega \url{https://fernandoarciniega.com/}.}
+%     \label{fig:metodologia-cascada}
+% \end{figure}
+
+\section{Metodología de Trabajo}
+Para el desarrollo del sistema \textbf{DOMU}, se ha optado por una \textbf{metodología híbrida} que combina la estructura secuencial del modelo en Cascada con la flexibilidad del desarrollo Iterativo e Incremental.
+
+Esta decisión se fundamenta en la naturaleza del proyecto:
+\begin{itemize}
+    \item \textbf{Componente Estructural (Cascada):} Las fases de definición de requerimientos y análisis de factibilidad requieren una aprobación formal y documentación exhaustiva antes de iniciar la construcción, alineándose con los estándares académicos de la Universidad.
+    \item \textbf{Componente de Construcción (Iterativo):} Dado que el stack tecnológico incluye un Backend (Spring Boot) y un Frontend (React) desacoplados, el desarrollo se beneficia de ciclos cortos donde se implementan, integran y prueban módulos funcionales paso a paso (ej. primero el módulo de autenticación, luego el control de visitas, etc.).
+\end{itemize}
+
+El ciclo de vida del proyecto se define en las siguientes fases:
+\begin{enumerate}
+    \item \textbf{Análisis y Diseño Global:} Definición de la arquitectura API REST y el modelo de datos en MySQL.
+    \item \textbf{Iteraciones de Desarrollo:} Construcción progresiva de los módulos (Backend + Frontend).
+    \item \textbf{Pruebas de Integración y Cierre:} Validación final del sistema completo y despliegue en el entorno de producción.
+\end{enumerate}
 
 \section{Estándares de Documentación}
 Para asegurar la trazabilidad, consistencia y calidad en el proceso de desarrollo, se emplean adaptaciones de los siguientes estándares del \textbf{IEEE}:

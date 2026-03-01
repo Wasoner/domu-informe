@@ -1,42 +1,88 @@
-Este capítulo detalla la ejecución técnica del proyecto, describiendo la arquitectura del sistema, el proceso iterativo de construcción y la gestión de los desafíos encontrados. Se presenta un desglose de los componentes desarrollados y la validación final mediante pruebas de aceptación.
+Este capítulo detalla el proceso de construcción del sistema \textbf{DOMU}, describiendo la estructura técnica del código, la configuración del entorno y las fases de implementación ejecutadas bajo la metodología híbrida definida. Se aborda la evolución del software desde su núcleo hasta los módulos de gestión comunitaria actualmente operativos.
 
-\section{Estructura del código}
+\section{Estructura del Código y Arquitectura}
 \label{sec:estructura_codigo}
-En esta sección se describe la organización de los directorios y la lógica de programación empleada.
 
-    \subsection{Backend}
-    Detallar aquí el lenguaje (e.g., Python, Node.js), el framework (Django, Express), el manejo de base de datos y la API.
+El sistema se ha desarrollado siguiendo una arquitectura de cliente-servidor desacoplada, donde el Backend expone una API REST consumida por el Frontend. A continuación, se detalla la organización de los componentes en los repositorios de control de versiones.
 
-    \subsection{Frontend}
-    Describir la interfaz de usuario, frameworks utilizados (React, Vue, Angular) y cómo se comunica con el backend.
+\subsection{Backend (Java)}
+El desarrollo del lado del servidor se ha estructurado en paquetes que separan claramente las responsabilidades, facilitando la mantenibilidad y escalabilidad del código. La estructura principal en el directorio \texttt{src/main/java/com/domu} es la siguiente:
 
-\section{Iteraciones en el desarrollo}
-\label{sec:iteraciones}
-El desarrollo se llevó a cabo bajo una metodología ágil, dividida en las siguientes etapas:
-
-    \subsection{Primera Iteración}
-    Descripción de los objetivos iniciales y lo que se logró construir en la primera etapa.
-
-    \subsection{Segunda Iteración}
-    Mejoras implementadas y nuevas funcionalidades añadidas tras la primera revisión.
-
-\section{Riesgos y Problemas}
-\label{sec:riesgos}
-Durante el desarrollo se identificaron los siguientes elementos que podrían haber afectado el éxito del proyecto:
-
-% Sugerencia: Una tabla para los riesgos se ve muy profesional
 \begin{itemize}
-    \item \textbf{Amenaza:} (Ej: Retraso por salud del equipo).
-    \item \textbf{Impacto:} (Ej: Crítico - Afecta tiempos de entrega).
-    \item \textbf{Estrategia:} (Ej: Reasignación de tareas y trabajo asíncrono).
+    \item \textbf{config/}: Clases de configuración global del sistema, incluyendo la inyección de dependencias (\texttt{AppConfig}, \texttt{DependencyInjectionModule}).
+    \item \textbf{database/}: Capa de persistencia encargada de la comunicación directa con la base de datos MySQL (ej. \texttt{UserRepository}, \texttt{DataSourceFactory}).
+    \item \textbf{domain/}: Entidades del dominio que representan los objetos de negocio como \texttt{User}, \texttt{Community}, \texttt{Ticket}, \texttt{Reservation} y \texttt{Vote}.
+    \item \textbf{dto/}: Objetos de Transferencia de Datos (DTOs) utilizados para recibir y enviar información a través de la API sin exponer las entidades de la base de datos (ej. \texttt{LoginRequest}, \texttt{AuthResponse}, \texttt{VisitRequest}).
+    \item \textbf{security/}: Módulos encargados de la seguridad, incluyendo la generación y validación de tokens JWT (\texttt{JwtProvider}) y el hashing de contraseñas (\texttt{BCryptPasswordHasher}).
+    \item \textbf{service/}: Capa de lógica de negocio donde residen las reglas del sistema (ej. \texttt{UserService}).
+    \item \textbf{web/}: Controladores y manejadores de rutas HTTP que exponen los endpoints de la API REST (\texttt{WebServer}, \texttt{UserMapper}).
 \end{itemize}
 
-\section{Retrospectiva Proyecto}
-Análisis crítico de lo que funcionó bien, lo que no, y cómo se adaptó el equipo a las circunstancias.
+\subsection{Frontend (React)}
+La interfaz de usuario se ha construido utilizando React, organizando el código para promover la reutilización de componentes y la gestión eficiente del estado:
 
-\section{Pruebas de Aceptación}
-\label{sec:pruebas}
-En esta sección se documentan los casos de prueba realizados para verificar que el software cumple con los requerimientos del cliente/usuario.
+\begin{itemize}
+    \item \textbf{components/}: Componentes reutilizables de la interfaz (botones, formularios, tarjetas de información).
+    \item \textbf{pages/}: Vistas principales que componen la navegación del usuario (Login, Dashboard, Reservas, Votaciones).
+    \item \textbf{services/}: Módulos encargados de realizar las peticiones HTTP al Backend (Axios/Fetch).
+    \item \textbf{context/}: Manejo del estado global de la aplicación, como la sesión del usuario autenticado.
+    \item \textbf{assets/}: Recursos estáticos como imágenes, logotipos e iconos.
+\end{itemize}
+
+\section{Fases de Implementación (Iteraciones)}
+\label{sec:fases_implementacion}
+
+Siguiendo la metodología híbrida adoptada, el desarrollo se dividió en fases iterativas, permitiendo desplegar funcionalidades incrementales. A continuación, se describen las iteraciones completadas y las que se encuentran en curso.
+
+\subsection{Fase 1: Fundamentos y Seguridad}
+El objetivo de esta primera iteración fue establecer los cimientos del sistema y asegurar el acceso controlado.
+\begin{itemize}
+    \item \textbf{Configuración del Entorno:} Levantar el servidor Backend y conectar con la base de datos MySQL.
+    \item \textbf{Autenticación (JWT):} Se implementó un sistema de seguridad basado en \textit{JSON Web Tokens}. Al iniciar sesión, el usuario recibe un token con una duración de 1 hora, el cual se almacena en el \texttt{localStorage} del navegador para persistir la sesión durante su uso.
+    \item \textbf{Gestión de Perfiles:} Funcionalidad para que los usuarios puedan editar su propia información de perfil.
+\end{itemize}
+
+\subsection{Fase 2: Gestión de Comunidades y Usuarios}
+Se desarrollaron las herramientas administrativas necesarias para la operación del condominio.
+\begin{itemize}
+    \item \textbf{Registro de Comunidades:} Implementación de un flujo mediante correo electrónico para solicitar y validar el registro de nuevas comunidades en la plataforma.
+    \item \textbf{Creación de Roles Operativos:} Desarrollo de interfaces para que el Administrador pueda crear y gestionar cuentas de personal, específicamente Conserjes y Personal de Aseo.
+    \item \textbf{Vistas por Rol:} Segmentación de la interfaz para mostrar opciones específicas según si el usuario es Administrador, Conserje o Residente.
+\end{itemize}
+
+\subsection{Fase 3: Servicios al Residente y Operación}
+Esta fase se centró en las funcionalidades de interacción diaria dentro de la comunidad.
+\begin{itemize}
+    \item \textbf{Reporte de Incidentes:} Módulo que permite a los residentes reportar problemas (ej. luces quemadas, ruidos molestos), generando un ticket visible para la administración.
+    \item \textbf{Reservas de Áreas Comunes:} Sistema de calendario para verificar disponibilidad y reservar espacios como quinchos o salones.
+    \item \textbf{Sistema de Votaciones:} Módulo digital que permite a la administración crear votaciones y a los residentes emitir su sufragio de manera remota.
+\end{itemize}
+
+\subsection{Fase 4: Control de Acceso y Finanzas (En Desarrollo)}
+Actualmente, el proyecto se encuentra en esta etapa, enfocándose en los módulos más complejos de lógica de negocio.
+\begin{itemize}
+    \item \textbf{Gestión de Visitas (Formulario Manual):} Se ha implementado el formulario base que permite al conserje o al residente registrar los datos de una visita manualmente.
+    \item \textbf{Generación de Gastos Comunes:} Desarrollo de la lógica para calcular el prorrateo de gastos mensuales por unidad.
+    \item \textbf{Generación de Documentos:} Implementación de librerías para generar automáticamente los reportes de cobro en formato PDF.
+\end{itemize}
+
+\section{Detalles Técnicos de Implementación}
+
+\subsection{Integración del Lector de Cédula (Diseño Técnico)}
+Para el control de acceso en conserjería, se ha definido una estrategia de integración mediante hardware tipo "pistola escáner" de códigos QR/Barras. A diferencia de soluciones basadas en cámaras web, este dispositivo operará en modo de emulación de teclado (\textit{HID Mode}).
+
+El flujo técnico diseñado (a implementar sobre el formulario actual) es el siguiente:
+\begin{enumerate}
+    \item El conserje enfoca el campo de entrada "RUT/Pasaporte" en la interfaz web.
+    \item Al escanear el código QR de la Cédula de Identidad chilena, el dispositivo "escribe" automáticamente la cadena de texto contenida en el código.
+    \item El Frontend procesará esta cadena, limpiando la URL o metadatos extraños para extraer únicamente el RUN.
+    \item Se realizará una consulta automática a la base de datos (Endpoint \texttt{GET /api/visits/check/\{run\}}) para verificar si la persona tiene un acceso autorizado o histórico previo, autocompletando el formulario en caso positivo.
+\end{enumerate}
+
+\subsection{Manejo de Seguridad y Sesión}
+La seguridad se gestiona mediante la clase \texttt{JwtProvider} en el Backend. El flujo de autenticación valida las credenciales contra la base de datos (con contraseñas encriptadas vía \texttt{BCrypt}) y emite un token firmado.
+
+En el Frontend, se ha implementado un interceptor en las peticiones HTTP (servicio \textit{Axios/Fetch}) que inyecta automáticamente el token en la cabecera \texttt{Authorization: Bearer <token>}. Si el servidor responde con un error 401 (No autorizado) debido a la expiración del token (1 hora), el Frontend cierra la sesión automáticamente y redirige al Login por seguridad.
 
 \section{Conclusión del Capítulo}
-Resumen de los logros alcanzados en esta fase y cómo preparan el terreno para el siguiente capítulo.
+A la fecha, el sistema \textbf{DOMU} cuenta con un núcleo funcional sólido y los módulos de gestión comunitaria más críticos (votaciones, reservas, incidentes) totalmente operativos. El desarrollo actual se centra en finalizar el módulo financiero y la integración de hardware para optimizar el control de acceso, cumpliendo con el cronograma de la metodología híbrida establecida.

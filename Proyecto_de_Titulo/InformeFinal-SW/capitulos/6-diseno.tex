@@ -90,6 +90,34 @@ Las entidades del modelo de datos son:
     \end{enumerate}
 \end{enumerate}
 
+\subsection{Esquema de la base de datos}
+El diseño de la persistencia de datos se realizó utilizando el motor de base de datos relacional \textbf{MySQL}. El esquema fue construido mediante migraciones SQL versionadas para asegurar la consistencia entre los entornos de desarrollo y producción. A continuación, se detallan las principales entidades y sus relaciones, derivadas de los modelos de migracion.
+
+\begin{itemize}
+    \item \textbf{Entidades de Acceso y Organización:}
+    \begin{itemize}
+        \item \texttt{rol}: Define los perfiles de acceso (Administrador, Residente, Conserje, Funcionario).
+        \item \texttt{usuario}: Entidad central que almacena credenciales, datos personales y llaves foráneas hacia \texttt{rol} y \texttt{unidad}.
+        \item \texttt{edificio} (\texttt{building}): Representa la comunidad. Contiene metadatos como dirección y configuración administrativa.
+        \item \texttt{unidad} (\texttt{housing\_unit}): Representa los departamentos o casas, vinculando a los usuarios residentes con un edificio específico.
+    \end{itemize}
+    \item \textbf{Entidades de Operación y Gestión:}
+    \begin{itemize}
+        \item \texttt{visita} y \texttt{contacto\_visita}: Registran el control de acceso, almacenando datos del visitante, el residente anfitrión y la duración autorizada.
+        \item \texttt{incidente}: Permite el seguimiento de problemas reportados, con campos para estado, prioridad y fechas de resolución.
+        \item \texttt{gasto\_comun} (\texttt{charge}): Almacena los cobros financieros asociados a una unidad y un periodo contable específico.
+    \end{itemize}
+    \item \textbf{Entidades de Participación y Servicios:}
+    \begin{itemize}
+        \item \texttt{votacion} (\texttt{poll}) y \texttt{opcion\_voto}: Estructura para la gestión democrática de decisiones comunitarias.
+        \item \texttt{amenity} (Áreas Comunes) y \texttt{reserva}: Gestionan la disponibilidad y uso de espacios compartidos (quinchos, salas de eventos), controlando aforos y bloques horarios.
+    \end{itemize}
+\end{itemize}
+
+El modelo respeta las formas normales para evitar redundancia de datos, utilizando claves foráneas (\texttt{FOREIGN KEY}) para mantener la integridad referencial entre las unidades, los residentes y sus respectivas operaciones (pagos, reservas, multas).
+
+
+
 \cleardoublepage % Asegura que esta sección comience en una página limpia (incluso página par/impar si aplica)
 \subsection{Modelo Entidad-Relación}
 
@@ -295,8 +323,34 @@ La composición de las interfaces expuesta a continuación corresponde a la vers
 \end{figure}
 \clearpage
 
-\section{Diseno de la Arquitectura}
+\section{Diseño de arquitectura}
+La solución sigue un patrón de arquitectura \textbf{Cliente-Servidor} utilizando una API RESTful como medio de comunicación. Esta separación permite que el \textit{frontend} y el \textit{backend} evolucionen, se desarrollen y se desplieguen de manera independiente.
 
-\subsection{Configuracion Inicial del Entorno}
+\begin{itemize}
+    \item \textbf{Backend (Servidor):} Construido sobre la JVM (Java Virtual Machine) utilizando \textbf{Java 21}. Se utiliza el framework ligero \textbf{Javalin 6} para la exposición de endpoints HTTP. La arquitectura interna sigue un diseño por capas (\textit{Controller-Service-Repository}), facilitando la inyección de dependencias (vía Google Guice) y la testabilidad del código.
+    \item \textbf{Frontend (Cliente):} Desarrollado como una \textit{Single Page Application} (SPA) utilizando \textbf{React 19}. La construcción y empaquetado se gestiona con \textbf{Vite}, lo que optimiza los tiempos de carga mediante \textit{code splitting} y carga perezosa (\textit{lazy loading}) de módulos.
+\end{itemize}
 
-\subsection{Arquitectura de Implementacion Final}
+\subsection{Configuración Inicial del Entorno}
+Para garantizar la reproducibilidad del entorno de desarrollo y la correcta ejecución del sistema, se definieron configuraciones específicas tanto para el servidor como para el cliente, eliminando dependencias obsoletas (como \texttt{pom.xml} en favor de Gradle) y estandarizando las versiones de las herramientas.
+
+\textbf{Configuración del Backend:}
+El proyecto \texttt{domu-backend} se gestiona mediante \textbf{Gradle} (usando Kotlin DSL en \texttt{build.gradle.kts}). Las dependencias clave configuradas en \texttt{libs.versions.toml} incluyen:
+\begin{itemize}
+    \item \textbf{Lenguaje:} Java 21 (LTS).
+    \item \textbf{Framework Web:} Javalin 6.7.0.
+    \item \textbf{Base de Datos:} MySQL Connector 9.0.0 y HikariCP 5.1.0 para el pool de conexiones.
+    \item \textbf{Seguridad:} Java-JWT 4.4.0 y JBcrypt 0.4.
+\end{itemize}
+
+La configuración en tiempo de ejecución se maneja a través de variables de entorno, priorizando la seguridad (no hardcodear credenciales). Las variables críticas definidas son: \texttt{DB\_URI}, \texttt{DB\_USER}, \texttt{DB\_PASSWORD} para la conexión JDBC; \texttt{JWT\_SECRET} para la firma de tokens; y \texttt{APP\_SERVER\_PORT} para el puerto de despliegue (por defecto 7000).
+
+\textbf{Configuración del Frontend:}
+El proyecto \texttt{domu-frontend} utiliza \textbf{Node.js} (v18+) como entorno de ejecución y \textbf{npm} para la gestión de paquetes. La configuración base se encuentra en \texttt{vite.config.js} y \texttt{package.json}.
+\begin{itemize}
+    \item \textbf{Core:} React 19.1 y React Router 7.9.
+    \item \textbf{Variables de Entorno:} Se utiliza un archivo \texttt{.env} (basado en \texttt{.env.example}) para definir \texttt{VITE\_API\_BASE\_URL}, permitiendo cambiar el apuntamiento de la API entre el entorno de desarrollo local (proxy) y producción sin modificar el código fuente.
+    \item \textbf{Calidad de Código:} Se configuró ESLint 9.36 para asegurar el estilo y detectar errores de sintaxis en tiempo de desarrollo.
+\end{itemize}
+
+\subsection{Arquitectura de Implementación Final}

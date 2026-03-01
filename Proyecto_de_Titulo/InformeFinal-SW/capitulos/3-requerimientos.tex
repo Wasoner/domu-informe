@@ -60,7 +60,24 @@ En esta sección se presentan las restricciones técnicas que condicionan el des
     \item En caso de que los desarrolladores lo consideren, se expondrá el Frontend en una pagina web con un hosting adquirido por ellos. Al igual que el servidor que alojara el backend y frontend.
 \end{itemize}
 
-% \section{Identificación de los Usuarios}
+\section{Identificación de usuario}
+Para el módulo de identificación y control de acceso, se diseñó e implementó un mecanismo de autenticación \textit{stateless} (sin estado) basado en el estándar \textbf{JSON Web Tokens (JWT)}. Esta decisión arquitectónica se fundamenta en la necesidad de desacoplar el estado de la sesión del servidor, permitiendo una mayor escalabilidad horizontal y facilitando la comunicación entre el cliente (SPA) y la API REST.
+
+El flujo de identificación se compone de las siguientes etapas:
+
+\begin{enumerate}
+    \item \textbf{Solicitud de Credenciales:} Desde la interfaz de usuario en \texttt{domu-frontend}, específicamente en el componente de Login, se capturan las credenciales del usuario (correo electrónico y contraseña).
+    \item \textbf{Validación y Envío:} El servicio \texttt{api.js} (método \texttt{auth.login}) estructura la petición y la envía mediante HTTP POST al endpoint \texttt{/api/auth/login} del backend.
+    \item \textbf{Verificación en Backend:}
+    \begin{itemize}
+        \item El servidor (implementado con Javalin) recibe la solicitud en \texttt{WebServer.java}.
+        \item El servicio \texttt{UserService} busca al usuario en la base de datos por su correo electrónico.
+        \item Se verifica la integridad de la contraseña utilizando el algoritmo de hashing \textbf{BCrypt} (mediante la librería \texttt{jbcrypt}). Esto asegura que las contraseñas nunca se almacenen ni comparen en texto plano.
+    \end{itemize}
+    \item \textbf{Generación del Token:} Si las credenciales son válidas, el componente \texttt{JwtProvider} genera un token firmado (HMAC256) que incluye en su \textit{payload} (carga útil) la identificación del usuario, su rol (\texttt{roleId}) y la fecha de expiración configurada.
+    \item \textbf{Almacenamiento y Persistencia en Cliente:} El frontend recibe el token y lo almacena localmente utilizando \texttt{localStorage}.
+    \item \textbf{Intercepción de Peticiones:} Para las subsecuentes interacciones con rutas protegidas, se implementó un \textit{wrapper} en \texttt{fetchWrapper} (\texttt{api.js}) que inyecta automáticamente el encabezado de autorización: \texttt{Authorization: Bearer <token>}, permitiendo al backend validar la identidad del usuario en cada petición mediante el \texttt{AuthenticationHandler}.
+\end{enumerate}
 
 \section{Requerimientos Funcionales}
 A continuación, se presentan los requerimientos funcionales identificados en la etapa inicial del proyecto, los cuales se consideran fundamentales para el desarrollo de la aplicación.
