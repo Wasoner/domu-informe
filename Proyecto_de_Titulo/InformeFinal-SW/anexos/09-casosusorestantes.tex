@@ -1,0 +1,114 @@
+% -----------------------------------------------------------
+%  Anexo --- Casos de Uso restantes
+% -----------------------------------------------------------
+
+\renewcommand{\cutop}[2]{%
+  \multicolumn{2}{|l|}{\textbf{#1\;\;#2}}\\\hline
+}
+\renewcommand{\cusec}[2]{%
+  \multicolumn{2}{|p{0.96\linewidth}|}{\textbf{#1:}\;#2}\\\hline
+}
+\renewcommand{\cuheader}[2]{\textbf{#1} & \textbf{#2}\\\hline}
+
+Este anexo consolida los casos de uso que quedaron fuera del alcance operativo de la version~1.0 de \textit{DOMU}. Se mantienen como funcionalidades proyectadas para una version posterior del sistema y se preservan aqui para no perder la trazabilidad funcional del informe.
+
+\begin{longtable}{|p{0.09\textwidth}|p{0.24\textwidth}|p{0.11\textwidth}|p{0.12\textwidth}|p{0.34\textwidth}|}
+\caption{Casos de uso restantes planificados para versiones futuras.}\label{tab:casos-restantes}\\
+\hline
+\textbf{CU} & \textbf{Nombre} & \textbf{Actor principal} & \textbf{RF asociado} & \textbf{Alcance pendiente} \\
+\hline
+\endfirsthead
+\hline
+\textbf{CU} & \textbf{Nombre} & \textbf{Actor principal} & \textbf{RF asociado} & \textbf{Alcance pendiente} \\
+\hline
+\endhead
+\hline
+\endfoot
+
+CU\_06 & Gestionar morosidad y conciliacion & Administrador & RF\_08 & Requiere conciliacion bancaria, regularizacion automatica de deuda, aplicacion formal de intereses y seguimiento administrativo integral de morosidad. \\
+\hline
+CU\_11 & Mantenimiento preventivo & Administrador & RF\_14 & Requiere planificacion de mantenciones, alertas de vencimiento, evidencia de ejecucion y reprogramacion de actividades preventivas. \\
+\hline
+CU\_12 & Gestionar estacionamientos (titulares y pases) & Administrador & RF\_09 (version previa) & Requiere administracion de cupos, pases temporales, disponibilidad y reglas de uso para residentes y visitas. \\
+\hline
+CU\_18 & Registrar mantencion de ascensor en bitacora & Conserje & RF\_14 & Requiere una bitacora especializada para ascensores, revisiones tecnicas y relacion con planes de mantencion futura. \\
+\hline
+\end{longtable}
+
+% CU_06
+\begin{table}[H]\centering
+\begin{tabular}{|p{0.475\linewidth}|p{0.475\linewidth}|}\hline
+\cutop{CU\_06}{Gestionar morosidad y conciliacion}
+\cusec{Precondiciones}{Administrador autenticado; estados de cuenta y comprobantes disponibles para revision financiera.}
+\cusec{Includes}{---}
+\cusec{Extends}{---}
+\cuheader{Administrador}{Sistema}
+1) Accede al modulo de morosidad. & 2) Muestra deudores, saldos pendientes y movimientos asociados. \\\hline
+3) Revisa pagos pendientes y aplica acciones administrativas. & 4) Calcula intereses, registra observaciones y prepara la conciliacion. \\\hline
+5) Importa o cruza informacion bancaria. & 6) Sugiere coincidencias, detecta diferencias y actualiza la regularizacion cuando corresponda. \\\hline
+\multicolumn{2}{|l|}{\textbf{Flujo de eventos alternativos}}\\\hline
+5a. El archivo bancario es invalido o no coincide con el periodo. & 5b. Rechaza la importacion y solicita una nueva fuente de datos. \\\hline
+\cusec{Post condiciones}{La morosidad queda conciliada o actualizada con trazabilidad financiera.}
+\end{tabular}
+\caption{CU\_06 --- Gestionar morosidad y conciliacion}
+\label{tab:cu06}
+\end{table}
+
+% CU_11
+\begin{table}[H]\centering
+\begin{tabular}{|p{0.475\linewidth}|p{0.475\linewidth}|}\hline
+\cutop{CU\_11}{Mantenimiento preventivo}
+\cusec{Precondiciones}{Administrador autenticado; activos o equipos registrados en la comunidad.}
+\cusec{Includes}{---}
+\cusec{Extends}{---}
+\cuheader{Administrador}{Sistema}
+1) Define un plan preventivo para un activo o instalacion. & 2) Registra periodicidad, responsable y fecha objetivo. \\\hline
+3) Programa la actividad de mantencion. & 4) Genera alertas de vencimiento y seguimiento del plan. \\\hline
+5) Registra evidencia de ejecucion o reprogramacion. & 6) Actualiza el historial preventivo del activo. \\\hline
+\multicolumn{2}{|l|}{\textbf{Flujo de eventos alternativos}}\\\hline
+5a. La mantencion no puede ejecutarse en la fecha programada. & 5b. Reagenda la actividad y registra el motivo. \\\hline
+\cusec{Post condiciones}{El plan preventivo queda programado, ejecutado o reprogramado con evidencia.}
+\end{tabular}
+\caption{CU\_11 --- Mantenimiento preventivo}
+\label{tab:cu11}
+\end{table}
+
+% CU_12
+\begin{table}[H]\centering
+\begin{tabular}{|p{0.475\linewidth}|p{0.475\linewidth}|}\hline
+\cutop{CU\_12}{Gestionar estacionamientos (titulares y pases)}
+\cusec{Precondiciones}{Administrador autenticado; mapa y reglas de estacionamientos configuradas.}
+\cusec{Includes}{---}
+\cusec{Extends}{---}
+\cuheader{Administrador}{Sistema}
+1) Accede al modulo de estacionamientos. & 2) Muestra cupos, titulares y disponibilidad actual. \\\hline
+3) Asigna o modifica un titular. & 4) Valida disponibilidad, vigencia y reglas de uso. \\\hline
+5) Emite un pase temporal o reasigna un cupo. & 6) Registra la autorizacion y controla su vigencia. \\\hline
+\multicolumn{2}{|l|}{\textbf{Flujo de eventos alternativos}}\\\hline
+4a. El cupo seleccionado ya se encuentra ocupado. & 4b. Informa el conflicto y solicita elegir otra alternativa. \\\hline
+\cusec{Post condiciones}{La asignacion o pase queda registrado y trazable para control futuro.}
+\end{tabular}
+\caption{CU\_12 --- Gestionar estacionamientos (titulares y pases)}
+\label{tab:cu12}
+\end{table}
+
+% CU_18
+\begin{table}[H]\centering
+\begin{tabular}{|p{0.475\linewidth}|p{0.475\linewidth}|}\hline
+\cutop{CU\_18}{Registrar mantencion de ascensor en bitacora}
+\cusec{Precondiciones}{Conserje autenticado; existe una revision tecnica o mantencion del ascensor en curso o finalizada.}
+\cusec{Includes}{---}
+\cusec{Extends}{CU\_11 Mantenimiento preventivo, cuando la revision forma parte de un plan formal.}
+\cuheader{Conserje}{Sistema}
+1) Accede a la bitacora tecnica del ascensor. & 2) Muestra formulario de registro de evento o mantencion. \\\hline
+3) Ingresa responsable, hallazgos, fecha y observaciones. & 4) Registra la entrada y la vincula al equipo o servicio correspondiente. \\\hline
+5) Adjunta evidencia si existe. & 6) Guarda la bitacora y notifica a administracion para seguimiento. \\\hline
+\multicolumn{2}{|l|}{\textbf{Flujo de eventos alternativos}}\\\hline
+5a. No existe evidencia adjunta. & 5b. Permite guardar el registro con solo antecedentes descriptivos. \\\hline
+\cusec{Post condiciones}{La mantencion queda registrada en una bitacora tecnica especializada del ascensor.}
+\end{tabular}
+\caption{CU\_18 --- Registrar mantencion de ascensor en bitacora}
+\label{tab:cu18}
+\end{table}
+
+La postergacion de estos casos de uso permitio enfocar la version~1.0 en los modulos operativos ya entregados: control de accesos, encomiendas, incidentes, reservas, finanzas, tareas, comunicaciones comunitarias, biblioteca y gobernanza basica.

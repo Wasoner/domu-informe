@@ -2,9 +2,9 @@
 %  Gestión del Proyecto
 % -----------------------------------------------------------
 
-Este anexo presenta los aspectos de gestión del proyecto DOMU, incluyendo la planificación mediante carta Gantt, el análisis de desviaciones y un resumen del esfuerzo invertido.
+Este anexo presenta los aspectos de gestión del proyecto DOMU, organizados en la planificación mediante carta Gantt, la estimación por puntos de casos de uso y el resumen del esfuerzo observado al cierre del desarrollo.
 
-\section{Carta Gantt con línea base y desviaciones}
+\section{Carta Gantt con Línea Base y Desviaciones}
 
 A continuación se presentan las cartas Gantt correspondientes a las dos etapas del proyecto: el anteproyecto (planificación inicial) y el proyecto de título (ejecución real).
 
@@ -40,117 +40,7 @@ Al comparar la carta Gantt del anteproyecto (Figura~\ref{fig:gantt-anteproyecto}
     \item \textbf{Fecha de cierre:} A pesar de las desviaciones puntuales, la fecha de cierre global del proyecto se mantuvo dentro del margen planificado, gracias a la re-priorización de funcionalidades y la eficiencia ganada por la adopción de TanStack React Query en el frontend.
 \end{itemize}
 
-\section{Resumen de Esfuerzo}
-
-La Tabla~\ref{tab:esfuerzo} presenta un resumen del esfuerzo estimado y real por fase del proyecto.
-
-\begin{table}[H]
-\centering
-\begin{tabular}{|p{0.40\textwidth}|c|c|c|}
-\hline
-\textbf{Fase} & \textbf{Estimado (hrs)} & \textbf{Real (hrs)} & \textbf{Desviación} \\ \hline
-Análisis y especificación de requerimientos & 40 & 35 & $-$12\% \\ \hline
-Diseño (BD, arquitectura, UI) & 50 & 60 & +20\% \\ \hline
-Implementación Backend & 100 & 120 & +20\% \\ \hline
-Implementación Frontend Web & 80 & 65 & $-$19\% \\ \hline
-Implementación App Móvil (PWA) & 20 & 15 & $-$25\% \\ \hline
-Integración y pruebas & 20 & 20 & 0\% \\ \hline
-Documentación del informe & 30 & 35 & +17\% \\ \hline
-\textbf{Total} & \textbf{340} & \textbf{350} & \textbf{+3\%} \\ \hline
-\end{tabular}
-\caption{Comparación de esfuerzo estimado vs. real por fase.}
-\label{tab:esfuerzo}
-\end{table}
-
-El esfuerzo total real (350~horas) se desvió solo un 3\% respecto a la estimación inicial (340~horas), lo que indica una planificación global acertada. Las desviaciones más significativas se produjeron en el diseño (+20\%) y el backend (+20\%), compensadas por una implementación más eficiente del frontend ($-$19\%) y la aplicación móvil PWA ($-$25\%).
-
-% -----------------------------------------------------------
-\section{Riesgos de Alto Nivel}
-% -----------------------------------------------------------
-
-La Tabla~\ref{tab:riesgos} presenta los riesgos de alto nivel identificados durante la etapa de planificación del proyecto, junto con su evaluación de probabilidad, impacto, estrategia de mitigación y el resultado observado al cierre del desarrollo.
-
-\begin{longtable}{|p{0.04\textwidth}|p{0.18\textwidth}|p{0.08\textwidth}|p{0.07\textwidth}|p{0.35\textwidth}|p{0.12\textwidth}|}
-\caption{Riesgos de alto nivel del proyecto DOMU}\label{tab:riesgos}\\
-\hline
-\textbf{ID} & \textbf{Riesgo} & \textbf{Prob.} & \textbf{Imp.} & \textbf{Estrategia de Mitigación} & \textbf{¿Se materializó?} \\
-\hline
-\endfirsthead
-\hline
-\textbf{ID} & \textbf{Riesgo} & \textbf{Prob.} & \textbf{Imp.} & \textbf{Estrategia de Mitigación} & \textbf{¿Se materializó?} \\
-\hline
-\endhead
-\hline
-\endfoot
-
-R01 & Complejidad del modelo financiero (gastos comunes, prorrateo, períodos contables) & Alta & Alto & Diseñar el esquema de BD en iteraciones tempranas; validar con datos de prueba realistas. & \textbf{Sí} (fase de diseño +20\%) \\
-\hline
-
-R02 & Postergación de funcionalidades a v2.0 por falta de tiempo & Alta & Medio & Priorizar CUs mediante MoSCoW; comunicar decisiones de alcance tempranamente. & \textbf{Sí} (5 CUs diferidos: CU\_06, CU\_08, CU\_11, CU\_12, CU\_18) \\
-\hline
-
-R03 & Integración hardware QR con navegador web & Media & Alto & Investigar modo HID de pistolas lectoras QR; preparar alternativa de ingreso manual. & \textbf{No} (modo HID funcionó sin drivers adicionales) \\
-\hline
-
-R04 & Rendimiento de WebSocket bajo carga concurrente & Media & Alto & Usar implementación nativa de Javalin; diseñar pruebas de carga para MVP. & \textbf{No} (Javalin nativo suficiente para escala MVP) \\
-\hline
-
-R05 & Dependencia de Box API para almacenamiento de archivos & Media & Medio & Abstraer almacenamiento tras interfaz de servicio; documentar proceso de renovación de tokens. & \textbf{Parcial} (token de desarrollador requiere renovación manual cada 60~min en desarrollo) \\
-\hline
-
-R06 & Disponibilidad de pasarela de pago Mercado Pago & Baja & Alto & Implementar flujo de pago en modo simulado para v1.0; preparar integración real para v2.0. & \textbf{N/A} (modo simulado en v1.0) \\
-\hline
-
-R07 & Curva de aprendizaje de tecnologías nuevas (Javalin, TanStack Query) & Media & Medio & Dedicar sprint inicial a prototipos; apoyarse en documentación oficial y ejemplos. & \textbf{Parcial} (compensado con documentación oficial extensa) \\
-\hline
-
-R08 & Coordinación entre 2 desarrolladores con cargas académicas paralelas & Media & Medio & Usar Git con ramas por funcionalidad; reuniones semanales breves de sincronización. & \textbf{No} (Git + comunicación efectiva mitigaron el riesgo) \\
-
-\end{longtable}
-
-De los ocho riesgos identificados, dos se materializaron completamente (R01 y R02), dos de forma parcial (R05 y R07) y los restantes no se concretaron gracias a las estrategias de mitigación adoptadas. El impacto más significativo fue la postergación de cinco casos de uso a la versión~2.0, decisión tomada en la semana~8 de desarrollo para asegurar la calidad de los módulos entregados.
-
-% === PLACEHOLDER: Reemplazar con imagen generada ===
-% PROMPT para generador de imágenes (Gemini/GPT/DALL-E):
-%
-% "Genera una MATRIZ DE RIESGOS (Probabilidad vs Impacto) para un proyecto de software.
-%
-% NOTACIÓN:
-% - GRILLA: tabla de 3 filas x 3 columnas formando 9 celdas.
-% - EJE X (horizontal, abajo): 'Impacto' con valores: Bajo, Medio, Alto.
-% - EJE Y (vertical, izquierda): 'Probabilidad' con valores: Baja, Media, Alta.
-% - COLORES DE CELDAS: verde claro (Baja+Bajo, Baja+Medio), amarillo (Media+Bajo, Media+Medio, Baja+Alto),
-%   naranja (Alta+Bajo, Alta+Medio, Media+Alto), rojo (Alta+Alto).
-% - RIESGOS: círculos blancos con borde negro, dentro el ID del riesgo (R01, R02, etc.).
-%   Cada círculo tiene un ícono pequeño: ✓ si se materializó, ✗ si no, ~ si parcial.
-%
-% POSICIÓN DE LOS 8 RIESGOS EN LA GRILLA:
-% - R01 en celda (Alta, Alto) = zona roja, con ✓
-% - R02 en celda (Alta, Medio) = zona naranja, con ✓
-% - R03 en celda (Media, Alto) = zona naranja, con ✗
-% - R04 en celda (Media, Alto) = zona naranja, con ✗ (junto a R03)
-% - R05 en celda (Media, Medio) = zona amarilla, con ~
-% - R06 en celda (Baja, Alto) = zona amarilla, con N/A
-% - R07 en celda (Media, Medio) = zona amarilla, con ~ (junto a R05)
-% - R08 en celda (Media, Medio) = zona amarilla, con ✗ (junto a R05 y R07)
-%
-% LEYENDA abajo: ✓ = Materializado | ✗ = No materializado | ~ = Parcial | N/A = No aplica
-%
-% ESTILO: Fondo blanco, bordes de grilla en negro, texto negro, sin gradientes.
-% Tipografía sans-serif. Profesional para tesis universitaria. Etiquetas en español.
-% Formato: PNG 300dpi."
-\begin{figure}[H]
-  \centering
-  \fbox{\parbox{0.85\textwidth}{\centering\vspace{3cm}
-  \textit{[Insertar diagrama: Matriz de riesgos Probabilidad vs.\ Impacto con R01--R08 posicionados]}
-  \vspace{3cm}}}
-  \caption{Matriz de probabilidad--impacto de los riesgos del proyecto DOMU.}
-  \label{fig:matriz-riesgos}
-\end{figure}
-
-% -----------------------------------------------------------
-\section{Estimación por Puntos de Casos de Uso}
-% -----------------------------------------------------------
+\section{Estimación Casos de Uso}
 
 A continuación se presenta la estimación del esfuerzo del proyecto utilizando el método de \textbf{Puntos de Casos de Uso} (UCP, \textit{Use Case Points}), desarrollado por Gustav Karner. Este método permite estimar el esfuerzo en horas-persona a partir de la complejidad de los actores y casos de uso del sistema, ajustado por factores técnicos y ambientales.
 
@@ -329,6 +219,32 @@ La estimación UCP arroja un valor teórico de 5{,}218~horas-persona, considerab
     \item \textbf{Factor de ajuste empírico:} Aplicando un factor de ajuste de $\approx 0.067$ (350/5{,}218), se obtiene un LOE efectivo de $\approx 1.34$~hrs/UCP, coherente con proyectos académicos de alta productividad reportados en la literatura.
 \end{itemize}
 
+\section{Resumen Esfuerzo}
+
+La Tabla~\ref{tab:esfuerzo} presenta un resumen del esfuerzo estimado y real por fase del proyecto.
+
+\begin{table}[H]
+\centering
+\begin{tabular}{|p{0.40\textwidth}|c|c|c|}
+\hline
+\textbf{Fase} & \textbf{Estimado (hrs)} & \textbf{Real (hrs)} & \textbf{Desviación} \\ \hline
+Análisis y especificación de requerimientos & 40 & 35 & $-$12\% \\ \hline
+Diseño (BD, arquitectura, UI) & 50 & 60 & +20\% \\ \hline
+Implementación Backend & 100 & 120 & +20\% \\ \hline
+Implementación Frontend Web & 80 & 65 & $-$19\% \\ \hline
+Implementación App Móvil (PWA) & 20 & 15 & $-$25\% \\ \hline
+Integración y pruebas & 20 & 20 & 0\% \\ \hline
+Documentación del informe & 30 & 35 & +17\% \\ \hline
+\textbf{Total} & \textbf{340} & \textbf{350} & \textbf{+3\%} \\ \hline
+\end{tabular}
+\caption{Comparación de esfuerzo estimado vs. real por fase.}
+\label{tab:esfuerzo}
+\end{table}
+
+El esfuerzo total real (350~horas) se desvió solo un 3\% respecto a la estimación inicial (340~horas), lo que indica una planificación global acertada. Las desviaciones más significativas se produjeron en el diseño (+20\%) y el backend (+20\%), compensadas por una implementación más eficiente del frontend ($-$19\%) y la aplicación móvil PWA ($-$25\%).
+
+\subsection{Comparación de estimaciones}
+
 En la Tabla~\ref{tab:comparacion-estimaciones} se resume la comparación entre las tres fuentes de estimación.
 
 \begin{table}[H]
@@ -349,3 +265,56 @@ UCP (ajustado, LOE=1.34) & $\approx$ 350 & Convergente con esfuerzo real \\
 \caption{Comparación de estimaciones de esfuerzo.}
 \label{tab:comparacion-estimaciones}
 \end{table}
+
+\subsection{Riesgos de Alto Nivel}
+
+La Tabla~\ref{tab:riesgos} presenta los riesgos de alto nivel identificados durante la etapa de planificación del proyecto, junto con su evaluación de probabilidad, impacto, estrategia de mitigación y el resultado observado al cierre del desarrollo.
+
+\begin{longtable}{|p{0.04\textwidth}|p{0.18\textwidth}|p{0.08\textwidth}|p{0.07\textwidth}|p{0.35\textwidth}|p{0.12\textwidth}|}
+\caption{Riesgos de alto nivel del proyecto DOMU}\label{tab:riesgos}\\
+\hline
+\textbf{ID} & \textbf{Riesgo} & \textbf{Prob.} & \textbf{Imp.} & \textbf{Estrategia de Mitigación} & \textbf{¿Se materializó?} \\
+\hline
+\endfirsthead
+\hline
+\textbf{ID} & \textbf{Riesgo} & \textbf{Prob.} & \textbf{Imp.} & \textbf{Estrategia de Mitigación} & \textbf{¿Se materializó?} \\
+\hline
+\endhead
+\hline
+\endfoot
+
+R01 & Complejidad del modelo financiero (gastos comunes, prorrateo, períodos contables) & Alta & Alto & Diseñar el esquema de BD en iteraciones tempranas; validar con datos de prueba realistas. & \textbf{Sí} (fase de diseño +20\%) \\
+\hline
+
+R02 & Postergación de funcionalidades a v2.0 por falta de tiempo & Alta & Medio & Priorizar CUs mediante MoSCoW; comunicar decisiones de alcance tempranamente. & \textbf{Sí} (5 CUs diferidos: CU\_06, CU\_08, CU\_11, CU\_12, CU\_18) \\
+\hline
+
+R03 & Integración hardware QR con navegador web & Media & Alto & Investigar modo HID de pistolas lectoras QR; preparar alternativa de ingreso manual. & \textbf{No} (modo HID funcionó sin drivers adicionales) \\
+\hline
+
+R04 & Rendimiento de WebSocket bajo carga concurrente & Media & Alto & Usar implementación nativa de Javalin; diseñar pruebas de carga para MVP. & \textbf{No} (Javalin nativo suficiente para escala MVP) \\
+\hline
+
+R05 & Dependencia de Box API para almacenamiento de archivos & Media & Medio & Abstraer almacenamiento tras interfaz de servicio; documentar proceso de renovación de tokens. & \textbf{Parcial} (token de desarrollador requiere renovación manual cada 60~min en desarrollo) \\
+\hline
+
+R06 & Disponibilidad de pasarela de pago Mercado Pago & Baja & Alto & Implementar flujo de pago en modo simulado para v1.0; preparar integración real para v2.0. & \textbf{N/A} (modo simulado en v1.0) \\
+\hline
+
+R07 & Curva de aprendizaje de tecnologías nuevas (Javalin, TanStack Query) & Media & Medio & Dedicar sprint inicial a prototipos; apoyarse en documentación oficial y ejemplos. & \textbf{Parcial} (compensado con documentación oficial extensa) \\
+\hline
+
+R08 & Coordinación entre 2 desarrolladores con cargas académicas paralelas & Media & Medio & Usar Git con ramas por funcionalidad; reuniones semanales breves de sincronización. & \textbf{No} (Git + comunicación efectiva mitigaron el riesgo) \\
+
+\end{longtable}
+
+De los ocho riesgos identificados, dos se materializaron completamente (R01 y R02), dos de forma parcial (R05 y R07) y los restantes no se concretaron gracias a las estrategias de mitigación adoptadas. El impacto más significativo fue la postergación de cinco casos de uso a la versión~2.0, decisión tomada en la semana~8 de desarrollo para asegurar la calidad de los módulos entregados.
+
+\begin{figure}[H]
+  \centering
+  \fbox{\parbox{0.85\textwidth}{\centering\vspace{3cm}
+  \textit{[Insertar diagrama: Matriz de riesgos Probabilidad vs.\ Impacto con R01--R08 posicionados]}
+  \vspace{3cm}}}
+  \caption{Matriz de probabilidad--impacto de los riesgos del proyecto DOMU.}
+  \label{fig:matriz-riesgos}
+\end{figure}

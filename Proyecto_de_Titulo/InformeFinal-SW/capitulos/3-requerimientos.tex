@@ -38,7 +38,7 @@ Se especifican las tecnologías y formatos de integración aceptados por el sist
 
 \begin{itemize}
     \item Las integraciones con servicios externos se realizan mediante \textbf{API REST + JSON} sobre HTTPS. Adicionalmente, el sistema utiliza \textbf{WebSocket nativo de Javalin} para comunicación bidireccional en tiempo real (chat y notificaciones).
-    \item La pasarela de pagos prevista es \textbf{Mercado Pago}. En la versión 1.0 (MVP), el flujo de pago opera en modo simulado; la integración con la API de producción de Mercado Pago se realizará en una iteración posterior.
+    \item En la version~1.0, el modulo financiero opera mediante carga de comprobantes por parte del residente y validacion manual por administracion. La integracion con pasarela de pago y la conciliacion bancaria automatica quedan fuera del alcance operativo vigente.
 \end{itemize}
 
 \subsection{Límites de Datos y Retención}
@@ -68,23 +68,26 @@ En esta sección se presentan las restricciones técnicas que condicionan el des
 \end{itemize}
 
 \section{Identificación de Usuario}
-Para el módulo de identificación y control de acceso, se diseñó e implementó un mecanismo de autenticación \textit{stateless} (sin estado) basado en el estándar \textbf{JSON Web Tokens (JWT)}. Esta decisión arquitectónica se fundamenta en la necesidad de desacoplar el estado de la sesión del servidor, permitiendo una mayor escalabilidad horizontal y facilitando la comunicación entre el cliente (SPA) y la API REST.
+La identificacion de usuario en \textit{DOMU} se organiza a partir de roles funcionales que determinan el alcance operativo de cada actor dentro de la comunidad. Esta definicion es coherente con los actores vigentes del Capitulo~5 y con el modelo de control de acceso aplicado por el sistema.
 
-El flujo de identificación se compone de las siguientes etapas:
+\begin{table}[H]
+\centering
+\setlength{\tabcolsep}{4pt}
+\renewcommand{\arraystretch}{1.15}
+\begin{tabular}{|p{0.16\textwidth}|p{0.24\textwidth}|p{0.34\textwidth}|p{0.12\textwidth}|}
+\hline
+\textbf{Actor} & \textbf{Cargo(s)} & \textbf{Responsabilidad principal en el sistema} & \textbf{Privilegio} \\ \hline
+Administrador & Administracion de comunidad & Configura la comunidad y gestiona usuarios, residentes, comite, unidades habitacionales, personal operativo, finanzas, incidentes, biblioteca y votaciones. & Alto \\ \hline
+Conserje & Conserjeria/recepcion & Gestiona el control de visitas, el registro y retiro de encomiendas, y el reporte de incidentes operativos asociados a la atencion diaria. & Medio \\ \hline
+Personal operativo & Aseo, mantencion y apoyo operativo & Ejecuta tareas asignadas por la administracion y reporta su cumplimiento con evidencia cuando corresponde. & Bajo--Medio \\ \hline
+Residente & Usuario final de la comunidad & Pre-autoriza visitas, consulta publicaciones y documentos, registra incidentes, reserva espacios comunes, revisa gastos comunes, vota, usa chat y participa en el marketplace. & Bajo \\ \hline
+Comite & Comite de administracion & Fiscaliza informacion financiera en modo lectura, participa en la gestion de votaciones y administra documentos asociados a actas y gobernanza comunitaria. & Medio \\ \hline
+\end{tabular}
+\caption{Identificacion de actores y privilegios operativos del sistema DOMU.}
+\label{tab:identificacion-usuarios}
+\end{table}
 
-\begin{enumerate}
-    \item \textbf{Solicitud de Credenciales:} Desde la interfaz de usuario en \texttt{domu-frontend}, específicamente en el componente de Login, se capturan las credenciales del usuario (correo electrónico y contraseña).
-    \item \textbf{Validación y Envío:} El servicio \texttt{api.js} (método \texttt{auth.login}) estructura la petición y la envía mediante HTTP POST al endpoint \texttt{/api/auth/login} del backend.
-    \item \textbf{Verificación en Backend:}
-    \begin{itemize}
-        \item El servidor (implementado con Javalin) recibe la solicitud en \texttt{WebServer.java}.
-        \item El servicio \texttt{UserService} busca al usuario en la base de datos por su correo electrónico.
-        \item Se verifica la integridad de la contraseña utilizando el algoritmo de hashing \textbf{BCrypt} (mediante la librería \texttt{jbcrypt}). Esto asegura que las contraseñas nunca se almacenen ni comparen en texto plano.
-    \end{itemize}
-    \item \textbf{Generación del Token:} Si las credenciales son válidas, el componente \texttt{JwtProvider} genera un token firmado (HMAC256) que incluye en su \textit{payload} (carga útil) la identificación del usuario, su rol (\texttt{roleId}) y la fecha de expiración configurada.
-    \item \textbf{Almacenamiento y Persistencia en Cliente:} El frontend recibe el token y lo almacena localmente utilizando \texttt{localStorage}.
-    \item \textbf{Intercepción de Peticiones:} Para las subsecuentes interacciones con rutas protegidas, se implementó un \textit{wrapper} en \texttt{fetchWrapper} (\texttt{api.js}) que inyecta automáticamente el encabezado de autorización: \texttt{Authorization: Bearer <token>}, permitiendo al backend validar la identidad del usuario en cada petición mediante el \texttt{AuthenticationHandler}.
-\end{enumerate}
+La autenticacion tecnica del sistema se implementa mediante credenciales personales y control de acceso basado en roles, de modo que cada usuario accede solamente a los modulos y operaciones que le corresponden segun su perfil. Esta separacion evita ambiguedades entre actores con funciones distintas, especialmente entre \textit{Conserje} y \textit{Personal operativo}, y asegura que el \textit{Comite} mantenga un rol de gobernanza y fiscalizacion consistente con los casos de uso vigentes.
 
 \section{Requerimientos Funcionales}
 A continuación, se presentan los requerimientos funcionales identificados en la etapa inicial del proyecto, los cuales se consideran fundamentales para el desarrollo de la aplicación.
@@ -93,26 +96,26 @@ A continuación, se presentan los requerimientos funcionales identificados en la
 \begin{longtable}{|p{0.14\textwidth}|p{0.80\textwidth}|}
 \hline
 \textbf{ID} & \textbf{El sistema debe…} \\ \hline
-RF\_01 & \textbf{Actor(es): CONSERJE.} Registrar la \textbf{entrada y salida de VISITAS} mediante lector de cédula o QR, validando el RUT. \\ \hline
-RF\_02 & \textbf{Actor(es): CONSERJE, RESIDENTE.} Enviar \textbf{notificación push} al RESIDENTE cuando se registre una VISITA, DELIVERY o ENCOMIENDA a su nombre. \\ \hline
-RF\_03 & \textbf{Actor(es): RESIDENTE.} Permitir al RESIDENTE \textbf{pre-autorizar visitas} mediante la aplicación, registrando previamente la información del visitante para facilitar su identificación y acceso en conserjería. \\ \hline
-RF\_04 & \textbf{Actor(es): CONSERJE, RESIDENTE.} Gestionar el \textbf{registro confiable de encomiendas}: recepción, fotografía de evidencia y entrega al residente (firma digital). \\ \hline
-RF\_05 & \textbf{Actor(es): ADMINISTRACIÓN, PERSONAL.} Gestionar \textbf{tareas y turnos} del PERSONAL (aseo, conserjes), permitiendo al ADMINISTRADOR asignar, re-asignar y monitorear estado. \\ \hline
-RF\_06 & \textbf{Actor(es): PERSONAL.} Permitir al PERSONAL marcar \textbf{inicio/fin de jornada} y declarar tareas completadas con fotos adjuntas. \\ \hline
-RF\_07 & \textbf{Actor(es): ADMINISTRACIÓN, RESIDENTE, COMITÉ.} Generar y enviar mensualmente el \textbf{estado de gastos comunes}; habilitar pago electrónico y permitir al \textbf{COMITÉ} la consulta en modo lectura para fiscalización. \\ \hline
-RF\_08 & \textbf{Actor(es): ADMINISTRADOR.} Mantener \textbf{morosidad y conciliación}: el ADMINISTRADOR puede aplicar sanciones y enviar notificaciones. \\ \hline
-RF\_09 & \textbf{Actor(es): RESIDENTE, ADMINISTRACIÓN.} Gestionar \textbf{reservas de espacios comunes} con reglas de aforo, tiempo máximo y bloqueo ante mora. \\ \hline
-RF\_10 & \textbf{Actor(es): ADMINISTRACIÓN, COMITÉ, RESIDENTE.} Implementar un \textbf{sistema de votaciones} (elecciones de comité, decisiones de gasto) con anonimato y trazabilidad, permitiendo que \textbf{ADMINISTRACIÓN} y \textbf{COMITÉ} generen y gestionen votaciones con los mismos permisos en este módulo. \\ \hline
-RF\_11 & \textbf{Actor(es): RESIDENTE.} Habilitar \textbf{foro/chat comunitario} categorizado (avisos, eventos, reclamos, sugerencias). \\ \hline
-RF\_12 & \textbf{Actor(es): RESIDENTE, ADMINISTRACIÓN.} Registrar \textbf{tickets de reclamos/sugerencias} y permitir su seguimiento por estado (abierto, en progreso, cerrado). \\ \hline
-RF\_13 & \textbf{Actor(es): ADMINISTRACIÓN, COMITÉ.} Permitir la \textbf{gestión de votaciones comunitarias} por parte de \textbf{ADMINISTRACIÓN} y \textbf{COMITÉ}, con paridad de permisos para crear, cerrar y publicar resultados dentro del módulo de votaciones. \\ \hline
-RF\_14 & \textbf{Actor(es): ADMINISTRACIÓN, PERSONAL.} Registrar \textbf{mantenimientos preventivos}; programar alertas de vencimiento (planificado para v2.0). \\ \hline
-RF\_15 & \textbf{Actor(es): ADMINISTRACIÓN, COMITÉ.} Emitir \textbf{dashboards} con KPIs de seguridad (conteo de incidentes), finanzas (ingresos/egresos) y desempeño de tareas (parcial en v1.0: estadísticas de incidentes). \\ \hline
-RF\_16 & \textbf{Actor(es): ADMINISTRADOR.} Permitir al ADMINISTRADOR configurar \textbf{roles y permisos} granularmente (RBAC). \\ \hline
-RF\_17 & \textbf{Actor(es): RESIDENTE.} Habilitar \textbf{chat en tiempo real} entre residentes mediante WebSocket. \\ \hline
-RF\_18 & \textbf{Actor(es): RESIDENTE.} Proveer un \textbf{marketplace comunitario} para compraventa entre vecinos. \\ \hline
-RF\_19 & \textbf{Actor(es): ADMINISTRACIÓN, COMITÉ, RESIDENTE.} Gestionar una \textbf{biblioteca de documentos} comunitarios, permitiendo carga de archivos por \textbf{ADMINISTRACIÓN} y \textbf{COMITÉ}; el \textbf{COMITÉ} sólo puede usar la etiqueta \textit{actas}, mientras que \textbf{ADMINISTRACIÓN} puede usar todas las etiquetas disponibles. \\ \hline
-RF\_20 & \textbf{Actor(es): ADMINISTRACIÓN, CONSERJE, PERSONAL, RESIDENTE, COMITÉ.} Entregar \textbf{notificaciones en tiempo real} mediante WebSocket con preferencias configurables. \\ \hline
+RF\_01 & \textbf{Actor(es): CONSERJE.} Registrar la \textbf{entrada y salida de VISITAS} mediante escaneo del QR de la cedula de identidad chilena o ingreso manual validado, asociando la visita a la unidad de destino. \\ \hline
+RF\_02 & \textbf{Actor(es): ADMINISTRADOR, CONSERJE, PERSONAL OPERATIVO, RESIDENTE, COMITE.} Emitir \textbf{notificaciones} asociadas a eventos relevantes de la comunidad, incluyendo visitas, encomiendas, incidentes, pagos, tareas y votaciones, segun el rol involucrado. \\ \hline
+RF\_03 & \textbf{Actor(es): RESIDENTE.} Permitir al RESIDENTE \textbf{pre-autorizar visitas} mediante la aplicacion, registrando previamente la informacion necesaria del visitante para facilitar su identificacion y acceso en conserjeria. \\ \hline
+RF\_04 & \textbf{Actor(es): CONSERJE, RESIDENTE, ADMINISTRADOR.} Gestionar el \textbf{registro y retiro de encomiendas}, asociando unidad de destino, evidencia opcional y cambios de estado hasta su entrega. \\ \hline
+RF\_05 & \textbf{Actor(es): ADMINISTRADOR.} Gestionar \textbf{personal operativo y tareas}, permitiendo registrar personal, asignar responsables, definir prioridades y monitorear el estado de las actividades operativas. \\ \hline
+RF\_06 & \textbf{Actor(es): PERSONAL OPERATIVO.} Permitir al PERSONAL OPERATIVO actualizar el estado de las tareas asignadas y declarar su cumplimiento con evidencia adjunta cuando corresponda. \\ \hline
+RF\_07 & \textbf{Actor(es): ADMINISTRADOR, RESIDENTE, COMITE.} Gestionar \textbf{gastos comunes} mediante la creacion de periodos y cargos, la generacion de estados de cuenta, la carga de comprobantes por parte del RESIDENTE y la validacion manual del pago por parte del ADMINISTRADOR; el COMITE debe poder consultar esta informacion en modo lectura para fiscalizacion. \\ \hline
+RF\_08 & \textbf{Actor(es): ADMINISTRADOR. [Trabajo futuro]} Incorporar la \textbf{gestion formal de morosidad y conciliacion bancaria}, incluyendo regularizacion de deuda y seguimiento administrativo integral. \\ \hline
+RF\_09 & \textbf{Actor(es): RESIDENTE, ADMINISTRADOR.} Gestionar \textbf{reservas de espacios comunes} con reglas de disponibilidad, aforo, bloques horarios y restricciones aplicables por mora. \\ \hline
+RF\_10 & \textbf{Actor(es): RESIDENTE.} Permitir al RESIDENTE \textbf{emitir su voto} en votaciones comunitarias abiertas, registrando la participacion de forma trazable y evitando duplicidad de sufragio. \\ \hline
+RF\_11 & \textbf{Actor(es): ADMINISTRADOR, RESIDENTE.} Habilitar \textbf{canales de comunicacion comunitaria}, incluyendo un muro de publicaciones para avisos de la comunidad y acceso a interacciones comunicacionales disponibles para residentes. \\ \hline
+RF\_12 & \textbf{Actor(es): RESIDENTE, CONSERJE, ADMINISTRADOR.} Permitir registrar \textbf{incidentes o reclamos operativos}, adjuntar antecedentes y mantener seguimiento de su estado por parte de administracion. \\ \hline
+RF\_13 & \textbf{Actor(es): ADMINISTRADOR, COMITE.} Permitir la \textbf{gestion de votaciones comunitarias} por parte de ADMINISTRADOR y COMITE, incluyendo creacion, cierre y publicacion de resultados dentro del modulo respectivo. \\ \hline
+RF\_14 & \textbf{Actor(es): ADMINISTRADOR, CONSERJE. [Trabajo futuro]} Incorporar \textbf{mantenimiento preventivo y bitacoras tecnicas especializadas}, con planificacion, alertas y evidencia de ejecucion. \\ \hline
+RF\_15 & \textbf{Actor(es): ADMINISTRADOR, COMITE.} Proveer \textbf{reportes y vistas de apoyo a la gestion}, incluyendo estados financieros, resumenes de periodos y estadisticas operativas disponibles para administracion y fiscalizacion. \\ \hline
+RF\_16 & \textbf{Actor(es): ADMINISTRADOR.} Permitir al ADMINISTRADOR gestionar \textbf{comunidad, roles, residentes, comite, unidades habitacionales y permisos asociados} de acuerdo con la configuracion administrativa vigente. \\ \hline
+RF\_17 & \textbf{Actor(es): RESIDENTE.} Habilitar \textbf{chat en tiempo real} entre residentes mediante WebSocket, con historial de conversaciones y actualizacion inmediata de mensajes. \\ \hline
+RF\_18 & \textbf{Actor(es): RESIDENTE.} Proveer un \textbf{marketplace comunitario} para publicar, actualizar y retirar articulos de compraventa o intercambio entre vecinos. \\ \hline
+RF\_19 & \textbf{Actor(es): ADMINISTRADOR, COMITE, RESIDENTE.} Gestionar una \textbf{biblioteca de documentos} comunitarios, permitiendo carga de archivos por ADMINISTRADOR y COMITE segun permisos; el COMITE solo puede publicar documentos bajo la categoria \textit{actas}, mientras los usuarios autorizados pueden consultarlos. \\ \hline
+RF\_20 & \textbf{Actor(es): ADMINISTRADOR, CONSERJE, PERSONAL OPERATIVO, RESIDENTE, COMITE.} Entregar \textbf{notificaciones en tiempo real} mediante WebSocket, con preferencias configurables y asociadas a eventos relevantes del sistema. \\ \hline
 \caption{Requerimientos Funcionales del sistema DOMU}
 \label{tab:rf}
 \end{longtable}

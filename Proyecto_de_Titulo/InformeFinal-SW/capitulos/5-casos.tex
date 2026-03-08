@@ -1,20 +1,15 @@
 % ---------------------------------------------
-% Capítulo 5 — Análisis
+% Capitulo 5 --- Analisis
 % ---------------------------------------------
 
-% ==== Estilo CU sin color + ajuste de ancho ====
-% Encabezado de cada CU (sin banner)
 \newcommand{\cutop}[2]{%
   \multicolumn{2}{|l|}{\textbf{#1\;\;#2}}\\\hline
 }
-% Secciones de ancho completo dentro de la tabla
 \newcommand{\cusec}[2]{%
   \multicolumn{2}{|p{0.96\linewidth}|}{\textbf{#1:}\;#2}\\\hline
 }
-% Cabecera Actor / Sistema
 \newcommand{\cuheader}[2]{\textbf{#1} & \textbf{#2}\\\hline}
 
-% Tamaño y padding locales para todo el capítulo 5
 \begingroup
 \small
 \setlength{\tabcolsep}{4pt}
@@ -22,107 +17,65 @@
 
 \label{cap:analisis}
 
-\noindent Este capítulo presenta los actores y la especificación de Casos de Uso del sistema \textit{DOMU}, junto con su matriz de trazabilidad con los requerimientos funcionales (RF), incorporando formalmente el rol de gobernanza del Comité.
+\noindent Este capitulo presenta los actores, diagramas y especificacion de Casos de Uso vigentes del sistema \textit{DOMU} para la version actual. Los casos de uso diferidos a una version futura se consolidan en el Anexo~\ref{anexo:casos-restantes} para mantener separada la funcionalidad implementada del trabajo proyectado.
 
-% ====== 4.2 Actores de Casos de Uso ======
 \section{Actores de casos de uso}
 \begin{table}[H]
 \centering
-% Ajustes SOLO para esta tabla:
-\setlength{\tabcolsep}{3pt}       % menos padding lateral
+\setlength{\tabcolsep}{3pt}
 \renewcommand{\arraystretch}{1.10}
-
-% Suma de anchos ≈ 0.92\linewidth para dejar margen a líneas y tabcolsep
 \begin{tabular}{|p{0.14\linewidth}|p{0.18\linewidth}|p{0.30\linewidth}|p{0.16\linewidth}|p{0.14\linewidth}|}
 \hline
-\textbf{Actor} & \textbf{Cargo(s)} & \textbf{Funciones en la empresa} &
-\textbf{Nivel de conocimientos técnicos} & \textbf{Nivel de privilegio} \\\hline
+\textbf{Actor} & \textbf{Cargo(s)} & \textbf{Funciones en el sistema} &
+\textbf{Nivel de conocimientos tecnicos} & \textbf{Nivel de privilegio} \\\hline
 
-Administrador & Admin. de comunidad & Gestión de finanzas, usuarios, reglas y supervisión operativa &
-Alto & Alto (configuración global) \\\hline
+Administrador & Administracion de comunidad & Configura comunidad, usuarios, unidades, personal, finanzas, incidentes, biblioteca y votaciones & Alto & Alto \\\hline
 
-Conserje & Guardia/Conserje & Control de accesos, encomiendas, bitácora &
-Básico & Medio (módulos operativos) \\\hline
+Conserje & Conserjeria/Recepcion & Controla visitas, registra y entrega encomiendas, y puede reportar incidentes operativos & Basico & Medio \\\hline
 
-Personal & Aseo/Mantención & Ejecución de tareas y reportes de actividad &
-Básico & Bajo–Medio (tareas asignadas) \\\hline
+Personal operativo & Aseo, mantencion, apoyo operativo & Ejecuta tareas asignadas y reporta su cumplimiento con evidencia & Basico & Bajo--Medio \\\hline
 
-Residente & Usuario final & Pagos, reservas, votaciones, reclamos &
-Básico & Bajo (ámbito personal) \\\hline
+Residente & Usuario final de la comunidad & Pre-autoriza visitas, consulta publicaciones, registra incidentes, reserva espacios, vota, chatea, usa marketplace y revisa gastos comunes & Basico & Bajo \\\hline
 
-Comité & Comité de administración & Generar votaciones, subir actas de asamblea a biblioteca (etiqueta ``actas'') y consultar estados de cuenta &
-Medio & Medio (fiscalización y gobierno) \\\hline
+Comite & Comite de administracion & Participa en gobernanza comunitaria: crea o fiscaliza votaciones, consulta estados de cuenta y gestiona documentos asociados a actas & Medio & Medio \\\hline
 \end{tabular}
-\caption{Actores que interactúan con el sistema.}
+\caption{Actores que interactuan con el sistema.}
 \label{tab:actores}
 \end{table}
 
+\section{Diagramas y especificacion de casos de uso}
 
-% ====== 4.3 Diagramas y especificación de casos de uso ======
-\section{Diagramas y especificación de casos de uso}
+La especificacion principal de este capitulo se restringe a los casos de uso implementados o representativos del alcance vigente de \textit{DOMU}. Los casos de uso planificados para una version posterior se presentan en el Anexo~\ref{anexo:casos-restantes}.
 
-% === PLACEHOLDER: Reemplazar con imagen generada ===
-% PROMPT para generador de imágenes (Gemini/GPT/DALL-E):
-%
-% "Genera un DIAGRAMA UML DE CASOS DE USO para un sistema llamado DOMU (gestión de condominios).
-%
-% NOTACIÓN OBLIGATORIA (UML 2.0 estricto):
-% - ACTORES: figuras de palito (stick figures) con su nombre debajo. NO usar íconos, cajas ni avatares.
-% - CASOS DE USO: elipses/óvalos horizontales con el nombre del CU dentro (ej: 'CU_01 Gestionar visitas').
-% - SISTEMA: un gran rectángulo con borde sólido que encierra todos los óvalos, etiquetado 'Sistema DOMU' arriba.
-% - RELACIONES: líneas sólidas entre actor y caso de uso. Flechas punteadas con etiqueta <<include>> o <<extend>> entre CUs.
-% - DIFERIDOS: los CUs diferidos a v2.0 deben tener óvalos con borde punteado y texto gris.
-%
-% ACTORES (5 stick figures):
-% - LADO IZQUIERDO: Administrador (arriba), Conserje (medio), Personal (abajo)
-% - LADO DERECHO: Residente (arriba), Comité (abajo)
-%
-% CASOS DE USO dentro del rectángulo, agrupados visualmente por área:
-% Grupo 'Control Accesos': CU_01 Gestionar visitas (→Conserje), CU_15 Ingreso QR (→Conserje, →Residente)
-%   Relación: CU_01 --<<extend>>--> CU_15
-% Grupo 'Encomiendas': CU_02 Registrar encomiendas (→Conserje)
-% Grupo 'Finanzas': CU_04 Pagar gastos comunes (→Residente), CU_09 Reportes financieros (→Administrador)
-%   Relación: CU_04 --<<include>>--> CU_09
-% Grupo 'Operaciones': CU_07 Asignar tareas (→Administrador), CU_13 Marcar tarea completada (→Personal)
-%   Relación: CU_07 --<<extend>>--> CU_13
-% Grupo 'Comunidad': CU_05 Reservar área, CU_10 Votaciones, CU_16 Foro, CU_20 Chat,
-%   CU_21 Marketplace, CU_22 Biblioteca, CU_23 Notificaciones (todos →Residente)
-% Grupo 'Administración': CU_14 RBAC, CU_24 Registrar comunidad (→Administrador)
-% Grupo 'Comité y Gobierno': CU_19 Generar votaciones (→Administrador, →Comité), CU_25 Subir actas de asamblea (→Administrador, →Comité),
-%   CU_26 Consultar estados de cuenta (→Comité, →Administrador), CU_27 Publicar resultados de votación (→Administrador, →Comité)
-% DIFERIDOS (óvalos punteados, texto gris): CU_06, CU_08, CU_11, CU_12, CU_18 con nota 'v2.0'
-%
-% ESTILO: Fondo blanco, líneas negras, sin colores de relleno (solo blanco), tipografía sans-serif.
-% No sobrecargues: agrupa los CUs con separación visual. Estilo profesional para tesis universitaria.
-% Etiquetas en español. Formato: PNG 300dpi orientación horizontal (landscape)."
 \begin{figure}[H]
   \centering
-  \includegraphics[width=\textwidth]{\detokenize{../images/ActoresCU.drawio (1).png}}
-  \caption{Diagrama de los principales casos de uso del sistema DOMU.}
+  \fbox{\parbox{0.9\textwidth}{\centering\vspace{2.8cm}
+  \textit{Diagrama general de casos de uso de la version vigente de DOMU.}\\
+  \textit{Incluye control de visitas, encomiendas, incidentes, finanzas, reservas, tareas, muro comunitario, votaciones, chat, marketplace, biblioteca y administracion de comunidad.}
+  \vspace{2.8cm}}}
+  \caption{Diagrama general de los principales casos de uso vigentes del sistema DOMU.}
   \label{fig:diagrama-cu}
 \end{figure}
 
-% ====== 4.3.1 Tablas de Casos de Uso (27 CU) ======
-\subsection{Especificación detallada de Casos de Uso}
+\subsection{Especificacion detallada de Casos de Uso}
 
-% ---------- A partir de aquí, todas las tablas usan columnas 0.475\linewidth ----------
 % CU_01
 \begin{table}[H]\centering
 \begin{tabular}{|p{0.475\linewidth}|p{0.475\linewidth}|}\hline
 \cutop{CU\_01}{Gestionar ingreso y salida de visitas}
-\cusec{Precondiciones}{Visitante se presenta en la estación de conserjería equipada con pistola lectora de códigos QR. Estación operativa y con conexión.\footnote{En futuras versiones se contempla la integración de un tótem de autoservicio para el registro de visitantes.}}
-\cusec{Includes}{—}
-\cusec{Extends}{CU\_15 Ingreso controlado (QR), cuando la visita fue pre-registrada.}
-\cuheader{Conserje}{Sistema}
-1) Ingresa RUT/Pasaporte o escanea QR. & 2) Valida identidad (formato/duplicidad). \\\hline
-3) Selecciona residente destino. & 4) Envía notificación push/email al residente. \\\hline
-5) Confirma autorización (verbal/app). & 6) Registra hora de ingreso y habilita apertura. \\\hline
+\cusec{Precondiciones}{Residente y/o conserje autenticado segun el punto del flujo; existe una unidad de destino en la comunidad.}
+\cusec{Includes}{---}
+\cusec{Extends}{CU\_15 Escanear QR de cedula para validar visita, cuando el ingreso se apoya en la lectura del documento de identidad.}
+\cuheader{Residente / Conserje}{Sistema}
+1) El residente pre-autoriza la visita o el conserje inicia un registro manual al momento del arribo. & 2) Muestra los datos de la visita autorizada o despliega el formulario de registro. \\\hline
+3) El conserje identifica a la visita y selecciona la unidad de destino. & 4) Valida datos del visitante, unidad asociada y vigencia del acceso. \\\hline
+5) El conserje registra el ingreso o la salida. & 6) Guarda el movimiento y notifica al residente cuando corresponde. \\\hline
 \multicolumn{2}{|l|}{\textbf{Flujo de eventos alternativos}}\\\hline
-2a. Documento inválido. & 2b. Muestra error y solicita reingreso. \\\hline
-4a. Residente no responde. & 4b. Rechaza acceso y registra incidente. \\\hline
-\cusec{Post condiciones}{Visita registrada con hora de entrada/salida (cuando aplique).}
+4a. La identificacion es invalida o la unidad no existe. & 4b. Rechaza el registro y solicita corregir los datos. \\\hline
+4c. No existe autorizacion previa. & 4d. Permite continuar con registro manual segun validacion de conserjeria. \\\hline
+\cusec{Post condiciones}{La visita queda registrada en el sistema con trazabilidad de ingreso y/o salida.}
 \end{tabular}
-\caption{CU\_01 — Gestionar ingreso y salida de visitas}
+\caption{CU\_01 --- Gestionar ingreso y salida de visitas}
 \label{tab:cu01}
 \end{table}
 
@@ -130,338 +83,274 @@ Medio & Medio (fiscalización y gobierno) \\\hline
 \begin{table}[H]\centering
 \begin{tabular}{|p{0.475\linewidth}|p{0.475\linewidth}|}\hline
 \cutop{CU\_02}{Registrar encomiendas y notificar a residentes}
-\cusec{Precondiciones}{Paquete recibido por conserje.}
-\cusec{Includes}{—}
-\cusec{Extends}{—}
+\cusec{Precondiciones}{Conserje autenticado; la encomienda fue recibida en conserjeria y existe una unidad de destino.}
+\cusec{Includes}{---}
+\cusec{Extends}{---}
 \cuheader{Conserje}{Sistema}
-1) Escanea código o ingresa datos. & 2) Asocia paquete a depto. y genera ID. \\\hline
-3) Toma fotografía (opcional). & 4) Guarda imagen y datos. \\\hline
-5) Confirma registro. & 6) Envía notificación push/email al residente. \\\hline
+1) Accede al modulo de encomiendas y selecciona registrar recepcion. & 2) Muestra formulario de nueva encomienda. \\\hline
+3) Ingresa remitente, descripcion, unidad y evidencia opcional. & 4) Valida los datos y crea la encomienda asociada a la unidad. \\\hline
+5) Confirma el registro. & 6) Guarda la encomienda con estado ``Por retirar'' y notifica al residente. \\\hline
 \multicolumn{2}{|l|}{\textbf{Flujo de eventos alternativos}}\\\hline
-3a. Sin cámara disponible. & Continúa sin foto. \\\hline
-\cusec{Post condiciones}{Encomienda en estado “Por retirar”.}
+3a. La unidad indicada no existe. & 3b. Muestra error y solicita seleccionar una unidad valida. \\\hline
+3c. La evidencia adjunta no es valida. & 3d. Permite continuar sin archivo o solicitar una nueva carga. \\\hline
+\cusec{Post condiciones}{La encomienda queda registrada y disponible para seguimiento por conserjeria, administracion y residente.}
 \end{tabular}
-\caption{CU\_02 — Registrar encomiendas y notificar a residentes}
+\caption{CU\_02 --- Registrar encomiendas y notificar a residentes}
 \label{tab:cu02}
 \end{table}
 
 % CU_03
 \begin{table}[H]\centering
 \begin{tabular}{|p{0.475\linewidth}|p{0.475\linewidth}|}\hline
-\cutop{CU\_03}{Mantener bitácora de incidentes y turnos}
-\cusec{Precondiciones}{Conserje autenticado en módulo Bitácora.}
-\cusec{Includes}{—}
-\cusec{Extends}{—}
-\cuheader{Conserje}{Sistema}
-1) Inicia nueva entrada. & 2) Muestra formulario. \\\hline
-3) Describe incidente/actividad. & 4) Guarda registro con fecha/hora. \\\hline
-5) Adjunta multimedia (opcional). & 6) Almacena archivos. \\\hline
+\cutop{CU\_03}{Registrar incidente}
+\cusec{Precondiciones}{Residente, conserje o administrador autenticado; modulo de incidentes habilitado.}
+\cusec{Includes}{---}
+\cusec{Extends}{---}
+\cuheader{Residente / Conserje / Administrador}{Sistema}
+1) Accede al modulo de incidentes. & 2) Muestra el formulario de registro. \\\hline
+3) Ingresa categoria, descripcion y antecedentes del incidente. & 4) Valida la informacion minima y permite adjuntar evidencia opcional. \\\hline
+5) Confirma el reporte. & 6) Registra el incidente y lo deja disponible para seguimiento por administracion. \\\hline
 \multicolumn{2}{|l|}{\textbf{Flujo de eventos alternativos}}\\\hline
-5a. Archivo $>$ 10 MB. & Rechaza y muestra aviso. \\\hline
-\cusec{Post condiciones}{Bitácora actualizada; visible para el administrador.}
+3a. Falta informacion obligatoria. & 3b. Indica los campos faltantes y no permite registrar. \\\hline
+4a. La evidencia adjunta no cumple formato o tamano. & 4b. Rechaza el archivo y mantiene el formulario para correccion. \\\hline
+\cusec{Post condiciones}{Incidente registrado correctamente en el sistema.}
 \end{tabular}
-\caption{CU\_03 — Mantener bitácora de incidentes y turnos\newline\footnotesize\textit{Nota: funcionalidad cubierta parcialmente por el módulo de Incidentes y Tareas.}}
+\caption{CU\_03 --- Registrar incidente}
 \label{tab:cu03}
 \end{table}
 
 % CU_04
 \begin{table}[H]\centering
 \begin{tabular}{|p{0.475\linewidth}|p{0.475\linewidth}|}\hline
-\cutop{CU\_04}{Pagar gastos comunes}
-\cusec{Precondiciones}{Residente autenticado; existe boleta pendiente.}
-\cusec{Includes}{CU\_09 Generar reportes.}
-\cusec{Extends}{—}
-\cuheader{Residente}{Sistema}
-1) Selecciona boleta. & 2) Muestra detalle. \\\hline
-3) Elige medio de pago. & 4) Procesa en la pasarela. \\\hline
-5) Confirma transacción. & 6) Marca “Pagado” y envía recibo PDF. \\\hline
+\cutop{CU\_04}{Registrar pago de gastos comunes}
+\cusec{Precondiciones}{Residente autenticado; existe al menos un periodo pendiente de pago.}
+\cusec{Includes}{CU\_09 Consultar reportes y estados financieros.}
+\cusec{Extends}{---}
+\cuheader{Residente / Administrador}{Sistema}
+1) El residente selecciona el periodo pendiente que desea pagar. & 2) Muestra el detalle del estado de cuenta, cargos y saldo pendiente. \\\hline
+3) El residente adjunta el comprobante de transferencia y confirma el envio. & 4) Valida el archivo y registra el pago con estado ``Pendiente de validacion''. \\\hline
+5) El administrador revisa el comprobante asociado al periodo. & 6) Aprueba manualmente el pago y cambia el estado a ``Pagado'', o lo observa para una nueva carga. \\\hline
 \multicolumn{2}{|l|}{\textbf{Flujo de eventos alternativos}}\\\hline
- & 4a. Pago rechazado $\rightarrow$ mantiene “Pendiente” y muestra error. \\\hline
-\cusec{Post condiciones}{Boleta pagada; recibo enviado por email.}
+3a. El archivo no cumple con el formato esperado. & 3b. Rechaza la carga y solicita un nuevo comprobante. \\\hline
+5a. El comprobante no es valido o no coincide con el cargo. & 5b. Mantiene el estado pendiente de validacion y registra observacion administrativa. \\\hline
+\cusec{Post condiciones}{El comprobante queda asociado al periodo y el pago queda pendiente o validado segun la revision administrativa.}
 \end{tabular}
-\caption{CU\_04 — Pagar gastos comunes}
+\caption{CU\_04 --- Registrar pago de gastos comunes}
 \label{tab:cu04}
 \end{table}
 
 % CU_05
 \begin{table}[H]\centering
 \begin{tabular}{|p{0.475\linewidth}|p{0.475\linewidth}|}\hline
-\cutop{CU\_05}{Reservar área común}
-\cusec{Precondiciones}{Residente al día en pagos; módulo de reservas habilitado.}
-\cusec{Includes}{—}
-\cusec{Extends}{—}
+\cutop{CU\_05}{Reservar espacio comun}
+\cusec{Precondiciones}{Residente autenticado; existen espacios comunes y franjas horarias configuradas.}
+\cusec{Includes}{---}
+\cusec{Extends}{---}
 \cuheader{Residente}{Sistema}
-1) Selecciona fecha/hora. & 2) Valida disponibilidad. \\\hline
-3) Confirma reserva. & 4) Registra reserva y notifica. \\\hline
-5) (opcional) Paga tarifa. & 6) Registra pago. \\\hline
+1) Selecciona el espacio comun y la fecha deseada. & 2) Muestra disponibilidad por bloque horario. \\\hline
+3) Elige un horario y confirma la reserva. & 4) Valida reglas de disponibilidad, aforo y restricciones por mora. \\\hline
+5) Finaliza la solicitud. & 6) Registra la reserva y actualiza el calendario del espacio comun. \\\hline
 \multicolumn{2}{|l|}{\textbf{Flujo de eventos alternativos}}\\\hline
-2a. Horario no disponible. & Muestra calendario alternativo. \\\hline
-\cusec{Post condiciones}{Espacio marcado como “Reservado”.}
+4a. El horario ya no esta disponible. & 4b. Informa el conflicto y ofrece horarios alternativos. \\\hline
+4c. El residente tiene bloqueo por mora. & 4d. Deniega la reserva e informa el motivo. \\\hline
+\cusec{Post condiciones}{El espacio queda reservado para la fecha y bloque seleccionado.}
 \end{tabular}
-\caption{CU\_05 — Reservar área común}
+\caption{CU\_05 --- Reservar espacio comun}
 \label{tab:cu05}
-\end{table}
-
-% CU_06
-\begin{table}[H]\centering
-\begin{tabular}{|p{0.475\linewidth}|p{0.475\linewidth}|}\hline
-\cutop{CU\_06}{Gestionar morosidad y conciliación}
-\cusec{Precondiciones}{Estados de cuenta cargados.}
-\cusec{Includes}{—}
-\cusec{Extends}{—}
-\cuheader{Administrador}{Sistema}
-1) Abre módulo de morosidad. & 2) Lista deudores y saldos. \\\hline
-3) Aplica intereses/sanciones. & 4) Recalcula saldo, registra acción y notifica. \\\hline
-5) Realiza conciliación bancaria. & 6) Sugerencias de conciliación y comprobantes. \\\hline
-\multicolumn{2}{|l|}{\textbf{Flujo de eventos alternativos}}\\\hline
-5a. Archivo bancario inválido. & Muestra error y permite reintentar. \\\hline
-\cusec{Post condiciones}{Morosidad actualizada; bitácora de conciliación.}
-\end{tabular}
-\caption{CU\_06 — Gestionar morosidad y conciliación\newline\footnotesize\textit{Nota: planificado para v2.0; en v1.0 el sistema registra cargos y pagos sin conciliación automática.}}
-\label{tab:cu06}
 \end{table}
 
 % CU_07
 \begin{table}[H]\centering
 \begin{tabular}{|p{0.475\linewidth}|p{0.475\linewidth}|}\hline
 \cutop{CU\_07}{Asignar tareas a personal}
-\cusec{Precondiciones}{Personal activo en el sistema.}
-\cusec{Includes}{—}
+\cusec{Precondiciones}{Administrador autenticado; existe personal operativo activo en el sistema.}
+\cusec{Includes}{---}
 \cusec{Extends}{CU\_13 Marcar tarea completada.}
 \cuheader{Administrador}{Sistema}
-1) Crea tarea con descripción. & 2) Guarda en tablero. \\\hline
-3) Asigna responsable. & 4) Notifica push al personal. \\\hline
-5) Adjunta archivo (opcional). & 6) Vincula adjunto. \\\hline
+1) Ingresa al modulo de tareas y crea una nueva tarea. & 2) Muestra formulario de definicion y asignacion. \\\hline
+3) Ingresa descripcion, prioridad, fecha limite y responsable. & 4) Valida la informacion y registra la tarea. \\\hline
+5) Confirma la asignacion. & 6) Notifica al personal responsable y deja la tarea en estado ``Asignada''. \\\hline
 \multicolumn{2}{|l|}{\textbf{Flujo de eventos alternativos}}\\\hline
-1a. Descripción vacía. & Exige completar campos. \\\hline
-\cusec{Post condiciones}{Tarea “Asignada” con fecha límite.}
+3a. Falta descripcion o responsable. & 3b. Solicita completar los campos obligatorios. \\\hline
+\cusec{Post condiciones}{La tarea queda asignada y visible para el personal operativo correspondiente.}
 \end{tabular}
-\caption{CU\_07 — Asignar tareas a personal}
+\caption{CU\_07 --- Asignar tareas a personal}
 \label{tab:cu07}
 \end{table}
 
 % CU_08
 \begin{table}[H]\centering
 \begin{tabular}{|p{0.475\linewidth}|p{0.475\linewidth}|}\hline
-\cutop{CU\_08}{Registrar inicio/fin de jornada del personal}
-\cusec{Precondiciones}{Personal autenticado.}
-\cusec{Includes}{—}
-\cusec{Extends}{—}
-\cuheader{Personal}{Sistema}
-1) Pulsa “Iniciar jornada/Terminar jornada”. & 2) Registra timestamp y ubicación (si aplica). \\\hline
-3) Agrega observación (opcional). & 4) Guarda observación. \\\hline
+\cutop{CU\_08}{Gestionar personal operativo}
+\cusec{Precondiciones}{Administrador autenticado; comunidad activa.}
+\cusec{Includes}{---}
+\cusec{Extends}{---}
+\cuheader{Administrador}{Sistema}
+1) Accede al modulo de personal operativo. & 2) Muestra listado del personal registrado y acciones disponibles. \\\hline
+3) Crea, edita o elimina un registro de personal. & 4) Valida la informacion y actualiza el registro correspondiente. \\\hline
+5) Asigna el rol o tipo de personal (conserje, aseo, mantencion u otro). & 6) Guarda los cambios y actualiza la disponibilidad del personal en el sistema. \\\hline
 \multicolumn{2}{|l|}{\textbf{Flujo de eventos alternativos}}\\\hline
-1a. Sin conexión. & Guarda local y sincroniza luego. \\\hline
-\cusec{Post condiciones}{Marcación registrada y visible para el administrador.}
+3a. El correo o identificador ya existe. & 3b. Informa el conflicto y solicita correccion. \\\hline
+3c. Se intenta eliminar personal con dependencias activas. & 3d. Solicita resolver las dependencias antes de completar la operacion. \\\hline
+\cusec{Post condiciones}{El personal operativo queda actualizado segun las acciones realizadas por administracion.}
 \end{tabular}
-\caption{CU\_08 — Registrar inicio/fin de jornada del personal\newline\footnotesize\textit{Nota: planificado para v2.0; en v1.0 se gestiona el personal sin marcación de turnos.}}
+\caption{CU\_08 --- Gestionar personal operativo}
 \label{tab:cu08}
 \end{table}
 
 % CU_09
 \begin{table}[H]\centering
 \begin{tabular}{|p{0.475\linewidth}|p{0.475\linewidth}|}\hline
-\cutop{CU\_09}{Generar reportes financieros}
-\cusec{Precondiciones}{Datos contables cargados.}
-\cusec{Includes}{—}
-\cusec{Extends}{—}
-\cuheader{Administrador}{Sistema}
-1) Selecciona rango y tipo de reporte. & 2) Genera PDF/Excel con KPIs. \\\hline
-3) Descarga/visualiza reporte. & 4) Registra evento de auditoría. \\\hline
+\cutop{CU\_09}{Consultar reportes y estados financieros}
+\cusec{Precondiciones}{Administrador o Comite autenticado; existen periodos y cargos registrados en el sistema.}
+\cusec{Includes}{---}
+\cusec{Extends}{---}
+\cuheader{Administrador / Comite}{Sistema}
+1) Ingresa al modulo financiero o panel de reportes. & 2) Lista periodos, estados de cuenta, pagos y documentos disponibles. \\\hline
+3) Selecciona el periodo, unidad o vista financiera a revisar. & 4) Muestra cargos, pagos, saldo, resumen del periodo y estadisticas disponibles. \\\hline
+5) Solicita descargar o visualizar el documento asociado. & 6) Genera o entrega el archivo disponible y registra la consulta para trazabilidad. \\\hline
 \multicolumn{2}{|l|}{\textbf{Flujo de eventos alternativos}}\\\hline
- & 2a. Falta información $\rightarrow$ alerta “Datos incompletos”. \\\hline
-\cusec{Post condiciones}{Reporte generado y almacenado en histórico.}
+2a. No existen periodos publicados para el filtro seleccionado. & 2b. Informa que no hay informacion disponible para el rango solicitado. \\\hline
+5a. El documento no esta generado. & 5b. Muestra el detalle en pantalla y registra la falta del archivo exportable. \\\hline
+\cusec{Post condiciones}{La informacion financiera queda consultada y, cuando existe soporte documental, puede descargarse desde el sistema.}
 \end{tabular}
-\caption{CU\_09 — Generar reportes financieros\newline\footnotesize\textit{Nota: parcial en v1.0: se generan PDFs individuales y estadísticas de incidentes.}}
+\caption{CU\_09 --- Consultar reportes y estados financieros}
 \label{tab:cu09}
 \end{table}
 
 % CU_10
 \begin{table}[H]\centering
 \begin{tabular}{|p{0.475\linewidth}|p{0.475\linewidth}|}\hline
-\cutop{CU\_10}{Votaciones de comité/decisiones de gasto}
-\cusec{Precondiciones}{Residentes habilitados; tema de votación configurado.}
-\cusec{Includes}{—}
-\cusec{Extends}{—}
+\cutop{CU\_10}{Emitir voto en votacion comunitaria}
+\cusec{Precondiciones}{Residente autenticado; existe una votacion abierta y habilitada para su participacion.}
+\cusec{Includes}{---}
+\cusec{Extends}{---}
 \cuheader{Residente}{Sistema}
-1) Abre votación y revisa antecedentes. & 2) Verifica habilitación y registra voto. \\\hline
-3) Emite voto. & 4) Aplica anonimato y traza hash/acta. \\\hline
+1) Ingresa al modulo de votaciones. & 2) Lista las votaciones abiertas y sus antecedentes. \\\hline
+3) Selecciona una votacion y revisa las opciones disponibles. & 4) Valida habilitacion, registra el voto y actualiza el estado de participacion. \\\hline
+5) Confirma su opcion. & 6) Guarda el voto y deja trazabilidad del sufragio emitido. \\\hline
 \multicolumn{2}{|l|}{\textbf{Flujo de eventos alternativos}}\\\hline
-1a. Residente inhabilitado (mora). & Deniega voto y muestra motivo. \\\hline
-\cusec{Post condiciones}{Voto registrado; acta consolidada.}
+4a. El residente ya voto. & 4b. Informa que la votacion ya fue respondida y bloquea un nuevo envio. \\\hline
+4c. La votacion se encuentra cerrada. & 4d. Muestra solo los resultados o el estado historico, sin permitir votar. \\\hline
+\cusec{Post condiciones}{El voto queda registrado correctamente para la votacion seleccionada.}
 \end{tabular}
-\caption{CU\_10 — Votaciones de comité/decisiones de gasto}
+\caption{CU\_10 --- Emitir voto en votacion comunitaria}
 \label{tab:cu10}
-\end{table}
-
-% CU_11
-\begin{table}[H]\centering
-\begin{tabular}{|p{0.475\linewidth}|p{0.475\linewidth}|}\hline
-\cutop{CU\_11}{Mantenimiento preventivo}
-\cusec{Precondiciones}{Equipos registrados; plan de mantenimiento.}
-\cusec{Includes}{—}
-\cusec{Extends}{—}
-\cuheader{Administrador}{Sistema}
-1) Definir plan. & 2) Programar alertas de vencimiento. \\\hline
-3) Ejecutar orden (personal). & 4) Registrar ejecución y evidencia. \\\hline
-\multicolumn{2}{|l|}{\textbf{Flujo de eventos alternativos}}\\\hline
-3a. Orden rechazada/reprogramada. & Ajusta fecha y reprograma. \\\hline
-\cusec{Post condiciones}{Órdenes programadas y ejecutadas con evidencias.}
-\end{tabular}
-\caption{CU\_11 — Mantenimiento preventivo\newline\footnotesize\textit{Nota: planificado para v2.0.}}
-\label{tab:cu11}
-\end{table}
-
-% CU_12
-\begin{table}[H]\centering
-\begin{tabular}{|p{0.475\linewidth}|p{0.475\linewidth}|}\hline
-\cutop{CU\_12}{Gestionar estacionamientos (titulares y pases)}
-\cusec{Precondiciones}{Mapa de estacionamientos configurado.}
-\cusec{Includes}{—}
-\cusec{Extends}{—}
-\cuheader{Administrador}{Sistema}
-1) Asigna/edita titular. & 2) Valida disponibilidad/reglas. \\\hline
-3) Emite pase temporal para visita. & 4) Genera QR y controla vigencia. \\\hline
-\multicolumn{2}{|l|}{\textbf{Flujo de eventos alternativos}}\\\hline
-2a. Estacionamiento ocupado. & Sugiere alternativa/reprograma. \\\hline
-\cusec{Post condiciones}{Asignación/pase registrado y trazable.}
-\end{tabular}
-\caption{CU\_12 — Gestionar estacionamientos (titulares y pases)\newline\footnotesize\textit{Nota: planificado para v2.0.}}
-\label{tab:cu12}
 \end{table}
 
 % CU_13
 \begin{table}[H]\centering
 \begin{tabular}{|p{0.475\linewidth}|p{0.475\linewidth}|}\hline
 \cutop{CU\_13}{Marcar tarea completada}
-\cusec{Precondiciones}{Tarea en estado “Asignada”.}
-\cusec{Includes}{—}
-\cusec{Extends}{—}
-\cuheader{Personal}{Sistema}
-1) Abre la tarea. & 2) Muestra detalle. \\\hline
-3) Marca “Completada” y sube evidencia. & 4) Cambia estado y notifica al administrador. \\\hline
+\cusec{Precondiciones}{Personal operativo autenticado; existe una tarea asignada en estado pendiente o en progreso.}
+\cusec{Includes}{---}
+\cusec{Extends}{---}
+\cuheader{Personal operativo}{Sistema}
+1) Accede a la tarea asignada. & 2) Muestra detalle, prioridad y fecha comprometida. \\\hline
+3) Marca la tarea como completada y adjunta evidencia si corresponde. & 4) Actualiza el estado de la tarea y registra fecha de cierre. \\\hline
+5) Confirma el cierre. & 6) Notifica a administracion que la tarea fue completada. \\\hline
 \multicolumn{2}{|l|}{\textbf{Flujo de eventos alternativos}}\\\hline
-3a. Sin conexión. & Guarda en caché y sincroniza luego. \\\hline
-\cusec{Post condiciones}{Tarea cerrada con timestamp y evidencia.}
+3a. La evidencia no cumple con el formato permitido. & 3b. Solicita una nueva carga o permite cerrar sin adjunto. \\\hline
+\cusec{Post condiciones}{La tarea queda cerrada o avanzada con respaldo operacional en el sistema.}
 \end{tabular}
-\caption{CU\_13 — Marcar tarea completada}
+\caption{CU\_13 --- Marcar tarea completada}
 \label{tab:cu13}
 \end{table}
 
 % CU_14
 \begin{table}[H]\centering
 \begin{tabular}{|p{0.475\linewidth}|p{0.475\linewidth}|}\hline
-\cutop{CU\_14}{Configurar roles y permisos (RBAC)}
-\cusec{Precondiciones}{Administrador con privilegios de seguridad.}
-\cusec{Includes}{—}
-\cusec{Extends}{—}
+\cutop{CU\_14}{Configurar roles y permisos}
+\cusec{Precondiciones}{Administrador autenticado con privilegios de seguridad.}
+\cusec{Includes}{---}
+\cusec{Extends}{---}
 \cuheader{Administrador}{Sistema}
-1) Define roles/permisos. & 2) Guarda política y aplica reglas. \\\hline
-3) Asigna roles a usuarios. & 4) Actualiza credenciales y auditoría. \\\hline
+1) Accede a la configuracion de roles y permisos. & 2) Muestra roles disponibles y permisos asociados por modulo. \\\hline
+3) Crea o ajusta permisos de un rol existente. & 4) Valida consistencia de la configuracion y guarda la politica de acceso. \\\hline
+5) Asigna el rol correspondiente a un usuario. & 6) Actualiza permisos efectivos y deja registro de auditoria. \\\hline
 \multicolumn{2}{|l|}{\textbf{Flujo de eventos alternativos}}\\\hline
-2a. Conflicto de permisos. & Informa colisión y sugiere ajuste. \\\hline
-\cusec{Post condiciones}{Política RBAC aplicada y trazada.}
+3a. La configuracion genera conflicto de permisos. & 3b. Informa la colision y no aplica los cambios hasta su correccion. \\\hline
+\cusec{Post condiciones}{La configuracion de acceso queda actualizada y trazada.}
 \end{tabular}
-\caption{CU\_14 — Configurar roles y permisos}
+\caption{CU\_14 --- Configurar roles y permisos}
 \label{tab:cu14}
 \end{table}
 
 % CU_15
 \begin{table}[H]\centering
 \begin{tabular}{|p{0.475\linewidth}|p{0.475\linewidth}|}\hline
-\cutop{CU\_15}{Ingreso controlado (QR)}
-\cusec{Precondiciones}{QR generado por Residente; estación de conserjería con pistola lectora activa.}
-\cusec{Includes}{—}
-\cusec{Extends}{Puede extender CU\_01.}
-\cuheader{Visita/Delivery}{Sistema}
-1) Escanea QR en estación de conserjería. & 2) Verifica vigencia. \\\hline
- & 3) Registra entrada. \\\hline
- & 4) Notifica residente. \\\hline
+\cutop{CU\_15}{Escanear QR de cedula para validar visita}
+\cusec{Precondiciones}{Conserje autenticado; la visita presenta una cedula de identidad chilena con QR legible; el lector QR se encuentra operativo.}
+\cusec{Includes}{---}
+\cusec{Extends}{CU\_01 Gestionar ingreso y salida de visitas.}
+\cuheader{Conserje}{Sistema}
+1) Escanea el QR de la cedula del visitante. & 2) Extrae RUN y datos de identificacion disponibles desde el documento. \\\hline
+3) Solicita la validacion del documento. & 4) Busca coincidencias con registros previos y autocompleta el formulario de visita. \\\hline
+5) Confirma el uso de los datos recuperados. & 6) Deja la identificacion lista para continuar el flujo de ingreso. \\\hline
 \multicolumn{2}{|l|}{\textbf{Flujo de eventos alternativos}}\\\hline
- & 2a. QR expirado $\rightarrow$ acceso denegado. \\\hline
-\cusec{Post condiciones}{Entrada registrada; estado visita “Activo”.}
+2a. El QR no puede leerse o esta incompleto. & 2b. Informa el error y permite continuar con ingreso manual de datos. \\\hline
+\cusec{Post condiciones}{La identidad del visitante queda validada o precargada para el registro de la visita.}
 \end{tabular}
-\caption{CU\_15 — Ingreso controlado (QR)}
+\caption{CU\_15 --- Escanear QR de cedula para validar visita}
 \label{tab:cu15}
 \end{table}
 
 % CU_16
 \begin{table}[H]\centering
 \begin{tabular}{|p{0.475\linewidth}|p{0.475\linewidth}|}\hline
-\cutop{CU\_16}{Participar en foro/marketplace}
-\cusec{Precondiciones}{Residente autenticado; módulo habilitado.}
-\cusec{Includes}{—}
-\cusec{Extends}{—}
-\cuheader{Residente}{Sistema}
-1) Ingresa a Foro/Marketplace. & 2) Muestra categorías y anuncios. \\\hline
-3) Publica/explora anuncios. & 4) Registra entrada. \\\hline
- & 5) Despliega formulario de publicación. \\\hline
- & 6) Valida y guarda anuncio. \\\hline
+\cutop{CU\_16}{Gestionar publicaciones del muro comunitario}
+\cusec{Precondiciones}{Administrador o residente autenticado; modulo de publicaciones habilitado.}
+\cusec{Includes}{---}
+\cusec{Extends}{---}
+\cuheader{Administrador / Residente}{Sistema}
+1) El administrador accede al muro para publicar, o el residente ingresa para revisar publicaciones vigentes. & 2) Muestra el listado del muro y, para administracion, el formulario de nueva publicacion. \\\hline
+3) El administrador ingresa categoria, titulo y contenido del aviso. & 4) Valida los datos y publica el contenido en el muro de la comunidad. \\\hline
+5) El residente consulta, filtra o abre una publicacion. & 6) Despliega el contenido y registra la visualizacion en el contexto de la comunidad. \\\hline
 \multicolumn{2}{|l|}{\textbf{Flujo de eventos alternativos}}\\\hline
- & 4a. Campo obligatorio vacío $\rightarrow$ error. \\\hline
- & 4b. Imagen $>$ 5 MB $\rightarrow$ rechaza. \\\hline
-\cusec{Post condiciones}{Anuncio publicado con estado “Activo”.}
+3a. Faltan campos obligatorios de la publicacion. & 3b. Informa el error y mantiene el formulario para correccion. \\\hline
+5a. No existen publicaciones vigentes. & 5b. Muestra estado vacio del muro comunitario. \\\hline
+\cusec{Post condiciones}{Las publicaciones quedan visibles para los residentes y disponibles para consulta posterior.}
 \end{tabular}
-\caption{CU\_16 — Participar en foro/marketplace}
+\caption{CU\_16 --- Gestionar publicaciones del muro comunitario}
 \label{tab:cu16}
 \end{table}
 
 % CU_17
 \begin{table}[H]\centering
 \begin{tabular}{|p{0.475\linewidth}|p{0.475\linewidth}|}\hline
-\cutop{CU\_17}{Registrar reclamo por ruidos molestos}
-\cusec{Precondiciones}{Residente autenticado; módulo de tickets operativo.}
-\cusec{Includes}{—}
-\cusec{Extends}{—}
-\cuheader{Residente}{Sistema}
-1) Crea nuevo reclamo. & 2) Despliega formulario. \\\hline
-3) Completa datos y adjunta evidencia (opcional). & 4) Valida y crea ticket \textsc{ABIERTO}; notifica. \\\hline
+\cutop{CU\_17}{Gestionar residentes y comite}
+\cusec{Precondiciones}{Administrador autenticado; comunidad activa y modulos administrativos disponibles.}
+\cusec{Includes}{CU\_28 Gestionar unidades habitacionales, cuando se requiere asignar o reasignar una unidad.}
+\cusec{Extends}{---}
+\cuheader{Administrador}{Sistema}
+1) Accede al modulo de usuarios de la comunidad. & 2) Muestra listado de residentes y miembros del comite registrados. \\\hline
+3) Crea o edita la ficha del usuario comunitario. & 4) Valida datos personales, rol y estado del registro. \\\hline
+5) Asigna rol de residente o comite y vincula la unidad cuando corresponde. & 6) Guarda los cambios y actualiza la informacion visible para la comunidad. \\\hline
 \multicolumn{2}{|l|}{\textbf{Flujo de eventos alternativos}}\\\hline
- & 3a. Archivo $>$ 10 MB $\rightarrow$ rechaza. \\\hline
- & 3b. Sin conexión $\rightarrow$ guarda local y sincroniza. \\\hline
-\cusec{Post condiciones}{Ticket visible para seguimiento.}
+3a. El correo o documento ya existe en la comunidad. & 3b. Informa el conflicto y no permite duplicar el registro. \\\hline
+5a. La unidad seleccionada no esta disponible. & 5b. Solicita escoger otra unidad o revisar la asociacion actual. \\\hline
+\cusec{Post condiciones}{La informacion de residentes y comite queda actualizada y vinculada a la comunidad activa.}
 \end{tabular}
-\caption{CU\_17 — Registrar reclamo por ruidos molestos}
+\caption{CU\_17 --- Gestionar residentes y comite}
 \label{tab:cu17}
-\end{table}
-
-% CU_18
-\begin{table}[H]\centering
-\begin{tabular}{|p{0.475\linewidth}|p{0.475\linewidth}|}\hline
-\cutop{CU\_18}{Registrar mantención de ascensor en bitácora}
-\cusec{Precondiciones}{Conserje autenticado; trabajo en curso/finalizado.}
-\cusec{Includes}{—}
-\cusec{Extends}{—}
-\cuheader{Conserje}{Sistema}
-1) Selecciona “Nueva entrada”. & 2) Muestra formulario. \\\hline
-3) Detalla responsable, hallazgos, duración. & 4) Guarda y vincula al plan de mantención. \\\hline
-5) Adjunta foto. & 6) Almacena foto; notifica al administrador. \\\hline
-\multicolumn{2}{|l|}{\textbf{Flujo de eventos alternativos}}\\\hline
- & 5a. Sin cámara $\rightarrow$ permite guardar. \\\hline
- & 5b. Falla de red $\rightarrow$ reintenta/sincroniza. \\\hline
-\cusec{Post condiciones}{Bitácora actualizada; administrador notificado.}
-\end{tabular}
-\caption{CU\_18 — Registrar mantención de ascensor en bitácora\newline\footnotesize\textit{Nota: planificado para v2.0.}}
-\label{tab:cu18}
 \end{table}
 
 % CU_19
 \begin{table}[H]\centering
 \begin{tabular}{|p{0.475\linewidth}|p{0.475\linewidth}|}\hline
-\cutop{CU\_19}{Generar votaciones comunitarias}
-\cusec{Precondiciones}{Administrador o Comité autenticado; permiso de creación de votaciones habilitado.}
-\cusec{Includes}{—}
-\cusec{Extends}{—}
-\cuheader{Administrador/Comité}{Sistema}
-1) Ingresa al módulo Votaciones. & 2) Muestra historial y opción de nueva votación. \\\hline
-3) Define tema, alternativas, quórum y fecha de cierre. & 4) Valida datos y registra borrador. \\\hline
-5) Publica votación. & 6) Notifica a residentes habilitados y registra auditoría. \\\hline
+\cutop{CU\_19}{Gestionar votaciones comunitarias}
+\cusec{Precondiciones}{Administrador o Comite autenticado; modulo de votaciones habilitado.}
+\cusec{Includes}{---}
+\cusec{Extends}{CU\_27 Publicar resultados de votacion, una vez cerrada la votacion.}
+\cuheader{Administrador / Comite}{Sistema}
+1) Ingresa al modulo de votaciones y selecciona crear o administrar una votacion. & 2) Muestra historial, estado actual y formulario de configuracion. \\\hline
+3) Define titulo, descripcion, opciones y fecha de cierre. & 4) Valida el formulario y registra la votacion en estado abierta. \\\hline
+5) Publica o cierra la votacion segun corresponda. & 6) Notifica a la comunidad y actualiza el historial del proceso. \\\hline
 \multicolumn{2}{|l|}{\textbf{Flujo de eventos alternativos}}\\\hline
- & 4a. Fecha de cierre inválida $\rightarrow$ solicita corrección. \\\hline
- & 4b. Falta quórum o alternativas $\rightarrow$ exige completar. \\\hline
-\cusec{Post condiciones}{Votación publicada y disponible para participación de residentes.}
+3a. Hay menos de dos opciones o la fecha no es valida. & 3b. Solicita corregir la configuracion antes de publicar. \\\hline
+\cusec{Post condiciones}{La votacion queda creada, administrada o cerrada segun la accion ejecutada.}
 \end{tabular}
-\caption{CU\_19 — Generar votaciones comunitarias}
+\caption{CU\_19 --- Gestionar votaciones comunitarias}
 \label{tab:cu19}
 \end{table}
 
@@ -469,37 +358,37 @@ Medio & Medio (fiscalización y gobierno) \\\hline
 \begin{table}[H]\centering
 \begin{tabular}{|p{0.475\linewidth}|p{0.475\linewidth}|}\hline
 \cutop{CU\_20}{Enviar y recibir mensajes en chat}
-\cusec{Precondiciones}{Residente autenticado; módulo de chat habilitado.}
-\cusec{Includes}{—}
-\cusec{Extends}{—}
+\cusec{Precondiciones}{Residente autenticado; canal de chat habilitado en la comunidad.}
+\cusec{Includes}{---}
+\cusec{Extends}{---}
 \cuheader{Residente}{Sistema}
-1) Solicita conversación con vecino. & 2) Crea sala de chat y notifica al destinatario. \\\hline
-3) Escribe mensaje. & 4) Transmite vía WebSocket en tiempo real. \\\hline
-5) Recibe respuestas. & 6) Persiste mensajes y actualiza estado de lectura. \\\hline
+1) Accede al modulo de chat y selecciona una conversacion o inicia una nueva. & 2) Muestra salas disponibles y el historial del chat seleccionado. \\\hline
+3) Escribe y envia un mensaje. & 4) Transmite el mensaje en tiempo real y lo almacena en el historial. \\\hline
+5) Recibe nuevas respuestas. & 6) Actualiza el estado de lectura y notifica actividad cuando corresponde. \\\hline
 \multicolumn{2}{|l|}{\textbf{Flujo de eventos alternativos}}\\\hline
-2a. Destinatario rechaza solicitud. & Notifica al solicitante. \\\hline
-\cusec{Post condiciones}{Conversación activa con historial persistido.}
+3a. La conversacion no esta disponible o fue ocultada. & 3b. Informa el estado y bloquea el envio hasta recuperar acceso. \\\hline
+\cusec{Post condiciones}{La conversacion queda actualizada con los mensajes intercambiados.}
 \end{tabular}
-\caption{CU\_20 — Enviar y recibir mensajes en chat}
+\caption{CU\_20 --- Enviar y recibir mensajes en chat}
 \label{tab:cu20}
 \end{table}
 
 % CU_21
 \begin{table}[H]\centering
 \begin{tabular}{|p{0.475\linewidth}|p{0.475\linewidth}|}\hline
-\cutop{CU\_21}{Publicar artículo en marketplace}
-\cusec{Precondiciones}{Residente autenticado; módulo marketplace habilitado.}
-\cusec{Includes}{—}
-\cusec{Extends}{—}
+\cutop{CU\_21}{Publicar articulo en marketplace}
+\cusec{Precondiciones}{Residente autenticado; marketplace comunitario habilitado.}
+\cusec{Includes}{---}
+\cusec{Extends}{---}
 \cuheader{Residente}{Sistema}
-1) Crea nuevo anuncio con fotos. & 2) Valida campos y almacena imágenes. \\\hline
-3) Publica anuncio. & 4) Muestra en listado comunitario. \\\hline
-5) Edita o elimina anuncio. & 6) Actualiza/elimina y notifica interesados. \\\hline
+1) Accede al marketplace y selecciona crear publicacion. & 2) Muestra formulario de articulo y carga de imagenes. \\\hline
+3) Ingresa titulo, descripcion, precio y fotos. & 4) Valida la informacion y almacena la publicacion. \\\hline
+5) Publica, edita o elimina el articulo. & 6) Actualiza el listado comunitario y deja trazabilidad del anuncio. \\\hline
 \multicolumn{2}{|l|}{\textbf{Flujo de eventos alternativos}}\\\hline
-2a. Imagen $>$ 5 MB. & Rechaza y solicita imagen menor. \\\hline
-\cusec{Post condiciones}{Anuncio visible en el marketplace comunitario.}
+3a. Las imagenes no cumplen el formato permitido. & 3b. Rechaza los archivos y solicita una nueva carga. \\\hline
+\cusec{Post condiciones}{El articulo queda disponible en el marketplace o actualizado segun la accion realizada.}
 \end{tabular}
-\caption{CU\_21 — Publicar artículo en marketplace}
+\caption{CU\_21 --- Publicar articulo en marketplace}
 \label{tab:cu21}
 \end{table}
 
@@ -507,17 +396,17 @@ Medio & Medio (fiscalización y gobierno) \\\hline
 \begin{table}[H]\centering
 \begin{tabular}{|p{0.475\linewidth}|p{0.475\linewidth}|}\hline
 \cutop{CU\_22}{Consultar biblioteca de documentos}
-\cusec{Precondiciones}{Residente autenticado; documentos cargados por administración o comité.}
-\cusec{Includes}{—}
-\cusec{Extends}{—}
-\cuheader{Residente}{Sistema}
-1) Ingresa al módulo Biblioteca. & 2) Lista documentos por categoría. \\\hline
-3) Selecciona documento. & 4) Permite visualizar/descargar el archivo. \\\hline
+\cusec{Precondiciones}{Administrador, residente o Comite autenticado; existen documentos publicados en la biblioteca.}
+\cusec{Includes}{---}
+\cusec{Extends}{---}
+\cuheader{Administrador / Residente / Comite}{Sistema}
+1) Accede al modulo Biblioteca. & 2) Lista documentos disponibles por categoria y nombre. \\\hline
+3) Filtra o selecciona un documento. & 4) Permite visualizarlo o descargarlo desde el repositorio documental. \\\hline
 \multicolumn{2}{|l|}{\textbf{Flujo de eventos alternativos}}\\\hline
-4a. Archivo no disponible. & Muestra error y sugiere contactar administrador. \\\hline
-\cusec{Post condiciones}{Documento visualizado/descargado por el residente.}
+4a. El archivo no se encuentra disponible. & 4b. Informa el problema y mantiene el documento como no descargable. \\\hline
+\cusec{Post condiciones}{El documento queda consultado o descargado por el actor correspondiente.}
 \end{tabular}
-\caption{CU\_22 — Consultar biblioteca de documentos}
+\caption{CU\_22 --- Consultar biblioteca de documentos}
 \label{tab:cu22}
 \end{table}
 
@@ -526,17 +415,16 @@ Medio & Medio (fiscalización y gobierno) \\\hline
 \begin{tabular}{|p{0.475\linewidth}|p{0.475\linewidth}|}\hline
 \cutop{CU\_23}{Gestionar notificaciones}
 \cusec{Precondiciones}{Usuario autenticado.}
-\cusec{Includes}{—}
-\cusec{Extends}{—}
-\cuheader{Residente}{Sistema}
-1) Abre centro de notificaciones. & 2) Lista notificaciones ordenadas por fecha. \\\hline
-3) Marca como leída / lee todas. & 4) Actualiza estado de lectura. \\\hline
-5) Configura preferencias. & 6) Guarda preferencias por tipo de notificación. \\\hline
+\cusec{Includes}{---}
+\cusec{Extends}{---}
+\cuheader{Usuario}{Sistema}
+1) Abre el centro de notificaciones. & 2) Muestra notificaciones ordenadas por fecha y tipo. \\\hline
+3) Marca notificaciones como leidas o ajusta preferencias. & 4) Actualiza el estado de lectura y la configuracion asociada. \\\hline
 \multicolumn{2}{|l|}{\textbf{Flujo de eventos alternativos}}\\\hline
- & 2a. Sin notificaciones $\rightarrow$ muestra estado vacío. \\\hline
-\cusec{Post condiciones}{Notificaciones gestionadas; preferencias actualizadas.}
+2a. No existen notificaciones para el usuario. & 2b. Muestra estado vacio y mantiene accesibles las preferencias. \\\hline
+\cusec{Post condiciones}{El estado de lectura y las preferencias de notificacion quedan actualizados.}
 \end{tabular}
-\caption{CU\_23 — Gestionar notificaciones}
+\caption{CU\_23 --- Gestionar notificaciones}
 \label{tab:cu23}
 \end{table}
 
@@ -544,274 +432,236 @@ Medio & Medio (fiscalización y gobierno) \\\hline
 \begin{table}[H]\centering
 \begin{tabular}{|p{0.475\linewidth}|p{0.475\linewidth}|}\hline
 \cutop{CU\_24}{Registrar y aprobar comunidad}
-\cusec{Precondiciones}{Solicitante con datos de la comunidad y documentos de respaldo.}
-\cusec{Includes}{—}
-\cusec{Extends}{—}
+\cusec{Precondiciones}{Solicitante con informacion de la comunidad y documentacion de respaldo.}
+\cusec{Includes}{---}
+\cusec{Extends}{---}
 \cuheader{Administrador}{Sistema}
-1) Completa formulario de solicitud. & 2) Valida datos y almacena documentos. \\\hline
-3) Envía solicitud. & 4) Notifica al aprobador por correo con enlace. \\\hline
-5) Aprobador revisa y aprueba/rechaza. & 6) Crea comunidad y envía invitación al administrador. \\\hline
+1) Completa el formulario de solicitud de comunidad. & 2) Valida los datos y almacena los documentos adjuntos. \\\hline
+3) Envia la solicitud. & 4) Notifica al flujo de aprobacion mediante correo electronico. \\\hline
+5) El aprobador revisa y aprueba o rechaza la solicitud. & 6) Crea la comunidad y habilita la invitacion para el administrador responsable. \\\hline
 \multicolumn{2}{|l|}{\textbf{Flujo de eventos alternativos}}\\\hline
-5a. Solicitud rechazada. & Notifica motivo al solicitante. \\\hline
-\cusec{Post condiciones}{Comunidad creada; administrador invitado a registrarse.}
+5a. La solicitud es rechazada. & 5b. Registra el motivo e informa el resultado al solicitante. \\\hline
+\cusec{Post condiciones}{La comunidad queda creada o rechazada con trazabilidad del proceso de aprobacion.}
 \end{tabular}
-\caption{CU\_24 — Registrar y aprobar comunidad}
+\caption{CU\_24 --- Registrar y aprobar comunidad}
 \label{tab:cu24}
 \end{table}
 
 % CU_25
 \begin{table}[H]\centering
 \begin{tabular}{|p{0.475\linewidth}|p{0.475\linewidth}|}\hline
-\cutop{CU\_25}{Subir actas de asamblea a biblioteca}
-\cusec{Precondiciones}{Administrador o Comité autenticado; módulo Biblioteca habilitado.}
-\cusec{Includes}{CU\_22}
-\cusec{Extends}{—}
-\cuheader{Administrador/Comité}{Sistema}
-1) Ingresa a la biblioteca y selecciona “Subir documento”. & 2) Muestra formulario de carga y metadatos. \\\hline
-3) Adjunta acta en PDF e ingresa título/período. & 4) Valida formato y metadatos mínimos. \\\hline
-5) Comité selecciona etiqueta ``actas'' / Administración selecciona etiqueta. & 6) Guarda documento, etiqueta y registra trazabilidad. \\\hline
+\cutop{CU\_25}{Publicar documentos y actas en la biblioteca}
+\cusec{Precondiciones}{Administrador o Comite autenticado; modulo Biblioteca habilitado.}
+\cusec{Includes}{CU\_22 Consultar biblioteca de documentos.}
+\cusec{Extends}{---}
+\cuheader{Administrador / Comite}{Sistema}
+1) Accede a la biblioteca y selecciona cargar documento. & 2) Muestra formulario de nombre, categoria y archivo. \\\hline
+3) Adjunta el documento y define su categoria. & 4) Valida formato, metadatos y permisos de carga. \\\hline
+5) Confirma la publicacion. & 6) Guarda el documento y lo deja disponible para consulta en la comunidad. \\\hline
 \multicolumn{2}{|l|}{\textbf{Flujo de eventos alternativos}}\\\hline
-4a. Archivo inválido o corrupto. & Rechaza carga y solicita nuevo archivo. \\\hline
-5a. Comité selecciona etiqueta distinta de ``actas''. & Restringe y fuerza etiqueta ``actas''. \\\hline
-\cusec{Post condiciones}{Acta disponible en biblioteca comunitaria, etiquetada y trazable.}
+4a. El archivo no es valido o supera el limite permitido. & 4b. Rechaza la carga y solicita un nuevo archivo. \\\hline
+4c. El Comite intenta usar una categoria distinta de ``actas''. & 4d. Restringe la categoria y solicita ajustarla a ``actas''. \\\hline
+\cusec{Post condiciones}{El documento queda publicado en la biblioteca documental de la comunidad.}
 \end{tabular}
-\caption{CU\_25 — Subir actas de asamblea a biblioteca}
+\caption{CU\_25 --- Publicar documentos y actas en la biblioteca}
 \label{tab:cu25}
 \end{table}
 
 % CU_26
 \begin{table}[H]\centering
 \begin{tabular}{|p{0.475\linewidth}|p{0.475\linewidth}|}\hline
-\cutop{CU\_26}{Consultar estados de cuenta para fiscalización}
-\cusec{Precondiciones}{Comité o Administrador autenticado; estado de cuenta mensual generado.}
-\cusec{Includes}{CU\_09}
-\cusec{Extends}{—}
-\cuheader{Comité/Administrador}{Sistema}
-1) Ingresa al módulo financiero en modo consulta. & 2) Lista períodos y estados de cuenta disponibles. \\\hline
-3) Selecciona período/comunidad. & 4) Muestra detalle de cargos, pagos y saldo. \\\hline
-5) Descarga PDF o consulta resumen. & 6) Registra acceso para auditoría (modo solo lectura). \\\hline
+\cutop{CU\_26}{Consultar estados de cuenta para fiscalizacion}
+\cusec{Precondiciones}{Comite o administrador autenticado; existen periodos financieros publicados para consulta.}
+\cusec{Includes}{CU\_09 Consultar reportes y estados financieros.}
+\cusec{Extends}{---}
+\cuheader{Comite / Administrador}{Sistema}
+1) Ingresa al modulo financiero en modo consulta. & 2) Lista periodos y estados de cuenta disponibles. \\\hline
+3) Selecciona el periodo que desea fiscalizar. & 4) Muestra detalle de cargos, pagos, saldo y documentos asociados. \\\hline
+5) Consulta o descarga el respaldo disponible. & 6) Registra la accion para fines de trazabilidad y fiscalizacion. \\\hline
 \multicolumn{2}{|l|}{\textbf{Flujo de eventos alternativos}}\\\hline
-2a. Período sin estado de cuenta publicado. & Informa indisponibilidad y sugiere período alternativo. \\\hline
-\cusec{Post condiciones}{Estado de cuenta consultado sin modificar información financiera.}
+2a. El periodo aun no fue publicado. & 2b. Informa indisponibilidad del estado de cuenta solicitado. \\\hline
+\cusec{Post condiciones}{El estado de cuenta queda consultado sin modificar la informacion financiera del sistema.}
 \end{tabular}
-\caption{CU\_26 — Consultar estados de cuenta para fiscalización}
+\caption{CU\_26 --- Consultar estados de cuenta para fiscalizacion}
 \label{tab:cu26}
 \end{table}
 
 % CU_27
 \begin{table}[H]\centering
 \begin{tabular}{|p{0.475\linewidth}|p{0.475\linewidth}|}\hline
-\cutop{CU\_27}{Publicar resultados de votación}
-\cusec{Precondiciones}{Administrador o Comité autenticado; votación cerrada con resultados consolidados.}
-\cusec{Includes}{—}
-\cusec{Extends}{—}
-\cuheader{Administrador/Comité}{Sistema}
-1) Accede a una votación cerrada. & 2) Consolida recuento y valida quórum alcanzado. \\\hline
-3) Publica resultados y acta de votación. & 4) Notifica resultados a residentes y registra auditoría. \\\hline
+\cutop{CU\_27}{Publicar resultados de votacion}
+\cusec{Precondiciones}{Administrador o Comite autenticado; existe una votacion cerrada con resultados consolidados.}
+\cusec{Includes}{---}
+\cusec{Extends}{CU\_19 Gestionar votaciones comunitarias.}
+\cuheader{Administrador / Comite}{Sistema}
+1) Selecciona una votacion cerrada. & 2) Muestra resultados consolidados, total de votos y estado del proceso. \\\hline
+3) Confirma la publicacion de resultados. & 4) Deja disponible el resultado en el historial y permite su descarga o consulta. \\\hline
+5) Comunica el cierre a la comunidad. & 6) Registra la publicacion y notifica el resultado cuando corresponde. \\\hline
 \multicolumn{2}{|l|}{\textbf{Flujo de eventos alternativos}}\\\hline
-2a. Quórum no alcanzado. & Marca votación como inválida y notifica cierre sin efecto. \\\hline
-\cusec{Post condiciones}{Resultados de votación publicados y disponibles para consulta comunitaria.}
+2a. La votacion aun esta abierta. & 2b. Impide la publicacion y exige cerrar primero el proceso. \\\hline
+\cusec{Post condiciones}{Los resultados quedan publicados y disponibles para consulta historica.}
 \end{tabular}
-\caption{CU\_27 — Publicar resultados de votación}
+\caption{CU\_27 --- Publicar resultados de votacion}
 \label{tab:cu27}
 \end{table}
 
-% ====== 4.3.2 Diagramas UML de casos de uso por módulo ======
-\subsection{Diagramas de casos de uso por módulo}
+% CU_28
+\begin{table}[H]\centering
+\begin{tabular}{|p{0.475\linewidth}|p{0.475\linewidth}|}\hline
+\cutop{CU\_28}{Gestionar unidades habitacionales}
+\cusec{Precondiciones}{Administrador autenticado; comunidad activa.}
+\cusec{Includes}{---}
+\cusec{Extends}{---}
+\cuheader{Administrador}{Sistema}
+1) Accede al modulo de unidades habitacionales. & 2) Muestra listado de unidades y opciones de creacion o edicion. \\\hline
+3) Crea, edita o elimina una unidad. & 4) Valida numero, torre, piso y metadatos asociados a la unidad. \\\hline
+5) Asocia o desvincula residentes cuando corresponde. & 6) Guarda los cambios y actualiza la estructura habitacional de la comunidad. \\\hline
+\multicolumn{2}{|l|}{\textbf{Flujo de eventos alternativos}}\\\hline
+3a. Se intenta eliminar una unidad con residentes asociados. & 3b. Impide la eliminacion y solicita desvincular primero a los residentes. \\\hline
+\cusec{Post condiciones}{Las unidades habitacionales quedan actualizadas y disponibles para operacion administrativa.}
+\end{tabular}
+\caption{CU\_28 --- Gestionar unidades habitacionales}
+\label{tab:cu28}
+\end{table}
 
-A continuación se presentan los diagramas UML de casos de uso agrupados por módulo funcional. Cada diagrama muestra los actores involucrados, los casos de uso correspondientes y sus relaciones \texttt{<<include>>} y \texttt{<<extend>>}.
+% CU_29
+\begin{table}[H]\centering
+\begin{tabular}{|p{0.475\linewidth}|p{0.475\linewidth}|}\hline
+\cutop{CU\_29}{Registrar retiro de encomienda}
+\cusec{Precondiciones}{Conserje autenticado; existe una encomienda en estado ``Por retirar''.}
+\cusec{Includes}{---}
+\cusec{Extends}{---}
+\cuheader{Conserje}{Sistema}
+1) Busca la encomienda pendiente de retiro. & 2) Muestra el detalle de la encomienda y la unidad asociada. \\\hline
+3) Verifica al residente o persona autorizada. & 4) Valida que la encomienda siga disponible para entrega. \\\hline
+5) Marca la encomienda como retirada. & 6) Registra fecha y hora del retiro y actualiza el estado a ``Retirada''. \\\hline
+\multicolumn{2}{|l|}{\textbf{Flujo de eventos alternativos}}\\\hline
+4a. La encomienda ya fue retirada. & 4b. Informa el estado actual y bloquea un nuevo cierre. \\\hline
+4c. No es posible validar al receptor. & 4d. Mantiene la encomienda en estado ``Por retirar''. \\\hline
+\cusec{Post condiciones}{La encomienda queda entregada y con trazabilidad del retiro en el sistema.}
+\end{tabular}
+\caption{CU\_29 --- Registrar retiro de encomienda}
+\label{tab:cu29}
+\end{table}
 
-% --- Diagrama 1: Visitas y Acceso ---
-% PROMPT para generador de imágenes:
-% "Genera un DIAGRAMA UML DE CASOS DE USO (UML 2.0 estricto) para el módulo de Visitas y Acceso del sistema DOMU.
-% ACTORES (stick figures): Conserje (izquierda), Residente (derecha), Sistema (abajo-derecha).
-% SISTEMA: rectángulo 'Módulo Visitas y Acceso'.
-% CASOS DE USO (elipses):
-%   - CU_01 Gestionar ingreso y salida de visitas (→Conserje)
-%   - CU_03 Mantener bitácora de incidentes y turnos (→Conserje)
-%   - CU_15 Ingreso controlado QR (→Conserje, →Residente)
-% RELACIONES: CU_01 --<<extend>}--> CU_15
-% ESTILO: Fondo blanco, líneas negras, tipografía sans-serif, etiquetas en español.
-% PNG 300dpi orientación horizontal."
+\subsection{Diagramas de casos de uso por modulo}
+
+A continuacion se presentan diagramas resumidos por modulo funcional. Se mantienen como apoyo visual del analisis vigente y excluyen los casos de uso diferidos al Anexo~\ref{anexo:casos-restantes}.
+
 \begin{figure}[H]
   \centering
-  \fbox{\parbox{0.85\textwidth}{\centering\vspace{3.5cm}
-  \textit{[Insertar diagrama UML de casos de uso: Módulo Visitas y Acceso --- CU\_01, CU\_03, CU\_15.
-  Actores: Conserje, Residente, Sistema. Relación: CU\_01 $\longrightarrow$ <<extend>> CU\_15]}
-  \vspace{3.5cm}}}
-  \caption{Diagrama de casos de uso --- Módulo Visitas y Acceso.}
+  \fbox{\parbox{0.85\textwidth}{\centering\vspace{3.2cm}
+  \textit{Modulo Visitas y Acceso: CU\_01 y CU\_15.}\\
+  \textit{Actores principales: Residente y Conserje.}
+  \vspace{3.2cm}}}
+  \caption{Diagrama de casos de uso --- Modulo Visitas y Acceso.}
   \label{fig:cu-modulo-visitas}
 \end{figure}
 
-% --- Diagrama 2: Encomiendas y Reclamos ---
-% PROMPT para generador de imágenes:
-% "Genera un DIAGRAMA UML DE CASOS DE USO (UML 2.0 estricto) para el módulo de Encomiendas y Reclamos del sistema DOMU.
-% ACTORES (stick figures): Conserje (izquierda), Residente (derecha), Administrador (izquierda-abajo).
-% SISTEMA: rectángulo 'Módulo Encomiendas y Reclamos'.
-% CASOS DE USO (elipses):
-%   - CU_02 Registrar encomiendas y notificar a residentes (→Conserje)
-%   - CU_17 Registrar reclamo por ruidos molestos (→Residente)
-% Sin relaciones <<include>>/ <<extend>> entre estos CUs.
-% ESTILO: Fondo blanco, líneas negras, tipografía sans-serif, etiquetas en español.
-% PNG 300dpi orientación horizontal."
 \begin{figure}[H]
   \centering
-  \fbox{\parbox{0.85\textwidth}{\centering\vspace{3.5cm}
-  \textit{[Insertar diagrama UML de casos de uso: Módulo Encomiendas y Reclamos --- CU\_02, CU\_17.
-  Actores: Conserje, Residente, Administrador]}
-  \vspace{3.5cm}}}
-  \caption{Diagrama de casos de uso --- Módulo Encomiendas y Reclamos.}
+  \fbox{\parbox{0.85\textwidth}{\centering\vspace{3.2cm}
+  \textit{Modulo Encomiendas e Incidentes: CU\_02, CU\_03 y CU\_29.}\\
+  \textit{Actores principales: Conserje, Residente y Administrador.}
+  \vspace{3.2cm}}}
+  \caption{Diagrama de casos de uso --- Modulo Encomiendas e Incidentes.}
   \label{fig:cu-modulo-encomiendas}
 \end{figure}
 
-% --- Diagrama 3: Financiero ---
-% PROMPT para generador de imágenes:
-% "Genera un DIAGRAMA UML DE CASOS DE USO (UML 2.0 estricto) para el módulo Financiero del sistema DOMU.
-% ACTORES (stick figures): Residente (derecha), Administrador (izquierda), Sistema (abajo).
-% SISTEMA: rectángulo 'Módulo Financiero'.
-% CASOS DE USO (elipses):
-%   - CU_04 Pagar gastos comunes (→Residente)
-%   - CU_09 Generar reportes financieros (→Administrador)
-% RELACIONES: CU_04 --<<include>}--> CU_09
-% ESTILO: Fondo blanco, líneas negras, tipografía sans-serif, etiquetas en español.
-% PNG 300dpi orientación horizontal."
 \begin{figure}[H]
   \centering
-  \fbox{\parbox{0.85\textwidth}{\centering\vspace{3.5cm}
-  \textit{[Insertar diagrama UML de casos de uso: Módulo Financiero --- CU\_04, CU\_09.
-  Actores: Residente, Administrador, Sistema. Relación: CU\_04 $\longrightarrow$ <<include>> CU\_09]}
-  \vspace{3.5cm}}}
-  \caption{Diagrama de casos de uso --- Módulo Financiero.}
+  \fbox{\parbox{0.85\textwidth}{\centering\vspace{3.2cm}
+  \textit{Modulo Financiero: CU\_04, CU\_09 y CU\_26.}\\
+  \textit{Actores principales: Residente, Administrador y Comite.}
+  \vspace{3.2cm}}}
+  \caption{Diagrama de casos de uso --- Modulo Financiero.}
   \label{fig:cu-modulo-financiero}
 \end{figure}
 
-% --- Diagrama 4: Comunicación y Comunidad ---
-% PROMPT para generador de imágenes:
-% "Genera un DIAGRAMA UML DE CASOS DE USO (UML 2.0 estricto) para el módulo de Comunicación y Comunidad del sistema DOMU.
-% ACTORES (stick figures): Residente (izquierda), Comité (derecha).
-% SISTEMA: rectángulo 'Módulo Comunicación y Comunidad'.
-% CASOS DE USO (elipses):
-%   - CU_10 Votaciones de comité (→Residente, →Administrador, →Comité)
-%   - CU_16 Participar en foro/marketplace (→Residente)
-%   - CU_20 Enviar y recibir mensajes en chat (→Residente)
-%   - CU_21 Publicar artículo en marketplace (→Residente)
-%   - CU_22 Consultar biblioteca de documentos (→Residente)
-%   - CU_25 Subir actas de asamblea (→Administrador, →Comité)
-%   - CU_27 Publicar resultados de votación (→Administrador, →Comité)
-% Sin relaciones <<include>>/ <<extend>> entre estos CUs.
-% ESTILO: Fondo blanco, líneas negras, tipografía sans-serif, etiquetas en español.
-% PNG 300dpi orientación horizontal."
 \begin{figure}[H]
   \centering
-  \fbox{\parbox{0.85\textwidth}{\centering\vspace{3.5cm}
-  \textit{[Insertar diagrama UML de casos de uso: Módulo Comunicación y Comunidad --- CU\_10, CU\_16, CU\_20, CU\_21, CU\_22, CU\_25, CU\_27.
-  Actores: Residente, Comité, Administrador]}
-  \vspace{3.5cm}}}
-  \caption{Diagrama de casos de uso --- Módulo Comunicación y Comunidad.}
+  \fbox{\parbox{0.85\textwidth}{\centering\vspace{3.2cm}
+  \textit{Modulo Comunidad: CU\_10, CU\_16, CU\_19, CU\_20, CU\_21, CU\_22, CU\_25 y CU\_27.}\\
+  \textit{Actores principales: Residente, Administrador y Comite.}
+  \vspace{3.2cm}}}
+  \caption{Diagrama de casos de uso --- Modulo Comunidad y Gobernanza.}
   \label{fig:cu-modulo-comunidad}
 \end{figure}
 
-% --- Diagrama 5: Administración ---
-% PROMPT para generador de imágenes:
-% "Genera un DIAGRAMA UML DE CASOS DE USO (UML 2.0 estricto) para el módulo de Administración del sistema DOMU.
-% ACTORES (stick figures): Administrador (izquierda), Personal (izquierda-abajo), Comité (derecha).
-% SISTEMA: rectángulo 'Módulo Administración'.
-% CASOS DE USO (elipses):
-%   - CU_07 Asignar tareas a personal (→Administrador)
-%   - CU_13 Marcar tarea completada (→Personal)
-%   - CU_14 Configurar roles y permisos RBAC (→Administrador)
-%   - CU_19 Generar votaciones comunitarias (→Administrador, →Comité)
-%   - CU_24 Registrar y aprobar comunidad (→Administrador)
-%   - CU_25 Subir actas de asamblea a biblioteca (→Administrador, →Comité)
-%   - CU_26 Consultar estados de cuenta para fiscalización (→Administrador, →Comité)
-%   - CU_27 Publicar resultados de votación (→Administrador, →Comité)
-% RELACIONES:
-%   CU_07 --<<extend>}--> CU_13
-%   CU_10 --<<include>}--> CU_19
-%   CU_19 --<<extend>}--> CU_27
-%   CU_25 --<<include>}--> CU_22
-%   CU_26 --<<include>}--> CU_09
-% ESTILO: Fondo blanco, líneas negras, tipografía sans-serif, etiquetas en español.
-% PNG 300dpi orientación horizontal."
 \begin{figure}[H]
   \centering
-  \fbox{\parbox{0.85\textwidth}{\centering\vspace{3.5cm}
-  \textit{[Insertar diagrama UML de casos de uso: Módulo Administración --- CU\_07, CU\_13, CU\_14, CU\_19, CU\_24, CU\_25, CU\_26, CU\_27.
-  Actores: Administrador, Personal, Comité.
-  Relaciones: CU\_07$\rightarrow$<<extend>>CU\_13, CU\_10$\rightarrow$<<include>>CU\_19, CU\_19$\rightarrow$<<extend>>CU\_27, CU\_25$\rightarrow$<<include>>CU\_22, CU\_26$\rightarrow$<<include>>CU\_09]}
-  \vspace{3.5cm}}}
-  \caption{Diagrama de casos de uso --- Módulo Administración.}
+  \fbox{\parbox{0.85\textwidth}{\centering\vspace{3.2cm}
+  \textit{Modulo Administrativo: CU\_07, CU\_08, CU\_14, CU\_17, CU\_24 y CU\_28.}\\
+  \textit{Actores principales: Administrador y Personal operativo.}
+  \vspace{3.2cm}}}
+  \caption{Diagrama de casos de uso --- Modulo Administrativo.}
   \label{fig:cu-modulo-admin}
 \end{figure}
 
-% ====== 4.4 Matriz de trazabilidad RF ↔ CU ======
-\section{Matriz de trazabilidad RF–CU}
+\section{Matriz de trazabilidad RF--CU}
 
-% --- Opción A (compacta) ---
 \begin{longtable}{|m{3cm}|m{12.5cm}|}
 \hline
 \textbf{RF} & \textbf{Casos de Uso relacionados} \\\hline
 RF\_01 (Visitas) & CU\_01, CU\_15 \\\hline
-RF\_02 (Notificaciones push) & CU\_01, CU\_02, CU\_04, CU\_05, CU\_07, CU\_13, CU\_15, CU\_17, CU\_23 \\\hline
-RF\_03 (Pre-autorizar visitas/QR) & CU\_15 \\\hline
-RF\_04 (Encomiendas) & CU\_02 \\\hline
-RF\_05 (Tareas/turnos) & CU\_07, CU\_13 \\\hline
-RF\_06 (Inicio/fin jornada) & CU\_08 \\\hline
-RF\_07 (Estado de cuenta/pago) & CU\_04, CU\_09, CU\_26 \\\hline
-RF\_08 (Morosidad/conciliación) & CU\_06 \\\hline
-RF\_09 (Reservas) & CU\_05, CU\_12 \\\hline
+RF\_02 (Notificaciones push) & CU\_01, CU\_02, CU\_03, CU\_04, CU\_07, CU\_13, CU\_19, CU\_23, CU\_29 \\\hline
+RF\_03 (Pre-autorizacion de visitas) & CU\_01 \\\hline
+RF\_04 (Encomiendas) & CU\_02, CU\_29 \\\hline
+RF\_05 (Tareas del personal) & CU\_07, CU\_08, CU\_13 \\\hline
+RF\_06 (Inicio/fin jornada) & Cobertura parcial en v1.0 mediante CU\_13; la marcacion de jornada queda diferida al anexo. \\\hline
+RF\_07 (Estado de cuenta y pago) & CU\_04, CU\_09, CU\_26 \\\hline
+RF\_08 (Morosidad/conciliacion) & Sin CU vigente en el cuerpo principal; vease Anexo~\ref{anexo:casos-restantes} (CU\_06). \\\hline
+RF\_09 (Reservas) & CU\_05 \\\hline
 RF\_10 (Votaciones) & CU\_10, CU\_19, CU\_27 \\\hline
-RF\_11 (Foro/chat comunitario) & CU\_16 \\\hline
-RF\_12 (Tickets reclamos) & CU\_17 \\\hline
-RF\_13 (Gestión de votaciones por Administración/Comité) & CU\_19, CU\_27 \\\hline
-RF\_14 (Mantenimiento preventivo) & CU\_11, CU\_18 \\\hline
+RF\_11 (Comunicacion comunitaria) & CU\_16, CU\_20 \\\hline
+RF\_12 (Tickets de reclamos) & CU\_03 \\\hline
+RF\_13 (Gestion de votaciones por Administracion/Comite) & CU\_19, CU\_27 \\\hline
+RF\_14 (Mantenimiento preventivo) & Sin CU vigente en el cuerpo principal; vease Anexo~\ref{anexo:casos-restantes} (CU\_11 y CU\_18). \\\hline
 RF\_15 (Dashboards/KPI) & CU\_09 \\\hline
-RF\_16 (RBAC) & CU\_14, CU\_24 \\\hline
+RF\_16 (RBAC y configuracion administrativa) & CU\_14, CU\_17, CU\_24, CU\_28 \\\hline
 RF\_17 (Chat en tiempo real) & CU\_20 \\\hline
 RF\_18 (Marketplace) & CU\_21 \\\hline
-RF\_19 (Biblioteca documentos) & CU\_22, CU\_25 \\\hline
-RF\_20 (Notificaciones RT) & CU\_23 \\\hline
-\caption{Matriz de trazabilidad RF–CU (vista compacta).}
+RF\_19 (Biblioteca documental) & CU\_22, CU\_25 \\\hline
+RF\_20 (Notificaciones en tiempo real) & CU\_01, CU\_02, CU\_03, CU\_04, CU\_07, CU\_13, CU\_19, CU\_23, CU\_29 \\\hline
+\caption{Matriz de trazabilidad RF--CU de la version vigente.}
 \label{tab:traza-compacta}
 \end{longtable}
 
-% --- Opción B (cuadrícula “X”) en página apaisada ---
 \begin{landscape}
 \scriptsize
 \setlength{\tabcolsep}{2pt}
 \renewcommand{\arraystretch}{1.1}
-\begin{longtable}{|l|*{27}{c|}}
+\begin{longtable}{|l|*{25}{c|}}
 \hline
-\textbf{RF \textbackslash\ CU} & \textbf{01} & \textbf{02} & \textbf{03} & \textbf{04} & \textbf{05} & \textbf{06} & \textbf{07} & \textbf{08} & \textbf{09} & \textbf{10} & \textbf{11} & \textbf{12} & \textbf{13} & \textbf{14} & \textbf{15} & \textbf{16} & \textbf{17} & \textbf{18} & \textbf{19} & \textbf{20} & \textbf{21} & \textbf{22} & \textbf{23} & \textbf{24} & \textbf{25} & \textbf{26} & \textbf{27}\\\hline
-RF\_01 & X &  &  &  &  &  &  &  &  &  &  &  &  &  & X &  &  &  &  &  &  &  &  &  &  &  &  \\\hline
-RF\_02 & X & X &  & X & X &  & X &  &  &  &  &  & X &  & X &  & X &  &  &  &  &  & X &  &  &  &  \\\hline
-RF\_03 &  &  &  &  &  &  &  &  &  &  &  &  &  &  & X &  &  &  &  &  &  &  &  &  &  &  &  \\\hline
-RF\_04 &  & X &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  \\\hline
-RF\_05 &  &  &  &  &  &  & X &  &  &  &  &  & X &  &  &  &  &  &  &  &  &  &  &  &  &  &  \\\hline
-RF\_06 &  &  &  &  &  &  &  & X &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  \\\hline
-RF\_07 &  &  &  & X &  &  &  &  & X &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  & X &  \\\hline
-RF\_08 &  &  &  &  &  & X &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  \\\hline
-RF\_09 &  &  &  &  & X &  &  &  &  &  &  & X &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  \\\hline
-RF\_10 &  &  &  &  &  &  &  &  &  & X &  &  &  &  &  &  &  &  & X &  &  &  &  &  &  &  & X \\\hline
-RF\_11 &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  & X &  &  &  &  &  &  &  &  &  &  &  \\\hline
-RF\_12 &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  & X &  &  &  &  &  &  &  &  &  &  \\\hline
-RF\_13 &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  & X &  &  &  &  &  &  &  & X \\\hline
-RF\_14 &  &  &  &  &  &  &  &  &  &  & X &  &  &  &  &  &  & X &  &  &  &  &  &  &  &  &  \\\hline
-RF\_15 &  &  &  &  &  &  &  &  & X &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  \\\hline
-RF\_16 &  &  &  &  &  &  &  &  &  &  &  &  &  & X &  &  &  &  &  &  &  &  &  & X &  &  &  \\\hline
-RF\_17 &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  & X &  &  &  &  &  &  &  \\\hline
-RF\_18 &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  & X &  &  &  &  &  &  \\\hline
-RF\_19 &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  & X &  &  & X &  &  \\\hline
-RF\_20 &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  & X &  &  &  &  \\\hline
-\caption{Matriz de trazabilidad RF–CU (cuadrícula).}
+\textbf{RF \textbackslash\ CU} & \textbf{01} & \textbf{02} & \textbf{03} & \textbf{04} & \textbf{05} & \textbf{07} & \textbf{08} & \textbf{09} & \textbf{10} & \textbf{13} & \textbf{14} & \textbf{15} & \textbf{16} & \textbf{17} & \textbf{19} & \textbf{20} & \textbf{21} & \textbf{22} & \textbf{23} & \textbf{24} & \textbf{25} & \textbf{26} & \textbf{27} & \textbf{28} & \textbf{29}\\\hline
+RF\_01 & X &  &  &  &  &  &  &  &  &  &  & X &  &  &  &  &  &  &  &  &  &  &  &  &  \\\hline
+RF\_02 & X & X & X & X &  & X &  &  &  & X &  &  &  &  & X &  &  &  & X &  &  &  &  &  & X \\\hline
+RF\_03 & X &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  \\\hline
+RF\_04 &  & X &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  & X \\\hline
+RF\_05 &  &  &  &  &  & X & X &  &  & X &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  \\\hline
+RF\_06 &  &  &  &  &  &  &  &  &  & X &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  \\\hline
+RF\_07 &  &  &  & X &  &  &  & X &  &  &  &  &  &  &  &  &  &  &  &  &  & X &  &  &  \\\hline
+RF\_08 &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  \\\hline
+RF\_09 &  &  &  &  & X &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  \\\hline
+RF\_10 &  &  &  &  &  &  &  &  & X &  &  &  &  &  & X &  &  &  &  &  &  &  & X &  &  \\\hline
+RF\_11 &  &  &  &  &  &  &  &  &  &  &  &  & X &  &  & X &  &  &  &  &  &  &  &  &  \\\hline
+RF\_12 &  &  & X &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  \\\hline
+RF\_13 &  &  &  &  &  &  &  &  &  &  &  &  &  &  & X &  &  &  &  &  &  &  & X &  &  \\\hline
+RF\_14 &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  \\\hline
+RF\_15 &  &  &  &  &  &  &  & X &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  \\\hline
+RF\_16 &  &  &  &  &  &  &  &  &  &  & X &  &  & X &  &  &  &  &  & X &  &  &  & X &  \\\hline
+RF\_17 &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  & X &  &  &  &  &  &  &  &  &  \\\hline
+RF\_18 &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  & X &  &  &  &  &  &  &  &  \\\hline
+RF\_19 &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  & X &  &  & X &  &  &  &  \\\hline
+RF\_20 & X & X & X & X &  & X &  &  &  & X &  &  &  &  & X &  &  &  & X &  &  &  &  &  & X \\\hline
+\caption{Matriz de trazabilidad RF--CU (version vigente).}
 \label{tab:traza-grid}
 \end{longtable}
 \end{landscape}
 
-% ====== 4.5 Matriz de trazabilidad CU → Vistas ======
 \section{Matriz de trazabilidad CU -- Vistas}
 
-La Tabla~\ref{tab:traza-cu-vistas} vincula cada caso de uso con las vistas del frontend donde se materializa, completando la cadena de trazabilidad RF~$\rightarrow$~CU~$\rightarrow$~Pantalla. Las vistas se detallan en la Sección~\ref{subsec:vistas-por-rol} del Capítulo~\ref{cap:diseno}.
+La Tabla~\ref{tab:traza-cu-vistas} vincula cada caso de uso vigente con las vistas del frontend donde se materializa, completando la cadena de trazabilidad RF~$\rightarrow$~CU~$\rightarrow$~Pantalla. Las vistas se detallan en la Seccion~\ref{subsec:vistas-por-rol} del Capitulo~\ref{cap:diseno}.
 
 \begin{longtable}{|p{0.07\textwidth}|p{0.25\textwidth}|p{0.42\textwidth}|p{0.18\textwidth}|}
 \caption{Matriz de trazabilidad CU -- Vistas del frontend}\label{tab:traza-cu-vistas}\\
@@ -826,61 +676,56 @@ La Tabla~\ref{tab:traza-cu-vistas} vincula cada caso de uso con las vistas del f
 \hline
 \endfoot
 
-CU\_01 & Gestionar ingreso/salida visitas & VisitRegistrationPanel, ConciergeVisitLog & Conserje \\
+CU\_01 & Gestionar ingreso/salida de visitas & VisitRegistrationPanel, ResidentVisits & Residente, Conserje \\
 \hline
-CU\_02 & Registrar encomiendas & ConciergeParcels, AdminParcels, ResidentParcels & Conserje, Admin \\
+CU\_02 & Registrar encomiendas & ConciergeParcels, AdminParcels, ResidentParcels & Conserje \\
 \hline
-CU\_03 & Mantener bitácora & ConciergeVisitLog & Conserje \\
+CU\_03 & Registrar incidente & ResidentIncidents, AdminIncidentsBoard & Residente, Conserje, Administrador \\
 \hline
-CU\_04 & Pagar gastos comunes & ResidentCartola, ResidentChargesDetail, ResidentPaymentFlow, AdminCommonExpenses & Residente, Admin \\
+CU\_04 & Registrar pago de gastos comunes & ResidentCartola, ResidentChargesDetail, ResidentPaymentFlow, AdminCommonExpenses & Residente, Administrador \\
 \hline
-CU\_05 & Reservar área común & ResidentAmenities, AdminAmenities & Residente, Admin \\
+CU\_05 & Reservar espacio comun & ResidentAmenities, AdminAmenities & Residente \\
 \hline
-CU\_06 & Gestionar morosidad & \textit{Diferido a v2.0} & Admin \\
+CU\_07 & Asignar tareas & AdminTasks & Administrador \\
 \hline
-CU\_07 & Asignar tareas & AdminTasks, AdminStaff & Admin \\
+CU\_08 & Gestionar personal operativo & AdminStaff, AdminCreateUser & Administrador \\
 \hline
-CU\_08 & Registrar jornada & \textit{Diferido a v2.0} & Personal \\
+CU\_09 & Consultar reportes y estados financieros & Dashboard, AdminCommonExpenses, AdminIncidentStats & Administrador, Comite \\
 \hline
-CU\_09 & Generar reportes financieros & AdminDashboard, AdminIncidentStats, AdminCommonExpenses & Admin \\
+CU\_10 & Emitir voto & Votaciones & Residente \\
 \hline
-CU\_10 & Votaciones & ResidentVotaciones, ResidentVoteDetail & Residente \\
+CU\_13 & Marcar tarea completada & StaffTasks, StaffPortal & Personal operativo \\
 \hline
-CU\_11 & Mantenimiento preventivo & \textit{Diferido a v2.0} & Admin \\
+CU\_14 & Configurar roles y permisos & AdminCreateUser & Administrador \\
 \hline
-CU\_12 & Gestionar estacionamientos & \textit{Diferido a v2.0} & Admin \\
+CU\_15 & Escanear QR de cedula & VisitRegistrationPanel & Conserje \\
 \hline
-CU\_13 & Marcar tarea completada & ResidentTasks & Personal \\
+CU\_16 & Gestionar publicaciones del muro comunitario & ResidentPublications & Administrador, Residente \\
 \hline
-CU\_14 & Configurar roles (RBAC) & AdminCreateUser, AdminResidents & Admin \\
+CU\_17 & Gestionar residentes y comite & AdminResidents, AdminCreateUser & Administrador \\
 \hline
-CU\_15 & Ingreso controlado (QR) & VisitRegistrationPanel, ResidentVisits & Conserje, Residente \\
+CU\_19 & Gestionar votaciones comunitarias & Votaciones & Administrador, Comite \\
 \hline
-CU\_16 & Participar en foro/marketplace & ResidentPublications & Residente \\
+CU\_20 & Chat en tiempo real & ChatHub & Residente \\
 \hline
-CU\_17 & Registrar reclamo & ResidentIncidents, AdminIncidentsBoard & Residente, Admin \\
+CU\_21 & Publicar articulo en marketplace & ResidentMarketplace, ResidentMarketplaceCreate & Residente \\
 \hline
-CU\_18 & Bitácora de ascensor & \textit{Diferido a v2.0} & Conserje \\
+CU\_22 & Consultar biblioteca documental & ResidentLibrary & Administrador, Residente, Comite \\
 \hline
-CU\_19 & Generar votaciones comunitarias & ResidentVotaciones, ResidentVoteDetail & Administración, Comité \\
+CU\_23 & Gestionar notificaciones & NotificationCenter, NotificationPreferences & Todos los roles \\
 \hline
-CU\_20 & Chat en tiempo real & ChatHub, ChatRoom & Residente \\
+CU\_24 & Registrar/aprobar comunidad & CreateCommunityModal, CommunitySelector, AdminInviteRegister & Administrador \\
 \hline
-CU\_21 & Publicar en marketplace & ResidentMarketplace, ResidentMarketplaceCreate & Residente \\
+CU\_25 & Publicar documentos y actas & ResidentLibrary & Administrador, Comite \\
 \hline
-CU\_22 & Consultar biblioteca & ResidentLibrary & Residente \\
+CU\_26 & Consultar estados de cuenta para fiscalizacion & AdminCommonExpenses, Dashboard & Comite, Administrador \\
 \hline
-CU\_23 & Gestionar notificaciones & NotificationCenter & Todos los roles \\
+CU\_27 & Publicar resultados de votacion & Votaciones & Administrador, Comite \\
 \hline
-CU\_24 & Registrar/aprobar comunidad & AdminCreateUser, RegisterByInvite, CommunitySelector, AdminHousingUnits & Admin \\
+CU\_28 & Gestionar unidades habitacionales & AdminHousingUnits & Administrador \\
 \hline
-CU\_25 & Subir actas de asamblea a biblioteca & ResidentLibrary & Administración, Comité \\
-\hline
-CU\_26 & Consultar estados de cuenta para fiscalización & AdminCommonExpenses, AdminDashboard & Comité, Administración \\
-\hline
-CU\_27 & Publicar resultados de votación & ResidentVotaciones, ResidentVoteDetail & Administración, Comité \\
+CU\_29 & Registrar retiro de encomienda & ConciergeParcels, AdminParcels, ResidentParcels & Conserje \\
 
 \end{longtable}
 
-% Cierra el ámbito local de tamaño/padding del capítulo
 \endgroup

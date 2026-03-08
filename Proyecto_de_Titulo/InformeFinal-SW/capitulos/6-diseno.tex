@@ -47,7 +47,7 @@ Recepción de paquetes, seguimiento de estados (recibido, notificado, retirado),
 
 Gestión Operativa &
 REST &
-Administración de personal y turnos, creación y asignación de tareas con evidencia fotográfica y seguimiento por estado. \\
+Administración de personal operativo, creación y asignación de tareas con evidencia fotográfica y seguimiento por estado. \\
 \hline
 
 Administración Financiera &
@@ -72,7 +72,7 @@ Creación de procesos de votación, sufragio remoto, cierre automático y export
 
 Comunicación Comunitaria &
 REST / WebSocket &
-Foro con categorías e hilos, chat en tiempo real vía WebSocket (\texttt{/ws/chat}), marketplace de artículos entre vecinos y biblioteca de documentos comunitarios. \\
+Muro comunitario de publicaciones, chat en tiempo real vía WebSocket (\texttt{/ws/chat}), marketplace de artículos entre vecinos y biblioteca de documentos comunitarios. \\
 \hline
 
 Notificaciones &
@@ -355,7 +355,7 @@ Ambos canales requieren autenticación mediante token JWT enviado como parámetr
 % Los 12 módulos se organizan en GRID 4x3 alrededor del core central:
 % Fila superior: Autenticación, Usuarios y Roles, Comunidades, Control de Accesos
 % Fila media: Encomiendas, Gestión Operativa, Finanzas, Incidentes
-% Fila inferior: Reservas, Votaciones, Comunicación (Foro/Chat/Marketplace), Notificaciones
+% Fila inferior: Reservas, Votaciones, Comunicación (Muro/Chat/Marketplace), Notificaciones
 % Última fila: Gobernanza del Comité (votaciones, actas y consulta de estados de cuenta)
 %
 % Cada módulo tiene una línea que lo conecta al core central.
@@ -395,7 +395,7 @@ Finanzas y Gastos Comunes & \texttt{common\_expense\_periods}, \texttt{common\_c
 Reservas de Espacios & \texttt{amenities}, \texttt{amenity\_time\_slots}, \texttt{amenity\_reservations} & 3 \\ \hline
 Votaciones & \texttt{polls}, \texttt{poll\_options}, \texttt{poll\_votes} & 3 \\ \hline
 Chat y Marketplace & \texttt{chat\_room}, \texttt{chat\_participant}, \texttt{chat\_message}, \texttt{chat\_request}, \texttt{market\_category}, \texttt{market\_item}, \texttt{market\_item\_image} & 7 \\ \hline
-Foro Comunitario & \texttt{forum\_categories}, \texttt{forum\_threads}, \texttt{forum\_posts} & 3 \\ \hline
+Publicaciones Comunitarias & \texttt{forum\_categories}, \texttt{forum\_threads}, \texttt{forum\_posts} & 3 \\ \hline
 Biblioteca, Notificaciones e Incidentes & \texttt{library\_documents}, \texttt{notifications}, \texttt{notification\_preferences}, \texttt{incidents} & 4 \\ \hline
 \end{tabular}
 \caption{Resumen de entidades del modelo de datos por dominio funcional.}
@@ -524,7 +524,7 @@ A continuación, las Tablas~\ref{tab:esquema-acceso} a~\ref{tab:esquema-soporte}
 \hline
 \texttt{marketplace\_items} & Artículos en venta o donación. & FK a \texttt{users}, \texttt{buildings} \\
 \hline
-\texttt{forum\_categories} & Categorías temáticas del foro. & FK a \texttt{buildings} \\
+\texttt{forum\_categories} & Categorías de publicaciones comunitarias. & FK a \texttt{buildings} \\
 \hline
 \texttt{forum\_threads} & Hilos de discusión. & FK a \texttt{forum\_categories}, \texttt{users} \\
 \hline
@@ -729,7 +729,7 @@ La composición de las interfaces expuesta a continuación corresponde a la vers
 
 % --- ÍTEM H: Vista Pago de Gastos Comunes ---
 \begin{itemize}
-    \item[\textbf{H.}] \textbf{Vista Pago de Gastos Comunes}: Flujo transaccional que guía al residente a través del proceso de pago en línea de su cuenta mensual.
+    \item[\textbf{H.}] \textbf{Vista Pago de Gastos Comunes}: Flujo que permite revisar cargos pendientes, adjuntar comprobantes de transferencia y dejar el pago pendiente de validación administrativa.
 \end{itemize}
 \begin{figure}[H]
     \centering
@@ -794,31 +794,33 @@ RegisterByInvite & Registro mediante código de invitación de administrador. & 
 \endhead
 \hline \endfoot
 
-AdminDashboard & Panel principal con resumen de actividad comunitaria. & CU\_09 \\
+Dashboard & Panel principal con resumen de actividad comunitaria. & CU\_09 \\
 \hline
-AdminCreateUser & Creación e invitación de usuarios a la comunidad. & CU\_14, CU\_24 \\
+AdminCreateUser & Creación e invitación de usuarios a la comunidad. & CU\_14, CU\_17, CU\_24 \\
 \hline
-AdminIncidentsBoard & Tablero Kanban de incidentes con estados de avance. & CU\_17 \\
+AdminIncidentsBoard & Tablero Kanban de incidentes con estados de avance. & CU\_03 \\
 \hline
 AdminIncidentStats & Estadísticas y métricas de incidentes reportados. & CU\_09 \\
 \hline
-AdminResidents & Listado y gestión de residentes por unidad. & CU\_14 \\
+AdminResidents & Listado y gestión de residentes y comité por unidad. & CU\_17 \\
 \hline
-AdminHousingUnits & Gestión de unidades habitacionales y coeficientes. & CU\_24 \\
+AdminHousingUnits & Gestión de unidades habitacionales, asociación y desvinculación de residentes. & CU\_28 \\
 \hline
 AdminAmenities & Configuración de áreas comunes, aforo y horarios. & CU\_05 \\
 \hline
-AdminCommonExpenses & Gestión de períodos, cargos y pagos de gastos comunes. & CU\_04, CU\_09 \\
+AdminCommonExpenses & Gestión de períodos, cargos, comprobantes y validación de gastos comunes. & CU\_04, CU\_09 \\
 \hline
-AdminParcels & Gestión y seguimiento de encomiendas. & CU\_02 \\
+AdminParcels & Gestión y seguimiento de encomiendas. & CU\_02, CU\_29 \\
 \hline
 AdminTasks & Creación y asignación de tareas al personal. & CU\_07 \\
 \hline
-AdminStaff & Gestión de personal operativo de la comunidad. & CU\_07 \\
+AdminStaff & Gestión de personal operativo de la comunidad. & CU\_08 \\
 \hline
-AdminProviders & Gestión de votaciones comunitarias y publicación de resultados. & CU\_19, CU\_27 \\
+Votaciones & Gestión de votaciones comunitarias y publicación de resultados. & CU\_19, CU\_27 \\
 \hline
-AdminServiceOrders & Carga de actas de asamblea y consulta de estados de cuenta para fiscalización. & CU\_25, CU\_26 \\
+ResidentLibrary & Carga de documentos y actas en la biblioteca documental. & CU\_22, CU\_25 \\
+\hline
+AdminCommonExpenses & Consulta de estados de cuenta para fiscalización. & CU\_26 \\
 
 \end{longtable}
 
@@ -835,9 +837,9 @@ AdminServiceOrders & Carga de actas de asamblea y consulta de estados de cuenta 
 
 VisitRegistrationPanel & Registro de visitas con escaneo QR y check-in/out. & CU\_01, CU\_15 \\
 \hline
-ConciergeVisitLog & Bitácora de visitas registradas. & CU\_01, CU\_03 \\
+ConciergeVisitLog & Historial operativo de visitas registradas. & CU\_01 \\
 \hline
-ConciergeParcels & Registro y gestión de encomiendas recibidas. & CU\_02 \\
+ConciergeParcels & Registro y gestión de encomiendas recibidas y retiradas. & CU\_02, CU\_29 \\
 
 \end{longtable}
 
@@ -854,9 +856,9 @@ ConciergeParcels & Registro y gestión de encomiendas recibidas. & CU\_02 \\
 
 ResidentProfile & Perfil personal con edición de datos y avatar. & --- \\
 \hline
-ResidentVisits & Pre-autorización de visitas con generación de QR. & CU\_15 \\
+ResidentVisits & Pre-autorización y seguimiento de visitas. & CU\_01, CU\_15 \\
 \hline
-ResidentIncidents & Reporte y seguimiento de reclamos e incidencias. & CU\_17 \\
+ResidentIncidents & Reporte y seguimiento de incidentes. & CU\_03 \\
 \hline
 ResidentAmenities & Consulta de disponibilidad y reserva de áreas comunes. & CU\_05 \\
 \hline
@@ -864,11 +866,11 @@ ResidentCartola & Estado de cuenta del residente (gastos comunes). & CU\_04 \\
 \hline
 ResidentChargesDetail & Detalle de cargos por período. & CU\_04 \\
 \hline
-ResidentPaymentFlow & Flujo de pago de gastos comunes. & CU\_04 \\
+ResidentPaymentFlow & Flujo de carga de comprobante para gastos comunes. & CU\_04 \\
 \hline
-ResidentParcels & Visualización de encomiendas pendientes y retiradas. & CU\_02 \\
+ResidentParcels & Visualización de encomiendas pendientes y retiradas. & CU\_02, CU\_29 \\
 \hline
-ResidentPublications & Foro comunitario con categorías e hilos. & CU\_16 \\
+ResidentPublications & Muro comunitario para publicación y consulta de avisos. & CU\_16 \\
 \hline
 ResidentLibrary & Biblioteca de documentos comunitarios. & CU\_22 \\
 \hline
@@ -884,7 +886,7 @@ ResidentVotaciones & Listado de votaciones activas y cerradas. & CU\_10 \\
 \hline
 ResidentVoteDetail & Detalle de votación con opciones y resultados. & CU\_10 \\
 \hline
-ResidentTasks & Visualización de tareas asignadas (rol Personal). & CU\_13 \\
+StaffTasks & Visualización y actualización de tareas asignadas (rol Personal). & CU\_13 \\
 \hline
 ResidentContacts & Gestión de contactos frecuentes para visitas. & CU\_01 \\
 
@@ -901,9 +903,11 @@ ResidentContacts & Gestión de contactos frecuentes para visitas. & CU\_01 \\
 \endhead
 \hline \endfoot
 
-AdminProviders & Gestión de votaciones comunitarias y publicación de resultados en rol Comité. & CU\_19, CU\_27 \\
+Votaciones & Gestión de votaciones comunitarias y publicación de resultados en rol Comité. & CU\_19, CU\_27 \\
 \hline
-AdminServiceOrders & Carga de actas de asamblea (etiqueta ``actas'') y consulta de estados de cuenta en modo lectura. & CU\_25, CU\_26 \\
+ResidentLibrary & Consulta y carga de actas en la biblioteca documental del comité. & CU\_22, CU\_25 \\
+\hline
+AdminCommonExpenses & Consulta de estados de cuenta en modo lectura para fiscalización. & CU\_26 \\
 
 \end{longtable}
 
