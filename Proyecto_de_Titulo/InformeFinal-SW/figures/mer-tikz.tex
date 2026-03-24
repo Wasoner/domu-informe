@@ -1,0 +1,169 @@
+% ============================================================
+%  MER — Modelo Entidad-Relación simplificado del Sistema DOMU
+% ============================================================
+\begin{figure}[H]
+\centering
+\resizebox{0.95\linewidth}{!}{%
+\begin{tikzpicture}[
+  ent/.style={
+    rectangle, draw=black!65, fill=white,
+    inner sep=4pt, rounded corners=1pt,
+    font=\small\sffamily, text centered,
+    minimum height=0.7cm
+  },
+  hub/.style={
+    ent, fill=blue!12, draw=blue!60, line width=0.7pt,
+    font=\small\sffamily\bfseries
+  },
+  domlabel/.style={
+    font=\footnotesize\sffamily\bfseries, text=black!55
+  },
+  rel/.style={draw=black!50, line width=0.35pt},
+  relm/.style={rel, one-crow's foot},
+  card/.style={font=\tiny\sffamily, fill=white, inner sep=1pt, text=black!60},
+]
+
+% ================================================================
+%  CORE
+% ================================================================
+\node[hub]  (users)     at (7.5,12)   {users};
+\node[hub]  (buildings) at (17.5,12)  {buildings};
+\node[ent]  (roles)     at (2.5,12)   {roles};
+\node[ent]  (hunits)    at (23,12)    {housing\_units};
+\node[ent]  (ubuilds)   at (12.5,12)  {user\_buildings};
+\node[ent]  (uconfirm)  at (5,14.5)   {user\_confirmations};
+\node[ent]  (pwdtokens) at (10,14.5)  {password\_reset\_tokens};
+\node[ent]  (breqs)     at (20.5,14.5){building\_requests};
+
+% Conexiones core con cardinalidades
+\draw[relm] (roles.east) -- node[card,above]{1:N} (users.west);
+\draw[rel]  (users.east) -- node[card,above]{N:M} (ubuilds.west);
+\draw[rel]  (ubuilds.east) -- node[card,above]{N:M} (buildings.west);
+\draw[relm] (buildings.east) -- node[card,above]{1:N} (hunits.west);
+\draw[relm] (users.north) -- node[card,right]{1:N} (uconfirm.south);
+\draw[relm] (users.north east) -- node[card,right]{1:N} (pwdtokens.south west);
+\draw[relm] (buildings.north) -- node[card,left]{1:N} (breqs.south west);
+
+% ================================================================
+%  FILA 1 DE DOMINIOS
+% ================================================================
+
+% --- ACCESO ---
+\node[domlabel] at (2.5,10.2) {ACCESO};
+\node[ent] (visits)    at (1.2, 8.8)  {visits};
+\node[ent] (vcontacts) at (4.2, 8.8)  {visit\_contacts};
+\node[ent] (vauth)     at (1.2, 7.2)  {visit\_authorizations};
+\node[ent] (vlogs)     at (1.2, 5.6)  {visit\_access\_logs};
+
+\draw[relm] (visits.south) -- node[card,right]{1:N} (vauth.north);
+\draw[relm] (vauth.south)  -- node[card,right]{1:N} (vlogs.north);
+
+% --- OPERATIVA ---
+\node[domlabel] at (9,10.2) {OPERATIVA};
+\node[ent] (staff)     at (7.5, 8.8)  {staff};
+\node[ent] (parcels)   at (10.5, 8.8) {parcels};
+\node[ent] (tasks)     at (7.5, 7.2)  {tasks};
+\node[ent] (taskasign) at (7.5, 5.6)  {task\_assignments};
+
+\draw[relm] (staff.south)  -- node[card,right]{1:N} (tasks.north);
+\draw[relm] (tasks.south)  -- node[card,right]{N:M} (taskasign.north);
+
+% --- FINANZAS ---
+\node[domlabel] at (15.5,10.2) {FINANZAS};
+\node[ent] (periods)   at (13.5, 8.8)  {expense\_periods};
+\node[ent] (delinq)    at (17.8, 8.8) {delinquency\_records};
+\node[ent] (charges)   at (13.5, 7.2) {common\_charges};
+\node[ent] (revisions) at (17.8, 7.2) {expense\_revisions};
+\node[ent] (payments)  at (13.5, 5.6) {common\_payments};
+
+\draw[relm] (periods.south) -- node[card,right]{1:N} (charges.north);
+\draw[relm] (charges.south) -- node[card,right]{1:N} (payments.north);
+\draw[relm] (periods.east)  -- node[card,above]{1:N} (delinq.west);
+\draw[relm] (periods.south east) -- node[card,right]{1:N} (revisions.north west);
+
+% --- VOTACIONES Y RESERVAS ---
+\node[domlabel] at (23.5,10.2) {VOTACIONES / RESERVAS};
+\node[ent] (polls)     at (21.8, 8.8) {polls};
+\node[ent] (amenities) at (25.2, 8.8) {amenities};
+\node[ent] (poptions)  at (21.8, 7.2) {poll\_options};
+\node[ent] (aslots)    at (25.2, 7.2) {amenity\_time\_slots};
+\node[ent] (pvotes)    at (21.8, 5.6) {poll\_votes};
+\node[ent] (areservs)  at (25.2, 5.6) {amenity\_reservations};
+
+\draw[relm] (polls.south)     -- node[card,right]{1:N} (poptions.north);
+\draw[relm] (poptions.south)  -- node[card,right]{1:N} (pvotes.north);
+\draw[relm] (amenities.south) -- node[card,right]{1:N} (aslots.north);
+\draw[relm] (aslots.south)    -- node[card,right]{1:N} (areservs.north);
+
+% ================================================================
+%  FILA 2 DE DOMINIOS
+% ================================================================
+
+% --- CHAT ---
+\node[domlabel] at (2.8,3.8) {CHAT};
+\node[ent] (chatroom)  at (1, 2.4)   {chat\_room};
+\node[ent] (chatpart)  at (4.8, 2.4) {chat\_participant};
+\node[ent] (chatmsg)   at (1, 0.8)   {chat\_message};
+\node[ent] (chatreq)   at (4.8, 0.8) {chat\_request};
+
+\draw[relm] (chatroom.east)  -- node[card,above]{1:N} (chatpart.west);
+\draw[relm] (chatroom.south) -- node[card,right]{1:N} (chatmsg.north);
+
+% --- MARKETPLACE ---
+\node[domlabel] at (10.5,3.8) {MARKETPLACE};
+\node[ent] (mktcat)  at (9.5, 2.4)  {market\_category};
+\node[ent] (mktitem) at (8.2, 0.8)  {market\_item};
+\node[ent] (mktimg)  at (12.2, 0.8) {market\_item\_image};
+
+\draw[relm] (mktcat.south)  -- node[card,right]{1:N} (mktitem.north);
+\draw[relm] (mktitem.east)  -- node[card,above]{1:N} (mktimg.west);
+
+% --- FORO ---
+\node[domlabel] at (17.5,3.8) {FORO};
+\node[ent] (forumcat)  at (17, 2.4)  {forum\_categories};
+\node[ent] (forumthr)  at (15.5, 0.8){forum\_threads};
+\node[ent] (forumpost) at (19.5, 0.8){forum\_posts};
+
+\draw[relm] (forumcat.south) -- node[card,right]{1:N} (forumthr.north);
+\draw[relm] (forumthr.east)  -- node[card,above]{1:N} (forumpost.west);
+
+% --- SOPORTE ---
+\node[domlabel] at (24.5,3.8) {SOPORTE};
+\node[ent] (incidents) at (23, 2.4)  {incidents};
+\node[ent] (notifs)    at (26.3, 2.4){notifications};
+\node[ent] (libdocs)   at (23, 0.8)  {library\_documents};
+\node[ent] (notifpref) at (26.3, 0.8){notification\_prefs};
+
+% ================================================================
+%  Fondos de dominio
+% ================================================================
+\begin{pgfonlayer}{background}
+  \node[fit=(roles)(users)(buildings)(hunits)(ubuilds)(uconfirm)(pwdtokens)(breqs),
+        rectangle, rounded corners=6pt, fill=blue!4, draw=blue!20, inner sep=10pt] {};
+  \node[fit=(visits)(vauth)(vlogs)(vcontacts),
+        rectangle, rounded corners=4pt, fill=red!4, draw=red!15, inner sep=7pt] {};
+  \node[fit=(staff)(tasks)(taskasign)(parcels),
+        rectangle, rounded corners=4pt, fill=orange!5, draw=orange!15, inner sep=7pt] {};
+  \node[fit=(periods)(charges)(payments)(delinq)(revisions),
+        rectangle, rounded corners=4pt, fill=green!5, draw=green!15, inner sep=7pt] {};
+  \node[fit=(polls)(poptions)(pvotes)(amenities)(aslots)(areservs),
+        rectangle, rounded corners=4pt, fill=violet!4, draw=violet!15, inner sep=7pt] {};
+  \node[fit=(chatroom)(chatmsg)(chatpart)(chatreq),
+        rectangle, rounded corners=4pt, fill=cyan!5, draw=cyan!15, inner sep=7pt] {};
+  \node[fit=(mktcat)(mktitem)(mktimg),
+        rectangle, rounded corners=4pt, fill=yellow!8, draw=yellow!25, inner sep=7pt] {};
+  \node[fit=(forumcat)(forumthr)(forumpost),
+        rectangle, rounded corners=4pt, fill=lime!6, draw=lime!20, inner sep=7pt] {};
+  \node[fit=(incidents)(libdocs)(notifs)(notifpref),
+        rectangle, rounded corners=4pt, fill=pink!6, draw=pink!20, inner sep=7pt] {};
+\end{pgfonlayer}
+
+\end{tikzpicture}
+}% end resizebox
+\caption{Modelo Entidad-Relación simplificado del sistema DOMU.
+  Las entidades \texttt{users} y \texttt{buildings} son los ejes centrales;
+  las líneas muestran las jerarquías internas de cada dominio (notación crow's foot) con sus cardinalidades.
+  Todas las entidades de los dominios inferiores se vinculan a \texttt{users} y/o \texttt{buildings}
+  mediante claves foráneas (detalladas en el Modelo Relacional y el Anexo~\ref{anexo:diccionario}).}
+\label{fig:mer}
+\end{figure}

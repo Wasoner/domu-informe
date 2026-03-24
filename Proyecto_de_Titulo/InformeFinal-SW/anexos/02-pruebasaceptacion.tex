@@ -199,24 +199,6 @@ La comunidad de prueba es \textit{Edificio Los Aromos}, con 30~unidades habitaci
 \caption{Datos de prueba PA\_12.}
 \end{table}
 
-% ---- PA_13: Proveedores ----
-\subsection{PA\_13 — Gestión de proveedores (RF\_13)}
-
-\textbf{Precondiciones:} El administrador ha iniciado sesión.
-
-\begin{table}[H]
-\centering
-\small
-\begin{tabular}{|c|p{0.35\textwidth}|p{0.25\textwidth}|p{0.25\textwidth}|}
-\hline
-\textbf{\#} & \textbf{Acción} & \textbf{Datos de entrada} & \textbf{Resultado esperado} \\ \hline
-1 & Registrar un proveedor & Nombre: Mantenciones ABC, RUT: 76.543.210-K, Rubro: Plomería & El proveedor queda registrado en el sistema \\ \hline
-2 & Crear una orden de servicio & Proveedor: Mantenciones ABC, Descripción: Reparar cañería piso~2 & La orden se crea con estado ``Solicitada'' \\ \hline
-3 & Registrar una cotización & Monto: \$150.000, Detalle del servicio & La cotización se asocia a la orden de servicio \\ \hline
-\end{tabular}
-\caption{Datos de prueba PA\_13.}
-\end{table}
-
 % ---- PA_16: Roles y permisos ----
 \subsection{PA\_16 — Configuración de roles y permisos (RF\_16)}
 
@@ -287,7 +269,6 @@ PA\_09 & RF\_09 — Reservas de espacios & Aprobada \\ \hline
 PA\_10 & RF\_10 — Votaciones & Aprobada \\ \hline
 PA\_11 & RF\_11 — Foro comunitario & Aprobada \\ \hline
 PA\_12 & RF\_12 — Tickets de reclamos & Aprobada \\ \hline
-PA\_13 & RF\_13 — Proveedores & Aprobada \\ \hline
 PA\_16 & RF\_16 — Roles y permisos & Aprobada \\ \hline
 PA\_17 & RF\_17 — Chat en tiempo real & Aprobada \\ \hline
 PA\_18 & RF\_18 — Marketplace & Aprobada \\ \hline

@@ -58,7 +58,76 @@
 \usepackage[ruled,vlined]{algorithm2e}
 %\usepackage[ruled,vlined,linesnumbered,titlenotnumbered, %portuguese]{algorithm2e}
 \usepackage{enumitem}
-\usetikzlibrary{positioning,arrows.meta}
+\usetikzlibrary{positioning,arrows.meta,shapes.multipart,fit,backgrounds,calc}
+
+% ── Crow's foot arrows for ER diagrams ──
+\makeatletter
+\pgfarrowsdeclare{crow's foot}{crow's foot}
+{
+    \pgfarrowsleftextend{+-.5\pgflinewidth}%
+    \pgfarrowsrightextend{+.5\pgflinewidth}%
+}
+{
+    \pgfutil@tempdima=0.6pt%
+    \pgfsetdash{}{+0pt}%
+    \pgfsetmiterjoin%
+    \pgfpathmoveto{\pgfqpoint{0pt}{-9\pgfutil@tempdima}}%
+    \pgfpathlineto{\pgfqpoint{-13\pgfutil@tempdima}{0pt}}%
+    \pgfpathlineto{\pgfqpoint{0pt}{9\pgfutil@tempdima}}%
+    \pgfpathmoveto{\pgfqpoint{0\pgfutil@tempdima}{0\pgfutil@tempdima}}%
+    \pgfpathmoveto{\pgfqpoint{-8pt}{-6pt}}%
+    \pgfpathlineto{\pgfqpoint{-8pt}{-6pt}}%
+    \pgfpathlineto{\pgfqpoint{-8pt}{6pt}}%
+    \pgfusepathqstroke%
+}
+\pgfarrowsdeclare{omany}{omany}
+{
+    \pgfarrowsleftextend{+-.5\pgflinewidth}%
+    \pgfarrowsrightextend{+.5\pgflinewidth}%
+}
+{
+    \pgfutil@tempdima=0.6pt%
+    \pgfsetdash{}{+0pt}%
+    \pgfsetmiterjoin%
+    \pgfpathmoveto{\pgfqpoint{0pt}{-9\pgfutil@tempdima}}%
+    \pgfpathlineto{\pgfqpoint{-13\pgfutil@tempdima}{0pt}}%
+    \pgfpathlineto{\pgfqpoint{0pt}{9\pgfutil@tempdima}}%
+    \pgfpathmoveto{\pgfqpoint{0\pgfutil@tempdima}{0\pgfutil@tempdima}}%
+    \pgfpathmoveto{\pgfqpoint{-6pt}{-6pt}}%
+    \pgfpathcircle{\pgfpoint{-11.5pt}{0}}{3.5pt}
+    \pgfusepathqstroke%
+}
+\pgfarrowsdeclare{one}{one}
+{
+    \pgfarrowsleftextend{+-.5\pgflinewidth}%
+    \pgfarrowsrightextend{+.5\pgflinewidth}%
+}
+{
+    \pgfutil@tempdima=0.6pt%
+    \pgfsetdash{}{+0pt}%
+    \pgfsetmiterjoin%
+    \pgfpathmoveto{\pgfqpoint{0\pgfutil@tempdima}{0\pgfutil@tempdima}}%
+    \pgfpathmoveto{\pgfqpoint{-6pt}{-6pt}}%
+    \pgfpathlineto{\pgfqpoint{-6pt}{-6pt}}%
+    \pgfpathlineto{\pgfqpoint{-6pt}{6pt}}%
+    \pgfpathmoveto{\pgfqpoint{0\pgfutil@tempdima}{0\pgfutil@tempdima}}%
+    \pgfpathmoveto{\pgfqpoint{-8pt}{-6pt}}%
+    \pgfpathlineto{\pgfqpoint{-8pt}{-6pt}}%
+    \pgfpathlineto{\pgfqpoint{-8pt}{6pt}}%
+    \pgfusepathqstroke%
+}
+\makeatother
+
+% ── ER diagram styles ──
+\tikzset{%
+    zig zag to/.style={
+        to path={(\tikztostart) -| ($(\tikztostart)!#1!(\tikztotarget)$) |- (\tikztotarget)}
+    },
+    zig zag to/.default=0.5,
+    one to one/.style={one-one},
+    one to many/.style={one-crow's foot},
+    one to omany/.style={one-omany},
+}
 \setlist{topsep=0pt,noitemsep}
 \setcounter{tocdepth}{3}
 \marginsize{3cm}{2.5cm}{2.5cm}{2.5cm}

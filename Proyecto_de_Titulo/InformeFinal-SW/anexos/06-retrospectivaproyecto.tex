@@ -37,8 +37,6 @@ Comunicación & RF\_11, RF\_17 & 100\% & Foro con categorías y chat WebSocket e
 \hline
 Tickets / Incidentes & RF\_12 & 100\% & Reporte, asignación y seguimiento de incidencias. \\
 \hline
-Proveedores & RF\_13 & 100\% & CRUD completo, órdenes y cotizaciones. \\
-\hline
 Mantenimiento & RF\_14 & 0\% & CU\_11 y CU\_18 diferidos íntegramente a v2.0. \\
 \hline
 Dashboards / KPI & RF\_15 & $\sim$50\% & Estadísticas de incidentes implementadas; dashboard financiero parcial. \\
@@ -74,7 +72,6 @@ Notificaciones RT & RF\_20 & 100\% & WebSocket de notificaciones con preferencia
 % Votaciones: 100% (verde)
 % Comunicación: 100% (verde)
 % Tickets: 100% (verde)
-% Proveedores: 100% (verde)
 % Mantenimiento: 0% (rojo)
 % Dashboards: 50% (naranja)
 % RBAC: 100% (verde)
@@ -121,7 +118,7 @@ De los ocho riesgos identificados en la etapa de planificación (ver Tabla~\ref{
 \begin{itemize}
     \item \textbf{R01 --- Complejidad del modelo financiero:} La necesidad de modelar 35~entidades en 9~dominios funcionales (frente a las $\sim$20 estimadas) extendió la fase de diseño de base de datos en aproximadamente una semana (+20\%). El impacto se absorbió parcialmente durante la implementación del frontend, que resultó más eficiente de lo previsto gracias a TanStack React Query.
 
-    \item \textbf{R02 --- Postergación de funcionalidades:} La decisión de diferir 5~CUs se tomó en la semana~8 del desarrollo, tras evaluar que la implementación completa comprometería la calidad del software entregado. Esta decisión permitió dedicar más tiempo a la estabilización de los módulos financiero y de proveedores.
+    \item \textbf{R02 --- Postergación de funcionalidades:} La decisión de diferir 5~CUs se tomó en la semana~8 del desarrollo, tras evaluar que la implementación completa comprometería la calidad del software entregado. Esta decisión permitió dedicar más tiempo a la estabilización del módulo financiero.
 
     \item \textbf{R05 --- Dependencia de Box API (parcial):} El token de desarrollador de Box tiene una vigencia limitada (60~minutos), lo que obligó a implementar un flujo de renovación manual durante el desarrollo. Para producción, se recomienda migrar a autenticación OAuth~2.0 con tokens de larga duración.
 

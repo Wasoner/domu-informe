@@ -1,0 +1,219 @@
+% ============================================================
+%  MR Parte 1 — Core, Autenticación, Acceso, Operativa
+% ============================================================
+\begin{figure}[H]
+\centering
+\resizebox{0.95\linewidth}{!}{%
+\begin{tikzpicture}[
+  every node/.style={font=\scriptsize\ttfamily},
+  tbl/.style={
+    rectangle split, rectangle split parts=2,
+    rectangle split part fill={#1!15, white},
+    draw=#1!60, line width=0.5pt,
+    text width=3.2cm, inner sep=3pt,
+    rectangle split part align={center,left},
+    font=\scriptsize\ttfamily,
+    rounded corners=1pt
+  },
+  tbl/.default={black},
+  tblhub/.style={tbl={blue}, line width=0.8pt},
+  rel/.style={draw=black!45, line width=0.3pt},
+  relm/.style={rel, one-crow's foot},
+]
+
+% ================================================================
+%  CORE
+% ================================================================
+\node[tblhub] (roles) at (0,0) {
+  \textbf{roles}
+  \nodepart{second}
+  \underline{id} BIGINT PK\\
+  name VARCHAR\\
+  description VARCHAR
+};
+
+\node[tblhub] (users) at (5.5,0) {
+  \textbf{users}
+  \nodepart{second}
+  \underline{id} BIGINT PK\\
+  email VARCHAR\\
+  password\_hash VARCHAR\\
+  first\_name VARCHAR\\
+  last\_name VARCHAR\\
+  display\_name VARCHAR\\
+  role\_id FK $\to$ roles
+};
+
+\node[tblhub] (buildings) at (11.5,0) {
+  \textbf{buildings}
+  \nodepart{second}
+  \underline{id} BIGINT PK\\
+  name VARCHAR\\
+  address VARCHAR\\
+  commune VARCHAR\\
+  building\_type VARCHAR\\
+  floors INT\\
+  units\_count INT
+};
+
+\node[tbl] (hunits) at (17.5,0) {
+  \textbf{housing\_units}
+  \nodepart{second}
+  \underline{id} BIGINT PK\\
+  building\_id FK $\to$ buildings\\
+  unit\_number VARCHAR\\
+  floor INT\\
+  prorate DECIMAL
+};
+
+% Relaciones core
+\draw[relm] (roles.east) -- (users.west);
+\draw[relm] (buildings.east) -- (hunits.west);
+
+% ================================================================
+%  AUTENTICACIÓN + JUNCTION (segunda fila)
+% ================================================================
+\node[tbl={gray}] (uconfirm) at (0,-5) {
+  \textbf{user\_confirmations}
+  \nodepart{second}
+  \underline{id} BIGINT PK\\
+  user\_id FK $\to$ users\\
+  token VARCHAR\\
+  confirmed\_at DATETIME
+};
+
+\node[tbl={gray}] (pwdtokens) at (5.5,-5) {
+  \textbf{password\_reset\_tokens}
+  \nodepart{second}
+  \underline{id} BIGINT PK\\
+  user\_id FK $\to$ users\\
+  token VARCHAR\\
+  expires\_at DATETIME
+};
+
+\node[tbl] (ubuildings) at (11.5,-5) {
+  \textbf{user\_buildings}
+  \nodepart{second}
+  \underline{id} BIGINT PK\\
+  user\_id FK $\to$ users\\
+  building\_id FK $\to$ buildings
+};
+
+\node[tbl] (breqs) at (17.5,-5) {
+  \textbf{building\_requests}
+  \nodepart{second}
+  \underline{id} BIGINT PK\\
+  building\_id FK $\to$ buildings\\
+  requested\_by FK $\to$ users\\
+  status VARCHAR\\
+  approval\_token VARCHAR
+};
+
+% Relaciones fila 2
+\draw[relm] (users.south west) -- (uconfirm.north east);
+\draw[relm] (users.south) -- (pwdtokens.north);
+\draw[relm] (users.south east) -- (ubuildings.north west);
+\draw[relm] (buildings.south west) -- (ubuildings.north east);
+\draw[relm] (buildings.south) -- (breqs.north);
+
+% ================================================================
+%  ACCESO (tercera fila)
+% ================================================================
+\node[tbl={red}] (visits) at (0,-10.5) {
+  \textbf{visits}
+  \nodepart{second}
+  \underline{id} BIGINT PK\\
+  building\_id FK $\to$ buildings\\
+  registered\_by FK $\to$ users\\
+  visitor\_name VARCHAR\\
+  visitor\_type VARCHAR\\
+  check\_in DATETIME\\
+  check\_out DATETIME
+};
+
+\node[tbl={red}] (vauth) at (5.5,-10.5) {
+  \textbf{visit\_authorizations}
+  \nodepart{second}
+  \underline{id} BIGINT PK\\
+  visit\_id FK $\to$ visits\\
+  resident\_user\_id FK $\to$ users\\
+  unit\_id FK $\to$ housing\_units\\
+  qr\_hash VARCHAR\\
+  status VARCHAR
+};
+
+\node[tbl={red}] (vlogs) at (0,-15.5) {
+  \textbf{visit\_access\_logs}
+  \nodepart{second}
+  \underline{id} BIGINT PK\\
+  visit\_id FK $\to$ visits\\
+  action VARCHAR\\
+  timestamp DATETIME
+};
+
+\node[tbl={red}] (vcontacts) at (5.5,-15.5) {
+  \textbf{visit\_contacts}
+  \nodepart{second}
+  \underline{id} BIGINT PK\\
+  user\_id FK $\to$ users\\
+  contact\_name VARCHAR\\
+  contact\_document VARCHAR
+};
+
+% Relaciones acceso
+\draw[relm] (visits.east)  -- (vauth.west);
+\draw[relm] (visits.south) -- (vlogs.north);
+
+% ================================================================
+%  OPERATIVA (tercera fila, lado derecho)
+% ================================================================
+\node[tbl={orange}] (staff) at (11.5,-10.5) {
+  \textbf{staff}
+  \nodepart{second}
+  \underline{id} BIGINT PK\\
+  building\_id FK $\to$ buildings\\
+  name VARCHAR\\
+  role VARCHAR\\
+  phone VARCHAR\\
+  active BOOLEAN
+};
+
+\node[tbl={orange}] (tasks) at (17.5,-10.5) {
+  \textbf{tasks}
+  \nodepart{second}
+  \underline{id} BIGINT PK\\
+  building\_id FK $\to$ buildings\\
+  title VARCHAR\\
+  priority VARCHAR\\
+  status VARCHAR\\
+  due\_date DATE
+};
+
+\node[tbl={orange}] (taskasign) at (11.5,-15.5) {
+  \textbf{task\_assignments}
+  \nodepart{second}
+  \underline{id} BIGINT PK\\
+  task\_id FK $\to$ tasks\\
+  staff\_id FK $\to$ staff
+};
+
+\node[tbl={orange}] (parcels) at (17.5,-15.5) {
+  \textbf{parcels}
+  \nodepart{second}
+  \underline{id} BIGINT PK\\
+  building\_id FK $\to$ buildings\\
+  recipient\_id FK $\to$ users\\
+  description VARCHAR\\
+  status VARCHAR
+};
+
+% Relaciones operativa
+\draw[relm] (staff.south)  -- (taskasign.north);
+\draw[relm] (tasks.south)  -- (parcels.north);
+\draw[relm] (tasks.west)   -- (taskasign.east);
+
+\end{tikzpicture}
+}% end resizebox
+\caption{Modelo Relacional --- Parte~1: Core, Autenticación, Acceso y Operativa.}
+\label{fig:mr-part1}
+\end{figure}
