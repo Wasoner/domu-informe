@@ -1,0 +1,167 @@
+% ============================================================
+%  MR Parte 2 — Finanzas, Votaciones y Reservas
+% ============================================================
+\begin{figure}[H]
+\centering
+\resizebox{0.95\linewidth}{!}{%
+\begin{tikzpicture}[
+  every node/.style={font=\scriptsize\ttfamily},
+  tbl/.style={
+    rectangle split, rectangle split parts=2,
+    rectangle split part fill={#1!15, white},
+    draw=#1!60, line width=0.5pt,
+    text width=3.2cm, inner sep=3pt,
+    rectangle split part align={center,left},
+    font=\scriptsize\ttfamily,
+    rounded corners=1pt
+  },
+  tbl/.default={black},
+  ref/.style={
+    rectangle, draw=blue!50, fill=blue!8,
+    font=\scriptsize\ttfamily\itshape,
+    inner sep=3pt, rounded corners=1pt, dashed
+  },
+  rel/.style={draw=black!45, line width=0.3pt},
+  relm/.style={rel, one-crow's foot},
+]
+
+% Referencias a Fig. mr-part1
+\node[ref] (users)  at (0.5, 2)  {users (ver Fig.~\ref{fig:mr-part1})};
+\node[ref] (builds) at (9, 2)    {buildings (ver Fig.~\ref{fig:mr-part1})};
+\node[ref] (hunits) at (17, 2)   {housing\_units (ver Fig.~\ref{fig:mr-part1})};
+
+% ================================================================
+%  FINANZAS
+% ================================================================
+\node[tbl={green!70!black}] (periods) at (0,-1) {
+  \textbf{common\_expense\_periods}
+  \nodepart{second}
+  \underline{id} BIGINT PK\\
+  building\_id FK $\to$ buildings\\
+  year INT\\
+  month INT\\
+  due\_date DATE\\
+  total\_amount DECIMAL\\
+  status VARCHAR
+};
+
+\node[tbl={green!70!black}] (charges) at (0,-6.5) {
+  \textbf{common\_charges}
+  \nodepart{second}
+  \underline{id} BIGINT PK\\
+  period\_id FK $\to$ periods\\
+  unit\_id FK $\to$ housing\_units\\
+  amount DECIMAL\\
+  description VARCHAR
+};
+
+\node[tbl={green!70!black}] (payments) at (0,-11.5) {
+  \textbf{common\_payments}
+  \nodepart{second}
+  \underline{id} BIGINT PK\\
+  charge\_id FK $\to$ charges\\
+  user\_id FK $\to$ users\\
+  amount DECIMAL\\
+  payment\_method VARCHAR\\
+  status VARCHAR
+};
+
+\node[tbl={green!70!black}] (delinq) at (5.5,-1) {
+  \textbf{delinquency\_records}
+  \nodepart{second}
+  \underline{id} BIGINT PK\\
+  unit\_id FK $\to$ housing\_units\\
+  period\_id FK $\to$ periods\\
+  amount\_owed DECIMAL
+};
+
+\node[tbl={green!70!black}] (revisions) at (5.5,-6.5) {
+  \textbf{expense\_revisions}
+  \nodepart{second}
+  \underline{id} BIGINT PK\\
+  period\_id FK $\to$ periods\\
+  revised\_by FK $\to$ users\\
+  changes TEXT
+};
+
+% Relaciones finanzas
+\draw[relm] (periods.south)  -- (charges.north);
+\draw[relm] (charges.south)  -- (payments.north);
+\draw[relm] (periods.east)   -- (delinq.west);
+\draw[relm] (periods.south east) -- ++(0.5,0) |- (revisions.west);
+
+% ================================================================
+%  VOTACIONES
+% ================================================================
+\node[tbl={violet}] (polls) at (11,-1) {
+  \textbf{polls}
+  \nodepart{second}
+  \underline{id} BIGINT PK\\
+  building\_id FK $\to$ buildings\\
+  title VARCHAR\\
+  description TEXT\\
+  status VARCHAR\\
+  closes\_at DATETIME
+};
+
+\node[tbl={violet}] (poptions) at (11,-6.5) {
+  \textbf{poll\_options}
+  \nodepart{second}
+  \underline{id} BIGINT PK\\
+  poll\_id FK $\to$ polls\\
+  label VARCHAR
+};
+
+\node[tbl={violet}] (pvotes) at (11,-11.5) {
+  \textbf{poll\_votes}
+  \nodepart{second}
+  \underline{id} BIGINT PK\\
+  option\_id FK $\to$ poll\_options\\
+  user\_id FK $\to$ users
+};
+
+% Relaciones votaciones
+\draw[relm] (polls.south)    -- (poptions.north);
+\draw[relm] (poptions.south) -- (pvotes.north);
+
+% ================================================================
+%  RESERVAS
+% ================================================================
+\node[tbl={violet}] (amenities) at (16.5,-1) {
+  \textbf{amenities}
+  \nodepart{second}
+  \underline{id} BIGINT PK\\
+  building\_id FK $\to$ buildings\\
+  name VARCHAR\\
+  max\_capacity INT
+};
+
+\node[tbl={violet}] (aslots) at (16.5,-6.5) {
+  \textbf{amenity\_time\_slots}
+  \nodepart{second}
+  \underline{id} BIGINT PK\\
+  amenity\_id FK $\to$ amenities\\
+  day\_of\_week INT\\
+  start\_time TIME\\
+  end\_time TIME
+};
+
+\node[tbl={violet}] (areservs) at (16.5,-11.5) {
+  \textbf{amenity\_reservations}
+  \nodepart{second}
+  \underline{id} BIGINT PK\\
+  slot\_id FK $\to$ time\_slots\\
+  user\_id FK $\to$ users\\
+  reservation\_date DATE\\
+  status VARCHAR
+};
+
+% Relaciones reservas
+\draw[relm] (amenities.south) -- (aslots.north);
+\draw[relm] (aslots.south)    -- (areservs.north);
+
+\end{tikzpicture}
+}% end resizebox
+\caption{Modelo Relacional --- Parte~2: Finanzas, Votaciones y Reservas.}
+\label{fig:mr-part2}
+\end{figure}

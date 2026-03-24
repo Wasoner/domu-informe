@@ -1,0 +1,187 @@
+% ============================================================
+%  MR Parte 3 — Comunicación (Chat, Marketplace, Foro) y Soporte
+% ============================================================
+\begin{figure}[H]
+\centering
+\resizebox{0.95\linewidth}{!}{%
+\begin{tikzpicture}[
+  every node/.style={font=\scriptsize\ttfamily},
+  tbl/.style={
+    rectangle split, rectangle split parts=2,
+    rectangle split part fill={#1!15, white},
+    draw=#1!60, line width=0.5pt,
+    text width=3.2cm, inner sep=3pt,
+    rectangle split part align={center,left},
+    font=\scriptsize\ttfamily,
+    rounded corners=1pt
+  },
+  tbl/.default={black},
+  ref/.style={
+    rectangle, draw=blue!50, fill=blue!8,
+    font=\scriptsize\ttfamily\itshape,
+    inner sep=3pt, rounded corners=1pt, dashed
+  },
+  rel/.style={draw=black!45, line width=0.3pt},
+  relm/.style={rel, one-crow's foot},
+]
+
+% Referencias a Fig. mr-part1
+\node[ref] (users)  at (4, 0.5)   {users (ver Fig.~\ref{fig:mr-part1})};
+\node[ref] (builds) at (14, 0.5)  {buildings (ver Fig.~\ref{fig:mr-part1})};
+
+% ================================================================
+%  CHAT
+% ================================================================
+\node[tbl={cyan!70!black}] (chatroom) at (0,-1) {
+  \textbf{chat\_room}
+  \nodepart{second}
+  \underline{id} BIGINT PK\\
+  created\_by FK $\to$ users\\
+  type VARCHAR
+};
+
+\node[tbl={cyan!70!black}] (chatpart) at (5.5,-1) {
+  \textbf{chat\_participant}
+  \nodepart{second}
+  \underline{id} BIGINT PK\\
+  room\_id FK $\to$ chat\_room\\
+  user\_id FK $\to$ users\\
+  hidden\_at DATETIME
+};
+
+\node[tbl={cyan!70!black}] (chatmsg) at (0,-5) {
+  \textbf{chat\_message}
+  \nodepart{second}
+  \underline{id} BIGINT PK\\
+  room\_id FK $\to$ chat\_room\\
+  sender\_id FK $\to$ users\\
+  content TEXT
+};
+
+\node[tbl={cyan!70!black}] (chatreq) at (5.5,-5) {
+  \textbf{chat\_request}
+  \nodepart{second}
+  \underline{id} BIGINT PK\\
+  from\_user FK $\to$ users\\
+  to\_user FK $\to$ users\\
+  status VARCHAR
+};
+
+\draw[relm] (chatroom.east)  -- (chatpart.west);
+\draw[relm] (chatroom.south) -- (chatmsg.north);
+
+% ================================================================
+%  MARKETPLACE
+% ================================================================
+\node[tbl={yellow!70!black}] (mktcat) at (11,-1) {
+  \textbf{market\_category}
+  \nodepart{second}
+  \underline{id} BIGINT PK\\
+  building\_id FK $\to$ buildings\\
+  name VARCHAR
+};
+
+\node[tbl={yellow!70!black}] (mktitem) at (11,-5.5) {
+  \textbf{market\_item}
+  \nodepart{second}
+  \underline{id} BIGINT PK\\
+  category\_id FK $\to$ market\_cat\\
+  seller\_id FK $\to$ users\\
+  title VARCHAR\\
+  price DECIMAL\\
+  status VARCHAR
+};
+
+\node[tbl={yellow!70!black}] (mktimg) at (16.5,-5.5) {
+  \textbf{market\_item\_image}
+  \nodepart{second}
+  \underline{id} BIGINT PK\\
+  item\_id FK $\to$ market\_item\\
+  image\_url TEXT
+};
+
+\draw[relm] (mktcat.south)  -- (mktitem.north);
+\draw[relm] (mktitem.east)  -- (mktimg.west);
+
+% ================================================================
+%  FORO
+% ================================================================
+\node[tbl={lime!60!black}] (fcat) at (0,-10.5) {
+  \textbf{forum\_categories}
+  \nodepart{second}
+  \underline{id} BIGINT PK\\
+  building\_id FK $\to$ buildings\\
+  name VARCHAR
+};
+
+\node[tbl={lime!60!black}] (fthreads) at (5.5,-10.5) {
+  \textbf{forum\_threads}
+  \nodepart{second}
+  \underline{id} BIGINT PK\\
+  category\_id FK $\to$ forum\_cat\\
+  author\_id FK $\to$ users\\
+  title VARCHAR
+};
+
+\node[tbl={lime!60!black}] (fposts) at (11,-10.5) {
+  \textbf{forum\_posts}
+  \nodepart{second}
+  \underline{id} BIGINT PK\\
+  thread\_id FK $\to$ threads\\
+  author\_id FK $\to$ users\\
+  content TEXT
+};
+
+\draw[relm] (fcat.east)     -- (fthreads.west);
+\draw[relm] (fthreads.east) -- (fposts.west);
+
+% ================================================================
+%  SOPORTE
+% ================================================================
+\node[tbl={pink!70!black}] (incidents) at (0,-15) {
+  \textbf{incidents}
+  \nodepart{second}
+  \underline{id} BIGINT PK\\
+  building\_id FK $\to$ buildings\\
+  reporter\_id FK $\to$ users\\
+  assigned\_to FK $\to$ users\\
+  category VARCHAR\\
+  priority VARCHAR\\
+  status VARCHAR
+};
+
+\node[tbl={pink!70!black}] (libdocs) at (5.5,-15) {
+  \textbf{library\_documents}
+  \nodepart{second}
+  \underline{id} BIGINT PK\\
+  building\_id FK $\to$ buildings\\
+  title VARCHAR\\
+  file\_url TEXT\\
+  doc\_type VARCHAR
+};
+
+\node[tbl={pink!70!black}] (notifs) at (11,-15) {
+  \textbf{notifications}
+  \nodepart{second}
+  \underline{id} BIGINT PK\\
+  user\_id FK $\to$ users\\
+  building\_id FK $\to$ buildings\\
+  type VARCHAR\\
+  message TEXT\\
+  read\_at DATETIME
+};
+
+\node[tbl={pink!70!black}] (notifpref) at (16.5,-15) {
+  \textbf{notification\_preferences}
+  \nodepart{second}
+  \underline{id} BIGINT PK\\
+  user\_id FK $\to$ users\\
+  event\_type VARCHAR\\
+  enabled BOOLEAN
+};
+
+\end{tikzpicture}
+}% end resizebox
+\caption{Modelo Relacional --- Parte~3: Comunicación (Chat, Marketplace, Foro) y Soporte.}
+\label{fig:mr-part3}
+\end{figure}

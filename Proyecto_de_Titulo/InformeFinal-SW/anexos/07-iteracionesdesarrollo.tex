@@ -57,10 +57,10 @@ Semanas 14--15 &
 WebSocket de notificaciones validado; asignación y seguimiento de tareas funcional con evidencia fotográfica. \\
 \hline
 
-7 & Proveedores y Documentación &
-Portal de proveedores (CRUD), órdenes de servicio con flujo de estados, cotizaciones, portal de acceso para proveedores externos, generación automática de documentación OpenAPI y Swagger~UI. &
+7 & Documentación &
+Generación automática de documentación OpenAPI y Swagger~UI. &
 Semanas 16--17 &
-Portal proveedor operativo con flujo aceptar/rechazar; API completamente documentada en Swagger~UI (\texttt{/swagger}). \\
+API completamente documentada en Swagger~UI (\texttt{/swagger}). \\
 
 \end{longtable}
 
@@ -88,7 +88,7 @@ Portal proveedor operativo con flujo aceptar/rechazar; API completamente documen
 %   ◆ HITO en Semana 8
 % Fase 5 'Comunicación' (Sem 11-13, morado) → Entregables: WebSocket Chat, Foro, Marketplace
 % Fase 6 'Personal y Notif.' (Sem 14-15, rosado) → Entregables: Tareas, WS Notificaciones
-% Fase 7 'Proveedores y Docs' (Sem 16-17, azul oscuro) → Entregables: Órdenes, Cotizaciones, Swagger UI
+% Fase 7 'Documentación' (Sem 16-17, azul oscuro) → Entregables: Swagger UI
 %
 % ESTILO: Fondo blanco, sin gradientes, tipografía sans-serif. Orientación horizontal (landscape).
 % Profesional para tesis universitaria. Etiquetas en español. Formato: PNG 300dpi."
@@ -151,10 +151,10 @@ Se construyó el módulo de gestión de personal con creación y asignación de 
 
 \textbf{Validación:} Se verificó que las notificaciones se entregan inmediatamente al usuario conectado y se persisten para consulta posterior. La asignación de tareas genera notificaciones automáticas al personal asignado.
 
-\subsection{Fase 7: Proveedores y Documentación (Semanas 16--17)}
+\subsection{Fase 7: Documentación (Semanas 16--17)}
 
-Última fase de desarrollo, que incorporó el módulo de proveedores con CRUD completo, órdenes de servicio con flujo de estados (pendiente $\rightarrow$ aceptada/rechazada $\rightarrow$ en progreso $\rightarrow$ completada), gestión de cotizaciones y un portal de acceso para proveedores externos. Se completó la documentación automatizada de la API mediante el plugin javalin-openapi y Swagger~UI.
+Última fase de desarrollo, dedicada a completar la documentación automatizada de la API mediante el plugin javalin-openapi y Swagger~UI.
 
-\textbf{Entregables:} CRUD proveedores $\rightarrow$ Órdenes de servicio $\rightarrow$ Cotizaciones $\rightarrow$ Portal proveedor $\rightarrow$ Swagger UI.
+\textbf{Entregables:} Swagger UI.
 
-\textbf{Validación:} Se verificó el flujo completo: administrador crea orden $\rightarrow$ proveedor recibe notificación $\rightarrow$ acepta/rechaza $\rightarrow$ sube cotización $\rightarrow$ marca completada. La documentación Swagger se confirmó accesible en \texttt{/swagger} con todos los endpoints registrados.
+\textbf{Validación:} La documentación Swagger se confirmó accesible en \texttt{/swagger} con todos los endpoints registrados.

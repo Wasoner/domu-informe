@@ -123,10 +123,10 @@ status & VARCHAR & Estado (PENDING, APPROVED, REJECTED) \\ \hline
 %% ============================================================
 \section{Historial Completo de Migraciones Flyway}
 
-El esquema de base de datos se gestiona mediante Flyway con 35~migraciones versionadas que documentan la evolución del modelo de datos. A continuación se detalla cada migración:
+El esquema de base de datos se gestiona mediante Flyway con 34~migraciones versionadas que documentan la evolución del modelo de datos. A continuación se detalla cada migración:
 
 \begin{longtable}{|p{0.08\textwidth}|p{0.40\textwidth}|p{0.42\textwidth}|}
-\caption{Historial de migraciones Flyway (V001--V035).} \label{tab:migraciones} \\
+\caption{Historial de migraciones Flyway (V001--V034).} \label{tab:migraciones} \\
 \hline
 \textbf{Ver.} & \textbf{Archivo} & \textbf{Descripción} \\ \hline
 \endfirsthead
@@ -205,7 +205,6 @@ V033 & notifications & Crea sistema de notificaciones: \texttt{notifications} y 
 
 V034 & inline\_schema\_updates & Consolidación de ajustes: ampliación de columnas URL a TEXT, verificaciones idempotentes de existencia de columnas. \\ \hline
 
-V035 & providers & Crea gestión de proveedores: \texttt{providers}, \texttt{service\_orders}, \texttt{quotations}. Inserta rol \textit{proveedor}. \\ \hline
 
 \end{longtable}
 
@@ -229,8 +228,7 @@ Foro & \texttt{forum\_categories}, \texttt{forum\_threads}, \texttt{forum\_posts
 Personal & \texttt{staff}, \texttt{tasks}, \texttt{task\_assignments} \\ \hline
 Biblioteca & \texttt{library\_documents} \\ \hline
 Notificaciones & \texttt{notifications}, \texttt{notification\_preferences} \\ \hline
-Proveedores & \texttt{providers}, \texttt{service\_orders}, \texttt{quotations} \\ \hline
 Autenticación & \texttt{user\_confirmations}, \texttt{password\_reset\_tokens} \\ \hline
 \end{tabular}
-\caption{Resumen de las 37 tablas del sistema organizadas por dominio.}
+\caption{Resumen de las 34 tablas del sistema organizadas por dominio.}
 \end{table}

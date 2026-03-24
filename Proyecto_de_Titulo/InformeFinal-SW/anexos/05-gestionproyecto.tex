@@ -33,7 +33,7 @@ Al comparar la carta Gantt del anteproyecto (Figura~\ref{fig:gantt-anteproyecto}
 \begin{itemize}
     \item \textbf{Fase de diseño de base de datos:} Se extendió aproximadamente una semana más de lo planificado debido a la complejidad del modelo financiero (gastos comunes, períodos contables, tipos de cargo). La decisión de modelar 35~entidades en 9~dominios, en lugar de las ~20 estimadas inicialmente, impactó esta fase.
 
-    \item \textbf{Fase de implementación del backend:} La construcción de los módulos de finanzas y proveedores demandó más iteraciones de las previstas, particularmente la generación de documentos PDF y la integración con Box para almacenamiento. Se compensó parcialmente con una implementación más rápida del frontend.
+    \item \textbf{Fase de implementación del backend:} La construcción del módulo de finanzas demandó más iteraciones de las previstas, particularmente la generación de documentos PDF y la integración con Box para almacenamiento. Se compensó parcialmente con una implementación más rápida del frontend.
 
     \item \textbf{Módulos postergados a v2.0:} Los casos de uso CU\_06 (conciliación bancaria), CU\_08 (turnos de personal), CU\_11 (mantenimiento preventivo), CU\_12 (estacionamientos) y CU\_18 (bitácora de ascensores) fueron postergados durante la ejecución para asegurar la calidad de los módulos entregados. Esta decisión se tomó en la semana~8 del desarrollo.
 
@@ -62,9 +62,7 @@ Personal & Protocolo interactivo limitado & Medio & 2 \\
 \hline
 Residente & GUI completa (web + PWA) & Complejo & 3 \\
 \hline
-Proveedor & Portal limitado (web) & Medio & 2 \\
-\hline
-\multicolumn{3}{|r|}{\textbf{UAW (Unadjusted Actor Weight)}} & \textbf{13} \\
+\multicolumn{3}{|r|}{\textbf{UAW (Unadjusted Actor Weight)}} & \textbf{11} \\
 \hline
 \end{tabular}
 \caption{Clasificación de actores y cálculo de UAW.}

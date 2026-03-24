@@ -376,7 +376,7 @@ Ambos canales requieren autenticación mediante token JWT enviado como parámetr
 
 El modelo de datos es de tipo relacional, con el fin de mantener la simpleza y eficiencia del almacenamiento de información crítica del sistema.
 
-Las 34~tablas del modelo, derivadas de las 35~migraciones Flyway del proyecto, se organizan en 11~dominios funcionales vigentes. La Tabla~\ref{tab:resumen-dominios} presenta un resumen de esta distribución; el detalle de cada entidad y sus atributos se encuentra en el Anexo~D (Diccionario de Datos).
+Las 34~tablas del modelo, derivadas de las 35~migraciones Flyway del proyecto, se organizan en 11~dominios funcionales vigentes. La Tabla~\ref{tab:resumen-dominios} presenta un resumen de esta distribución; el detalle de cada entidad y sus atributos se encuentra en el Anexo~\ref{anexo:diccionario} (Diccionario de Datos).
 
 \begin{table}[H]
 \centering
@@ -409,7 +409,7 @@ A continuación, las Tablas~\ref{tab:esquema-acceso} a~\ref{tab:esquema-soporte}
 \begin{table}[H]
 \centering
 \caption{Esquema de base de datos --- Acceso y Organización}\label{tab:esquema-acceso}
-\begin{tabular}{|p{0.26\textwidth}|p{0.38\textwidth}|p{0.28\textwidth}|}
+\begin{tabular}{|p{0.32\textwidth}|p{0.36\textwidth}|p{0.24\textwidth}|}
 \hline
 \textbf{Tabla} & \textbf{Descripción} & \textbf{Relaciones clave} \\
 \hline
@@ -434,7 +434,7 @@ A continuación, las Tablas~\ref{tab:esquema-acceso} a~\ref{tab:esquema-soporte}
 \begin{table}[H]
 \centering
 \caption{Esquema de base de datos --- Solicitudes de Comunidad y Control de Acceso}\label{tab:esquema-solicitudes}
-\begin{tabular}{|p{0.26\textwidth}|p{0.38\textwidth}|p{0.28\textwidth}|}
+\begin{tabular}{|p{0.32\textwidth}|p{0.36\textwidth}|p{0.24\textwidth}|}
 \hline
 \textbf{Tabla} & \textbf{Descripción} & \textbf{Relaciones clave} \\
 \hline
@@ -453,7 +453,7 @@ A continuación, las Tablas~\ref{tab:esquema-acceso} a~\ref{tab:esquema-soporte}
 \begin{table}[H]
 \centering
 \caption{Esquema de base de datos --- Gestión Operativa}\label{tab:esquema-operativa}
-\begin{tabular}{|p{0.26\textwidth}|p{0.38\textwidth}|p{0.28\textwidth}|}
+\begin{tabular}{|p{0.32\textwidth}|p{0.36\textwidth}|p{0.24\textwidth}|}
 \hline
 \textbf{Tabla} & \textbf{Descripción} & \textbf{Relaciones clave} \\
 \hline
@@ -472,7 +472,7 @@ A continuación, las Tablas~\ref{tab:esquema-acceso} a~\ref{tab:esquema-soporte}
 \begin{table}[H]
 \centering
 \caption{Esquema de base de datos --- Finanzas}\label{tab:esquema-finanzas}
-\begin{tabular}{|p{0.26\textwidth}|p{0.38\textwidth}|p{0.28\textwidth}|}
+\begin{tabular}{|p{0.32\textwidth}|p{0.36\textwidth}|p{0.24\textwidth}|}
 \hline
 \textbf{Tabla} & \textbf{Descripción} & \textbf{Relaciones clave} \\
 \hline
@@ -489,7 +489,7 @@ A continuación, las Tablas~\ref{tab:esquema-acceso} a~\ref{tab:esquema-soporte}
 \begin{table}[H]
 \centering
 \caption{Esquema de base de datos --- Participación y Reservas}\label{tab:esquema-participacion}
-\begin{tabular}{|p{0.26\textwidth}|p{0.38\textwidth}|p{0.28\textwidth}|}
+\begin{tabular}{|p{0.32\textwidth}|p{0.36\textwidth}|p{0.24\textwidth}|}
 \hline
 \textbf{Tabla} & \textbf{Descripción} & \textbf{Relaciones clave} \\
 \hline
@@ -510,7 +510,7 @@ A continuación, las Tablas~\ref{tab:esquema-acceso} a~\ref{tab:esquema-soporte}
 \begin{table}[H]
 \centering
 \caption{Esquema de base de datos --- Comunicación}\label{tab:esquema-comunicacion}
-\begin{tabular}{|p{0.26\textwidth}|p{0.38\textwidth}|p{0.28\textwidth}|}
+\begin{tabular}{|p{0.32\textwidth}|p{0.36\textwidth}|p{0.24\textwidth}|}
 \hline
 \textbf{Tabla} & \textbf{Descripción} & \textbf{Relaciones clave} \\
 \hline
@@ -533,7 +533,7 @@ A continuación, las Tablas~\ref{tab:esquema-acceso} a~\ref{tab:esquema-soporte}
 \begin{table}[H]
 \centering
 \caption{Esquema de base de datos --- Soporte}\label{tab:esquema-soporte}
-\begin{tabular}{|p{0.26\textwidth}|p{0.38\textwidth}|p{0.28\textwidth}|}
+\begin{tabular}{|p{0.32\textwidth}|p{0.36\textwidth}|p{0.24\textwidth}|}
 \hline
 \textbf{Tabla} & \textbf{Descripción} & \textbf{Relaciones clave} \\
 \hline
@@ -550,30 +550,28 @@ A continuación, las Tablas~\ref{tab:esquema-acceso} a~\ref{tab:esquema-soporte}
 
 El modelo respeta las formas normales para evitar redundancia de datos, utilizando claves foráneas (\texttt{FOREIGN KEY}) para mantener la integridad referencial entre las unidades, los residentes y sus respectivas operaciones (pagos, reservas, incidentes). Todas las tablas incluyen columnas de auditoría \texttt{created\_at} y \texttt{updated\_at} gestionadas automáticamente.
 
-\cleardoublepage
+\clearpage
 \subsection{Modelo Entidad-Relación}
+\label{subsec:mer}
 
-Ya que el proyecto utilizará MySQL como base de datos, definimos el siguiente diagrama Entidad-Relación que ayudará a comprender mejor la definición de las relaciones y la estructura de los datos.
+Ya que el proyecto utiliza MySQL como motor de base de datos, se presenta a continuación el diagrama Entidad-Relación simplificado del sistema (Figura~\ref{fig:mer}). El diagrama agrupa las entidades por dominio funcional (colores) y muestra las relaciones con notación \textit{crow's foot}; los atributos de cada entidad se detallan en el Anexo~\ref{anexo:diccionario} (Diccionario de Datos).
 
-\begin{figure}[H]
-  \centering
-  \includegraphics[width=\textwidth]{MER.png}
-  \caption{Modelo Entidad-Relación del Sistema DOMU}
-  \label{fig:mer}
-\end{figure}
+\begin{landscape}
+\input{figures/mer-tikz}
+\end{landscape}
 
 \clearpage
 
-\cleardoublepage
 \subsection{Modelo Relacional}
+\label{subsec:mr}
 
-A continuación, se modelaron los datos siguiendo el patrón relacional, detallando las tablas, columnas, claves primarias y foráneas que se implementarán en MySQL.
+A continuación se presenta el Modelo Relacional completo del sistema DOMU (Figura~\ref{fig:mr-detalle}), mostrando las 34 tablas con sus atributos, claves primarias y foráneas, y las relaciones de cardinalidad entre ellas. El detalle de cada columna se encuentra en el Anexo~\ref{anexo:diccionario} (Diccionario de Datos).
 
 \begin{figure}[H]
   \centering
-  \includegraphics[width=\textwidth]{ModeloRelacional.png}
-  \caption{Diagrama del Modelo Relacional del Sistema DOMU}
-  \label{fig:relacional}
+  \includegraphics[width=0.98\textwidth]{MER-nuevo.png}
+  \caption{Modelo Relacional completo del sistema DOMU.}
+  \label{fig:mr-detalle}
 \end{figure}
 
 \clearpage
