@@ -2,93 +2,93 @@
 %  Recopilación de Información
 % -----------------------------------------------------------
 
-Este anexo describe las técnicas de recopilación de información empleadas durante las etapas de análisis y diseño del proyecto DOMU. La información recopilada alimentó la definición de requerimientos funcionales, la especificación de casos de uso y las decisiones de diseño del sistema.
+Este anexo presenta la fuentes de recopilación de información utilizadas durante las etapas de análisis y diseño del proyecto DOMU. El material recolectado fue fundamental para levantar requerimientos funcionales, definir casos de uso y sustentar las principales decisiones de diseño del sistema. Se detallan tanto los métodos empleados como el aporte de cada fuente a la visión final del sistema.
 
-\section{Historias de usuario}
+% \section{Historias de usuario}
 
-A continuación se presentan las principales historias de usuario que guiaron el diseño del sistema, organizadas por actor:
+% A continuación se presentan las principales historias de usuario que guiaron el diseño del sistema, organizadas por actor:
 
-\subsubsection*{Administrador}
-\begin{itemize}
-  \item Como \textbf{administrador}, quiero generar estados de cuenta mensuales en PDF para distribuirlos a los residentes y mantener transparencia financiera.
-  \item Como \textbf{administrador}, quiero asignar y monitorear tareas del personal operativo para asegurar el cumplimiento de las labores de mantenimiento.
-  \item Como \textbf{administrador}, quiero gestionar los residentes de mis edificios.
-  \item Como \textbf{administrador}, quiero crear votaciones con cierre programado para facilitar la toma de decisiones comunitarias de forma transparente.
-\end{itemize}
+% \subsubsection*{Administrador}
+% \begin{itemize}
+%   \item Como \textbf{administrador}, quiero generar estados de cuenta mensuales en PDF para distribuirlos a los residentes y mantener transparencia financiera.
+%   \item Como \textbf{administrador}, quiero asignar y monitorear tareas del personal operativo para asegurar el cumplimiento de las labores de mantenimiento.
+%   \item Como \textbf{administrador}, quiero gestionar los residentes de mis edificios.
+%   \item Como \textbf{administrador}, quiero crear votaciones con cierre programado para facilitar la toma de decisiones comunitarias de forma transparente.
+% \end{itemize}
 
-\subsubsection*{Conserje}
-\begin{itemize}
-  \item Como \textbf{conserje}, quiero registrar el ingreso y salida de visitas escaneando la cédula de identidad con la pistola QR para agilizar el control de acceso.
-  \item Como \textbf{conserje}, quiero verificar si una visita tiene pre-autorización vigente para permitir el ingreso sin necesidad de contactar al residente.
-  \item Como \textbf{conserje}, quiero registrar la recepción de encomiendas con fotografía de evidencia para garantizar la trazabilidad de los paquetes.
-\end{itemize}
+% \subsubsection*{Conserje}
+% \begin{itemize}
+%   \item Como \textbf{conserje}, quiero registrar el ingreso y salida de visitas escaneando la cédula de identidad con la pistola QR para agilizar el control de acceso.
+%   \item Como \textbf{conserje}, quiero verificar si una visita tiene pre-autorización vigente para permitir el ingreso sin necesidad de contactar al residente.
+%   \item Como \textbf{conserje}, quiero registrar la recepción de encomiendas con fotografía de evidencia para garantizar la trazabilidad de los paquetes.
+% \end{itemize}
 
-\subsubsection*{Residente}
-\begin{itemize}
-  \item Como \textbf{residente}, quiero recibir notificaciones cuando llegue una encomienda a mi nombre para retirarla oportunamente.
-  \item Como \textbf{residente}, quiero pre-autorizar visitas generando un código QR temporal para evitar demoras en el ingreso de mis invitados.
-  \item Como \textbf{residente}, quiero reservar áreas comunes desde la aplicación para planificar eventos sin tener que acudir a conserjería.
-  \item Como \textbf{residente}, quiero consultar mi estado de cuenta y registrar pagos de gastos comunes desde la plataforma para evitar trámites presenciales.
-  \item Como \textbf{residente}, quiero comunicarme con otros vecinos mediante el chat en tiempo real para coordinar asuntos comunitarios.
-  \item Como \textbf{residente}, quiero registrar reclamos y sugerencias con seguimiento de estado para tener visibilidad sobre la resolución de mis solicitudes.
-\end{itemize}
+% \subsubsection*{Residente}
+% \begin{itemize}
+%   \item Como \textbf{residente}, quiero recibir notificaciones cuando llegue una encomienda a mi nombre para retirarla oportunamente.
+%   \item Como \textbf{residente}, quiero pre-autorizar visitas generando un código QR temporal para evitar demoras en el ingreso de mis invitados.
+%   \item Como \textbf{residente}, quiero reservar áreas comunes desde la aplicación para planificar eventos sin tener que acudir a conserjería.
+%   \item Como \textbf{residente}, quiero consultar mi estado de cuenta y registrar pagos de gastos comunes desde la plataforma para evitar trámites presenciales.
+%   \item Como \textbf{residente}, quiero comunicarme con otros vecinos mediante el chat en tiempo real para coordinar asuntos comunitarios.
+%   \item Como \textbf{residente}, quiero registrar reclamos y sugerencias con seguimiento de estado para tener visibilidad sobre la resolución de mis solicitudes.
+% \end{itemize}
 
-\subsubsection*{Comité}
-\begin{itemize}
-  \item Como \textbf{miembro del comité}, quiero acceder a reportes financieros y de gestión para fiscalizar la labor del administrador.
-\end{itemize}
+% \subsubsection*{Comité}
+% \begin{itemize}
+%   \item Como \textbf{miembro del comité}, quiero acceder a reportes financieros y de gestión para fiscalizar la labor del administrador.
+% \end{itemize}
 
-% === PLACEHOLDER: Reemplazar con imagen generada ===
-% PROMPT para generador de imágenes (Gemini/GPT/DALL-E):
-%
-% "Genera un DIAGRAMA DE FLUJO DE INFORMACIÓN mostrando las 4 fuentes de recopilación de datos
-% para un proyecto de software.
-%
-% NOTACIÓN:
-% - FUENTES: 4 rectángulos redondeados con borde sólido, cada uno con un título en negrita y
-%   debajo una lista con viñetas (bullet points) de los sub-ítems.
-% - ELEMENTO CENTRAL: un rectángulo más grande con borde doble (o más grueso), en el centro,
-%   etiquetado 'Requerimientos Funcionales (20 RFs) + Casos de Uso (27 CUs)'.
-% - FLECHAS: flechas gruesas con punta, desde cada fuente hacia el centro, indicando que la
-%   información fluye de las fuentes a los requerimientos.
-% - ÉNFASIS: la caja 'Análisis de Competencia' debe tener borde más grueso y un asterisco (*)
-%   o etiqueta 'Fuente principal' para destacarla visualmente respecto a las otras 3.
-%
-% DISPOSICIÓN (las 4 fuentes rodean al centro):
-% ARRIBA-IZQUIERDA: 'Revisión de Documentos Externos'
-%   • Ley 21.442 Copropiedad
-%   • Ley 21.719 Datos Personales
-%   • Ley 19.799 Docs Electrónicos
-%   • Estadísticas Subtel
-%
-% ARRIBA-DERECHA: 'Análisis de la Competencia' ★ FUENTE PRINCIPAL (borde grueso doble)
-%   • ComunidadFeliz
-%   • Edifito
-%   • Edipro
-%   • GastoComunChile
-%
-% ABAJO-IZQUIERDA: 'Reuniones con Profesora Guía'
-%   • Validación de alcance
-%   • Retroalimentación de diseño
-%   • Revisión de avances
-%
-% ABAJO-DERECHA: 'Observación de Procesos en Condominios'
-%   • Libro de visitas manual
-%   • Pizarras de avisos
-%   • Gestión de encomiendas en cuaderno
-%   • Reservas en papel
-%
-% ESTILO: Fondo blanco, bordes negros, relleno blanco o gris muy claro. Sin gradientes.
-% Tipografía sans-serif. Profesional para tesis universitaria. Etiquetas en español.
-% Formato: PNG 300dpi."
-\begin{figure}[H]
-  \centering
-  \fbox{\parbox{0.85\textwidth}{\centering\vspace{3cm}
-  \textit{[Insertar diagrama: Fuentes de recopilación de información y su relación con los RFs y CUs del proyecto]}
-  \vspace{3cm}}}
-  \caption{Técnicas de recopilación de información y su aporte a los requerimientos del sistema.}
-  \label{fig:fuentes-recopilacion}
-\end{figure}
+% % === PLACEHOLDER: Reemplazar con imagen generada ===
+% % PROMPT para generador de imágenes (Gemini/GPT/DALL-E):
+% %
+% % "Genera un DIAGRAMA DE FLUJO DE INFORMACIÓN mostrando las 4 fuentes de recopilación de datos
+% % para un proyecto de software.
+% %
+% % NOTACIÓN:
+% % - FUENTES: 4 rectángulos redondeados con borde sólido, cada uno con un título en negrita y
+% %   debajo una lista con viñetas (bullet points) de los sub-ítems.
+% % - ELEMENTO CENTRAL: un rectángulo más grande con borde doble (o más grueso), en el centro,
+% %   etiquetado 'Requerimientos Funcionales (20 RFs) + Casos de Uso (27 CUs)'.
+% % - FLECHAS: flechas gruesas con punta, desde cada fuente hacia el centro, indicando que la
+% %   información fluye de las fuentes a los requerimientos.
+% % - ÉNFASIS: la caja 'Análisis de Competencia' debe tener borde más grueso y un asterisco (*)
+% %   o etiqueta 'Fuente principal' para destacarla visualmente respecto a las otras 3.
+% %
+% % DISPOSICIÓN (las 4 fuentes rodean al centro):
+% % ARRIBA-IZQUIERDA: 'Revisión de Documentos Externos'
+% %   • Ley 21.442 Copropiedad
+% %   • Ley 21.719 Datos Personales
+% %   • Ley 19.799 Docs Electrónicos
+% %   • Estadísticas Subtel
+% %
+% % ARRIBA-DERECHA: 'Análisis de la Competencia' ★ FUENTE PRINCIPAL (borde grueso doble)
+% %   • ComunidadFeliz
+% %   • Edifito
+% %   • Edipro
+% %   • GastoComunChile
+% %
+% % ABAJO-IZQUIERDA: 'Reuniones con Profesora Guía'
+% %   • Validación de alcance
+% %   • Retroalimentación de diseño
+% %   • Revisión de avances
+% %
+% % ABAJO-DERECHA: 'Observación de Procesos en Condominios'
+% %   • Libro de visitas manual
+% %   • Pizarras de avisos
+% %   • Gestión de encomiendas en cuaderno
+% %   • Reservas en papel
+% %
+% % ESTILO: Fondo blanco, bordes negros, relleno blanco o gris muy claro. Sin gradientes.
+% % Tipografía sans-serif. Profesional para tesis universitaria. Etiquetas en español.
+% % Formato: PNG 300dpi."
+% \begin{figure}[H]
+%   \centering
+%   \fbox{\parbox{0.85\textwidth}{\centering\vspace{3cm}
+%   \textit{[Insertar diagrama: Fuentes de recopilación de información y su relación con los RFs y CUs del proyecto]}
+%   \vspace{3cm}}}
+%   \caption{Técnicas de recopilación de información y su aporte a los requerimientos del sistema.}
+%   \label{fig:fuentes-recopilacion}
+% \end{figure}
 
 \section{Revisión de Documentos Externos}
 
